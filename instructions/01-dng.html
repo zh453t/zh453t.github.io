@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            font-family: 'Microsoft Yahei UI', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        body {
+            width: 15cm;
+            padding: 0 .3cm;
+        }
+
+        h1 {
+            color: red;
+            text-align: center;
+            font-size: 1.4em;
+        }
+
+        #适用范围 {
+            display: flow-root;
+            width: 100%;
+        }
+        #适用范围 table:nth-of-type(1) {float: left;}
+
+        #适用范围 table:nth-of-type(2) {float: right;}
+        table {
+            border-collapse: collapse;
+            text-align: center;
+        }
+
+        th,td {
+            border: 1px solid #555;
+            padding: 0 1mm;
+        }
+
+        #适用范围 th[rowspan="6"] {
+            writing-mode: vertical-rl;
+            letter-spacing: 0.2em;
+            width: 0.5cm;
+        }
+
+        #提醒 ::marker {
+            content: '* ';
+            font-weight: bold;
+        }
+
+        #footer {
+            display: flex;
+            width: 100%;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        #footer h3 {
+            writing-mode: vertical-lr;
+            letter-spacing: 0.3em;
+        }
+        #footer strong {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>多功能清洗机使用说明书</h1>
+    <h3>清洁与保养:</h3>
+    <ol>
+        <li>清洁保养时，请先取下电池，切断电源。</li>
+        <li>用量杯向清洗槽内倒入盖住清洗的物品即可，用柔软海棉进行清洗，当污渍较为严重时，可滴入3-5滴中性洗涤剂，清洗完成后用清水冲洗干净。</li>
+        <li>用沾水的湿布擦拭机器表面，擦干净后再用干燥抹布擦干水分。</li>
+        <li>注意清洗时不要将水渗入开关及电池仓处。</li>
+    </ol>
+    <h3>常见故障和排除方法:</h3>
+    <p><strong>【清洗机没法开机处理方法】</strong>根据我们调查统计99%机器没法开机都是以下原因造成的</p>
+    <ol>
+        <li>先检查电池是否装反或者没装到位置；</li>
+        <li>换一对新电池试下,看下是不是原来的电池没电了；</li>
+        <li>打开电池盖和拆出电池，看下电池仓是不是进水了，假如有水的就用吹风机热风把电池仓的水吹干就可以开机了。</li>
+    </ol>
+    <h3>产品适用范围</h3>
+    <samp id="适用范围">
+        <table>
+            <tr>
+                <th rowspan="6">可清洗用品</th>
+                <th>种类</th>
+                <th>具体例子</th>
+            </tr>
+            <tr>
+                <td>眼销类</td>
+                <td>眼镜、隐形眼镜</td>
+            </tr>
+            <tr>
+                <td>办公用器类</td>
+                <td>尺子、剪刀、钢笔等笔头</td>
+            </tr>
+            <tr>
+                <td>日常用品类</td>
+                <td>牙刷、剃须刀刀片、梳子等</td>
+            </tr>
+            <tr>
+                <td>珠宝首饰类</td>
+                <td>戒指、项链、耳环等、防水手表</td>
+            </tr>
+            <tr>
+                <td>餐具用品类</td>
+                <td>金餐具、陶瓷餐具、假牙等</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <th rowspan="6">不可清洗物品</th>
+                <th>种类</th>
+                <th>具体例子</th>
+            </tr>
+            <tr>
+                <td>木制品</td>
+                <td rowspan="5" style="width: 1.8cm;">龟壳镜框、珍珠、土耳古石、蛋白石、翡翠、珊瑚、象牙、绿宝石、石材等漆器
+                </td>
+            </tr>
+            <tr>
+                <td>表面硬度较为柔软的宝石类</td>
+            </tr>
+            <tr>
+                <td>镀层及涂饰加工较劣质用品</td>
+            </tr>
+            <tr>
+                <td>粘合粘贴的宝石类</td>
+            </tr>
+            <tr>
+                <td>有划痕和裂病的用品</td>
+            </tr>
+        </table>
+    </samp>
+    <ul id="提醒">
+        <li>可能无法完全清除残留在假牙中的牙石、牙垢、蜡黄、黑斑、吸烟牙垢等。</li>
+        <li>可能无法清洁假牙中固定的镇静剂。</li>
+        <li>金属及金属的变色、生锈问题无法清除干净。</li>
+        <li>清洗粘合粘贴宝石/钻石类的项链/戒指时,可能会导致宝石/钻石脱落。</li>
+        <li>清洗金属表带时，请将表带从手表主体上拆下来方可清洗，仅用清洁液或清水清洗。</li>
+    </ul>
+    <samp id="footer">
+        <h3>清洗时间</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>可清洗用品</th>
+                    <th>清洗时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>眼镜、隐形眼镜</td>
+                    <td rowspan="6">约5分钟</td>
+                </tr>
+                <tr><td>眼镜、隐形眼镜</td></tr>
+                <tr><td>尺子、剪刀、钢笔等笔头</td></tr>
+                <tr><td>牙刷、剃须刀刀片、梳子等</td></tr>
+                <tr><td>戒指、项链、耳环等、防水手表</td></tr>
+                <tr><td>金餐具、陶瓷餐具、假牙等</td></tr>
+            </tbody>
+        </table>
+        <strong>
+            注意：过度清洗会导致物品破损、<br>刀片脱落，尤其是长时间清洗外刀片。
+        </strong>
+    </samp>
+</body>
+
+</html>
