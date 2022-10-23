@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+<meta charset="UTF-8">
+<title>Clash</title>
+<style>
+body {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+fieldset {
+width: 200px;
+}
+
+button {
+margin: 10px;
+cursor: pointer;
+border-color: rgb(202, 202, 202);
+padding: 1px 10px;
+}
+</style>
+<script>
+function get() {
+let platform = document.getElementById('main').elements.namedItem('platform').value
+console.log(platform)
+document.write('跳转中...')
+switch (platform) {
+case 'windows':
+window.location.assign('https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.6/Clash.for.Windows.Setup.0.20.6.exe')
+break;
+case 'windows_arm':
+window.location.assign('https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.6/Clash.for.Windows.Setup.0.20.6.arm64.exe')
+break;
+case 'windows_x86':
+window.location.assign('https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.6/Clash.for.Windows-0.20.6-ia32-win.7z')
+break;
+case 'mac':
+window.location.assign('https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.6/Clash.for.Windows-0.20.6.dmg')
+break;
+case 'linux_arm':
+window.location.assign('https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.6/Clash.for.Windows-0.20.6-arm64-linux.tar.gz')
+break;
+case 'linux_x64':
+window.location.assign('https://github.com/Fndroid/clash_for_windows_pkg/releases/download/0.20.6/Clash.for.Windows-0.20.6-x64-linux.tar.gz')
+break;
+case 'and-armv8a':
+window.location.assign('https://github.com/Kr328/ClashForAndroid/releases/download/v2.5.11/cfa-2.5.11-foss-arm64-v8a-release.apk')
+break;
+case 'and-armv7a':
+window.location.assign('https://github.com/Kr328/ClashForAndroid/releases/download/v2.5.11/cfa-2.5.11-foss-armeabi-v7a-release.apk')
+break;
+case 'and-x86_64':
+window.location.assign('https://github.com/Kr328/ClashForAndroid/releases/download/v2.5.11/cfa-2.5.11-foss-x86_64-release.apk')
+break;
+case 'and-x86':
+window.location.assign('https://github.com/Kr328/ClashForAndroid/releases/download/v2.5.11/cfa-2.5.11-foss-x86-release.apk')
+break;
+case 'and-universal':
+window.location.assign('https://github.com/Kr328/ClashForAndroid/releases/download/v2.5.11/cfa-2.5.11-foss-universal-release.apk')
+break;
+default:
+alert('你输的什么我不知道')
+break;
+}
+}
+</script>
+</head>
+
+<body>
+<form id="main" action="/">
+<fieldset>
+<legend>Clash</legend>
+<label for="platform">操作系统：</label>
+<select id="platform">
+<optgroup label="手机端">
+<option value="and-armv8a">Android armv8a</option>
+<option value="and-armv7a">Android armv7a</option>
+<option value="and-x86">Android x86</option>
+<option value="and-x86_64">Android x86_64</option>
+<option value="and-universal">Android 通用</option>
+</optgroup>
+<optgroup label="电脑端">
+<option value="windows">windows x64</option>
+<option value="windows_x86">windows x86</option>
+<option value="windows_arm">windows arm64</option>
+<option value="mac">mac</option>
+<option value="linux_x64">linux x64</option>
+<option value="linux_arm">linux arm64</option>
+</optgroup>
+</select>
+</fieldset>
+<button onclick="get()">ok</button>
+</form>
+
+</body>
+
+</html>
