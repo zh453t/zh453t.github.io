@@ -44,7 +44,7 @@
 <script>
 	'use strict'
 	document.getElementById('encBtn').addEventListener('click', function() {
-		document.getElementById('enc-out').textContent = window.btoa(document.getElementById('encStr').value)
+		document.getElementById('enc-out').textContent = window.btoa(encodeURIComponent(document.getElementById('encStr').value))
 	})
 </script>
 </fieldset>
@@ -55,9 +55,10 @@
 <script>
 	'use strict'
 	document.getElementById('decBtn').addEventListener('click', function() {
-		document.getElementById('dec-out').textContent = window.atob(document.getElementById('decStr').value)
+		document.getElementById('dec-out').textContent = decodeURIComponent(window.atob(document.getElementById('decStr').value))
 	})
 </script>
 </fieldset>
+<address><a href="https://cms.35g.tw/coding/javascript-btoa-string-contains-an-invalid-character">感谢：</a><br>应先过一遍uri</address>
 </body>
 </html>
