@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>base64</title>
+	<style>
+		body {color: #333;background-color: #fcfcfc}
+		fieldset {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin: 1em auto;
+			width: fit-content;
+		}
+		output {
+			display: block;
+			padding: 0.1em 0.5em;
+			border: 1px solid #444;
+			width: fit-content;
+			font-family: Consolas, Microsoft Jhenghei, monospace;
+		}
+		button {
+			padding: 2px 5px;
+			border-color: #eee;
+		}
+		p {user-select: none}
+		legend {
+			padding-inline: 0.5rem;
+		}
+		input, textarea {
+			font-family: Consolas, Microsoft Jhenghei, monospace;
+			color: #555
+		}
+		fieldset[title="编码"] button {margin-block: 1.2em}
+		fieldset[title="编码"] p {margin-block-start: 0.4em;}
+		textarea {height: 1.2em}
+	</style>
+</head>
+<body>
+<fieldset title="编码">
+<legend>编码</legend>
+<p>输入字符串：</p> <textarea type="text" id="encStr"></textarea> <button id="encBtn">加密</button>	
+<output id="enc-out">输出base64</output>
+<script>
+	'use strict'
+	document.getElementById('encBtn').addEventListener('click', function() {
+		document.getElementById('enc-out').textContent = window.btoa(document.getElementById('encStr').value)
+	})
+</script>
+</fieldset>
+<fieldset title="解码">
+<legend>解码</legend>
+<p>输入字符串： <input type="Password" id="decStr"> <button id="decBtn">解密</button></p>
+<output id="dec-out">还原string</output>
+<script>
+	'use strict'
+	document.getElementById('decBtn').addEventListener('click', function() {
+		document.getElementById('dec-out').textContent = window.atob(document.getElementById('decStr').value)
+	})
+</script>
+</fieldset>
+</body>
+</html>
