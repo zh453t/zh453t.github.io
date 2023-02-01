@@ -4,14 +4,178 @@
 		<meta charset="UTF-8">
 		<title>git</title>
 		<style>
-			
+			html {
+				background-color: #f0efe7;
+				padding: 1vh 8vw;
+				font-family: Consolas, Microsoft Yahei;
+				color: #444;
+				line-height: 1.6;
+
+			}
+			body {
+				background-color: #fafafa;
+				padding: 4vh 2vw;
+				border: 1px solid #e9e9e9;
+			}
+			details {
+				margin-bottom: 0.5em;
+				padding-inline: 1em;
+				white-space: pre-wrap;
+				word-wrap: break-word;
+        }
+		details details {
+			margin-block: 0;
+			margin-left: 2em;
+		}
+
+        h5 {
+            font-size: large;
+            margin-block: 8px 0;
+            color: rgb(45, 165, 180);
+        }
+        summary {
+            font-weight: bold;
+            font-size: large;
+            color: rgb(45, 165, 180);
+            cursor: cell;
+        }
+		details details summary {
+			font-size: 1.2em;
+		}
+        b {color: rgb(165, 57, 53);}
 		</style>
 	</head>
 
-	<body>
-		<details><summary></summary></details>
-		<details><summary></summary></details>
-		<details><summary></summary></details>
-		<details><summary></summary></details>
-	</body>
+<body>
+<h5 style="text-align: center;">所有操作均在本地进行，在.git目录中标记<br>
+<b>pointer => 指针<br>
+branch => 分支
+</b></h5>
+<details><summary>仓库</summary>
+<b>创建仓库</b>
+git init
+cd 到目录，init即可
+
+git clone
+从远端复制
+复制的仓库包括git记录 (其实是把.git都复制下来)
+</details>
+<details><summary>文件操作</summary>
+git不会自动跟踪
+新加的文件需 <b>git add</b> 让git跟踪
+
+git add . // 这时的.是当前目录？
+git add -A (-all) // 追踪全部
+
+git add -i (--interactive) // <a href="https://git-scm.com/docs/git-add/zh_HANS-CN#_交互模式">交互模式</a>
+
+之后，可以对文件作出删改
+
+<b>git rm</b>
+取消追踪文件
+Remove files from the working tree <b>and</b> from the index
+不会直接删掉
+
+<b>git mv</b>
+mv => move 移动文件
+
+<b>git status</b>
+查看状态
+可以改变log的参数，参见<a href="https://git-scm.com/docs/git-status">Git - git-status Documentation</a>
+
+<b>git diff</b>
+显示commit之间，commit和现在某个文件的差异
+
+
+</details>
+<details><summary>分支 / Branching and Merging</summary>
+分支就是分支
+
+<b>git branch < new branch name ></b> 创建新分支
+实际上是分支管理命令
+v1 - v2 - v3 (master) - 
+        \- bug1fix (issue) - 
+git branch issue见上
+
+git branch <b>-d</b> 删除分支，后面加分支名字
+git branch <b>-c</b> 复制，后面加新分支名称
+git branch <b>-m</b> 移动（重命名）后面加新分支名称
+
+<b>git checkout</b> 看现在在哪个branch上
+
+<b>git switch</b> 灵活切换branch(s)
+
+<b>git merge</b> 合二为一
+1. fast forward 方法
+
+     master
+       ↓
+M1 --- M2
+       \
+        \--- F1
+             ↑
+           feature
+
+如果此时master分支没有作出改动，那就会从M2移动master指针到F1，像这样
+           master          
+M1 --- M2    |
+       \     ↓
+        \--- <b>F1</b>
+             ↑
+           feature
+
+
+<b>2. 3-way 方法</b>
+取分支前的最后版本，branch1 (通常是master/main)的最后版本，和branch2的最后版本，合并到master/main分支上
+            master
+              ↓
+M1 --- <b>M2</b> --- M3
+       \             
+        \--- <b>F1</b>
+              ↑
+           feature
+变成
+                     master
+                       ↓
+M1 --- <b>M2</b> --- M3 ---  <b>M4</b> --- M5
+       \             /
+        \--- <b>F1</b> --- /
+              ↑
+           feature
+
+
+
+<b>git rebase</b> 变基：另一种合并方式
+后面加目标branch名称
+
+     master
+       ↓
+M1 --- M2 --- M3
+       \
+        \--- F1
+             ↑
+           feature
+变成
+                   master
+                     ↓
+M1 --- M2 --- M3 --- F1
+                     ↑
+                  feature
+符合对合并的一切想像
+</details>
+<details open><summary>与远端交互</summary>
+应有ssh协议
+
+<b>git remote</b> 连接远程仓库
+不加参数：显示远程仓库名称
+git remote <b>-v</b> 显示名称 但是还有地址
+
+git remote remove 仓库名称
+git remote add 仓库名称 仓库地址
+git remote raname 仓库名称 仓库名称
+
+<b>git fetch 远仓名称</b> 更新远程仓库信息/进度
+<b>git push 远仓名称</b> 推
+</details>
+</body>
 </html>
