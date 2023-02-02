@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>jstest</title></head>
+<body><scr>
+'use strict'
+const openingHrs = {
+          thu: {
+            open: 12,
+            close: 22
+          },
+          fri: {
+            open: 11,
+            close: 23
+          },
+          sat: {
+            open: 0,
+            close: 24
+          }
+        }
+        
+        
+    const restaurant = {
+        name: 'Classico Italiano',
+        location: ',,, Firenze, Italy',
+        categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
+
+
+        starterMenu: [
+          'Focaccia',
+          'Bruschetta',
+          'Garlic Bread',
+          'Caprese Salad',
+        ],
+        mainMenu: ['Pizza', 'Pasta', 'Risotto'],
+
+        /*order: function (starterIndex, mainIndex) {
+          return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]]
+        },*/
+        
+        // 函数表达式
+        order(starterIndex, mainIndex) {
+          return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]]
+        },
+		
+		// 过时：openingHrs: openingHrs,
+		// es6:
+		openingHrs,
+		 
+      }
+
+
+</scr>
+<script>
+var rootparti;
+var rootpart;
+var det;
+var rootparti1;
+var rootparti2;
+var a;
+var b;
+var c;
+var x1;
+var x2;
+var i = "i";
+function checkQuad() {
+var a = document.fquad.fa.value;
+var b = document.fquad.fb.value;
+var c = document.fquad.fc.value;
+if (a == 0 && c != 0) {
+x1 = -c / b;
+x2 = "Not a quadratic equation, but here is your answer for x";
+document.fquad.x1.value=x1;
+document.fquad.x2.value=x2;
+}
+else if (a == "" && c != 0) {
+x1 = -c / b;
+x2 = "Not a quadratic equation";
+document.fquad.x1.value=x1;
+document.fquad.x2.value=x2;
+}
+else {
+quad();
+   }
+}
+function quad() {
+var a = document.fquad.fa.value;
+var b = document.fquad.fb.value;
+var c = document.fquad.fc.value;
+det = Math.pow(b,2) - 4 * a * c;
+rootpart = Math.sqrt(det) / (2 * a);
+rootparti = (Math.sqrt(-det) / (2 * a)) + i;
+if (parseFloat(rootparti) < 0) {
+rootparti1 = rootparti;
+rootparti2 = (-1 * parseFloat(rootparti)) + i;
+}
+else {
+rootparti1 = (-1 * parseFloat(rootparti)) + i;
+rootparti2 = rootparti;
+}
+if (rootparti1 == "1i") {
+rootparti1 = i;
+rootparti2 = "-i";
+}
+else if (rootparti1 == "-1i") {
+rootparti1 = "-i";
+rootparti2 = i;
+}
+if (det == 0) {
+x1 = x2 = -b / (2 * a);
+}
+else if (det > 0) {
+x1 = (-b + Math.sqrt(det)) / (2 * a);
+x2 = (-b - Math.sqrt(det)) / (2 * a);
+}
+else if ((-b / (2 * a)) == 0) {
+x1 = rootparti1;
+x2 = rootparti2;
+}
+else {
+x1 = (-b / (2 * a) + " + " + rootparti1);
+x2 = (-b / (2 * a) + " + " + rootparti2);
+}
+document.fquad.x1.value=x1;
+document.fquad.x2.value=x2;
+}
+// will solve for complex numbers
+
+//   -->
+
+</script>
+</body>
+</html>

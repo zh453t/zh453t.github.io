@@ -48,6 +48,7 @@
 
 <body>
 <h5 style="text-align: center;">所有操作均在本地进行，在.git目录中标记<br>
+按q退出<br>
 <b>pointer => 指针<br>
 branch => 分支
 </b></h5>
@@ -78,6 +79,10 @@ Remove files from the working tree <b>and</b> from the index
 
 <b>git mv</b>
 mv => move 移动文件
+
+<b>git commit</b>
+提交
+git commit --amend 撤销
 
 <b>git status</b>
 查看状态
@@ -163,7 +168,7 @@ M1 --- M2 --- M3 --- F1
                   feature
 符合对合并的一切想像
 </details>
-<details open><summary>与远端交互</summary>
+<details><summary>与远端交互</summary>
 应有ssh协议
 
 <b>git remote</b> 连接远程仓库
@@ -177,5 +182,25 @@ git remote raname 仓库名称 仓库名称
 <b>git fetch 远仓名称</b> 更新远程仓库信息/进度
 <b>git push 远仓名称</b> 推
 </details>
-</body>
-</html>
+<details open><summary>查看提交历史</summary>
+<b>git log</b>
+显示每次commit记录
+<b>-p</b> (--patch) -[最近几次] 显示每次提交所引入的差异
+<b>--pretty</b> 允许以不同格式展示
+这个选项有一些内建的子选项供你使用。 比如 oneline 会将每个提交放在一行显示，在浏览大量的提交时非常有用。 另外还有 short，full 和 fuller 选项，它们展示信息的格式基本一致，但是详尽程度不一：
+	--pretty=online
+	--pretty=format:"" // 可以指定log的内容
+
+* 61fc7d1251ae0957d018a1934b27b962fb037bbb (origin/main, origin/HEAD) new branch
+* fbc9d5b2e246991ad91815629e4e7567f2e9a90f add git.html
+
+<b>git reflog</b>
+查看操作历史
+
+<b>--graph</b> 与online/format配合
+
+<b>回滚到历史版本</b>
+1. git checkout 上文版本号61fc7d1251ae0957d018a1934b27b962fb037bbb 等，可只写前6位
+2. git reset HEAD^n (n为版本)
+3. 回滚后再要返回到回滚前的版本：git reset --hard 版本号
+ </details> </body> </html>
