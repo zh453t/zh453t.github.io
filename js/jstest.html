@@ -1,56 +1,49 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"><title>jstest</title></head>
-<body><scr>
+<body>
+  <script>
 'use strict'
+const weekdays = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
 const openingHrs = {
-          thu: {
-            open: 12,
-            close: 22
-          },
-          fri: {
-            open: 11,
-            close: 23
-          },
-          sat: {
-            open: 0,
-            close: 24
-          }
-        }
-        
-        
-    const restaurant = {
-        name: 'Classico Italiano',
-        location: ',,, Firenze, Italy',
-        categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
+   'thu': {
+    open: 12,
+    close: 22
+  },
+  'fri': {
+    open: 11,
+    close: 23
+  },
+  'sat': {
+    open: 0,
+    close: 24
+  }
+}
 
 
-        starterMenu: [
-          'Focaccia',
-          'Bruschetta',
-          'Garlic Bread',
-          'Caprese Salad',
-        ],
-        mainMenu: ['Pizza', 'Pasta', 'Risotto'],
-
-        /*order: function (starterIndex, mainIndex) {
-          return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]]
-        },*/
-        
-        // 函数表达式
-        order(starterIndex, mainIndex) {
-          return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]]
-        },
-		
-		// 过时：openingHrs: openingHrs,
-		// es6:
-		openingHrs,
-		 
-      }
+const restaurant = {
+  name: 'Classico Italiano',
+  location: ',,, Firenze, Italy',
+  categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
 
 
-</scr>
-<script>
+  starterMenu: [
+    'Focaccia',
+    'Bruschetta',
+    'Garlic Bread',
+    'Caprese Salad',
+  ],
+   mainMenu: ['Pizza', 'Pasta', 'Risotto'],
+
+  // 函数表达式
+  order(starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]]
+  },
+}
+
+
+</script>
+<!--<script>
 var rootparti;
 var rootpart;
 var det;
