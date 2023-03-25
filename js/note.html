@@ -15,7 +15,7 @@
         details {
             white-space: pre-wrap;
 			word-wrap: break-word;
-            font-family: Cascadia Code, Consolas, Microsoft JhengHei, monospace;
+            font-family: Consolas, Microsoft JhengHei, monospace;
             margin-block: 1em;
         }
 		details details {
@@ -459,65 +459,36 @@ document.addEventListener('keydown', function(e) { // 在function这里设定一
 	
 </details>
 <details hidden><summary>案例</summary>
-	<samp>
-    const temps = [3, 2, 6, -1, 'error', 16, 19, 7]
-    // 计算temps的最大差值
-    function calcAmplitude(temp1,temp2) {
-      let temps = temp1.concat(temp2) // mdn
-      let max = temps[0]
-      let min = temps[0]
-      for (let i = 0; i &lt; temps.length; i++) {
-        if ((temps[i] == 'error')) continue
-        if (temps[i] > max) max = temps[i]
-        if (temps[i] &lt; min) min = temps[i]
-      }
-      return max - min
-    }
+<samp>
+  const temps = [3, 2, 6, -1, 'error', 16, 19, 7] // 计算temps的最大差值
+  function calcAmplitude(temp1,temp2) { let temps = temp1.concat(temp2)
+  // mdn let
+  max = temps[0] let min = temps[0]
+  for (let i = 0; i &lt; temps.length;i++) {
+    if ((temps[i] == 'error')) continue
+    if (temps[i] > max) max = temps[i]
+    if (temps[i] &lt; min) min = temps[i] } return max - min }
     console.log(calcAmplitude(temps,[0,2,32]))
-    // 收到2个数组
-    // 如何把数组组合在一起？Merge 2 arrays ==> concat
-	</samp>
-    <h5>debug</h5>
-    function measureKelvin() {
-        const measurement = {
-          type: 'temp',
-          unit: 'celsius',
-          value: parseFloat(prompt('degrees celsius:')) // bug在此
-        }
-        debugger // 浏览器执行到这里的时候打开debugger
-        const kelvin = measurement.value + 273
-        return kelvin
-      } 
-      console.log(measureKelvin());
-      console.error(''); // 向控制台报错
-      console.warn(''); // 警告
+  // 收到2个数组
+  // 如何把数组组合在一起？Merge 2 arrays ==> concat
+</samp>
+<h5>debug</h5>
+function measureKelvin() { const measurement = { type: 'temp', unit: 'celsius',
+value: parseFloat(prompt('degrees celsius:')) // bug在此 } debugger // 浏览器执行到这里的时候打开debugger
+const kelvin = measurement.value + 273 return kelvin } console.log(measureKelvin());
+console.error(''); // 向控制台报错 console.warn(''); // 警告 const arr1 = [17,
+21, 23] const arr2 = [12, 5, -5, 0, 4] //
 
+<b>disaplay a string with these temperatures 天气预报生成器</b>
 
-
-      const arr1 = [17, 21, 23]
-      const arr2 = [12, 5, -5, 0, 4]
-      // <b>disaplay a string with these temperatures 天气预报生成器</b>
-      // 1. 生成每天的
-      // 2. 组合一下
-      function printForcast(inputarr) {
-        let outputarr = []
-        for (let i = 0; i &lt; inputarr.length; i++) {
-          i == 0
-            ? (outputarr[i] = `${inputarr[i]} °C in ${i + 1} day`)
-            : (outputarr[i] = `${inputarr[i]} °C in ${i + 1} days`) // 单复数问题😅
-          // debugger
-        } // 创建单个句子
-
-        let outputstr = ''
-        for (let i = 0; i &lt; outputarr.length - 1; i++) {
-          outputarr[i] += ' ... ' // 加间隙
-          outputstr += outputarr[i] // 加字符串
-        } // 将多天的句子组合在一起
-        outputstr += outputarr[outputarr.length - 1]
-        return outputstr
-      }
-      console.log(printForcast(arr1))
-      console.warn(printForcast(arr2));
+// 1. 生成每天的
+// 2. 组合一下 function printForcast(inputarr) { let outputarr = [] for (let i = 0; i &lt; inputarr.length; i++) { i == 0 ? (outputarr[i] = `${inputarr[i]} °C in ${i + 1} day`) : (outputarr[i] = `${inputarr[i]} °C in ${i + 1} days`) // 单复数问题
+// debugger
+} // 创建单个句子 let outputstr
+= '' for (let i = 0; i &lt; outputarr.length - 1; i++) { outputarr[i] +=
+' ... ' // 加间隙 outputstr += outputarr[i] // 加字符串 } // 将多天的句子组合在一起 outputstr
++= outputarr[outputarr.length - 1] return outputstr } console.log(printForcast(arr1))
+console.warn(printForcast(arr2));
 </details>
 <details hidden><summary>javascript 基础及原理</summary>
 js即时编译 在engine里操作
@@ -825,7 +796,6 @@ console.log(newday) <b>浅拷贝</b>
 
 <details open><summary>现代js</summary>
 
-<details><summary>数组与对象</summary>
 <details><summary>1.数组</summary>
 <samp>
     const arr = [2,3,4]
@@ -836,8 +806,16 @@ console.log(newday) <b>浅拷贝</b>
     let [e,,f] = arr
     // e=2. f=4
 </samp>
+<details open><summary>for..of循环</summary>
+const menu = [...restaurant.starterMenu, ...restaurant.mainMenu]
+for (const item of menu) console.log(item)
+// 列出列表中的每一项
+
+for (const [i, el] of menu.entries()) document.write(`${i + 1}, ${el}`)
+// entries() 返回[]
+</details>
 <details><summary>案例</summary>
-<samp>
+  <samp>
 const restaurant = {
     name: 'Classico Italiano',
     location: ',,, Firenze, Italy',
@@ -855,10 +833,20 @@ console.log(starter, mainCourse) // <b>可以用来拆分函数返回数组，�
 
 const [a = 1, b] = [9, 2]
 
+  </details>
 </details>
-</details>
-<details><summary>2. 对象</summary>
-<samp>
+<details open><summary>2.对象</summary>
+{
+key: value,
+key2: value2,
+}
+
+key键，用Object.keys(对象)访问。<b>返回的是数组</b>
+value值，用Object.values(对象)访问。<b>返回的是数组</b>
+访问key和value，用Object.entries(对象)
+<b>返回的是 [ [key1, value1], [key2, value2],  ]</b>
+ <details><summary>对象操作</summary>
+  <samp>
 	// 自定义变量名:
 	const {name: restaurantName,
 	openingHrs: openHrs,
@@ -882,7 +870,7 @@ const [a = 1, b] = [9, 2]
 	// 用括号上下文要加分号，否则报错
 	
 	
-	// <b>object嵌套</b>
+	// <b>嵌套</b>
 	// const {fri} = openHrs // fri 取openHrs.fri
 	
 	// 取fri 里面的值
@@ -898,12 +886,68 @@ const [a = 1, b] = [9, 2]
 	restaurant.orderDelivery(
 	{time: '22:30', address: '1', mainIndex: 2, starterIndex: 2}
 	)
-</samp>
-</details>
+  </samp>
+  <h5>循环对象</h5>
+<b>因为Object.keys返回的是数组，所以Object.keys可以用for...of循环遍历。</b>
+for (const days of Object.keys(restaurant.openingHrs)) {
+  console.log(days)
+}
 
-</details>
+let openingDays = Object.keys(restaurant.openingHrs)
+let openStr = `We are opening on ${openingDays.length} days: `
+for (const day of openingDays) {
+  openStr += `${day}, `
+}
+console.log(openStr)
 
-<details open><summary>运算符</summary>
+<b>因为Object.values返回的是数组，所以Object.values可以用for...of循环遍历。</b>
+<b>但Object.values返回的是数组套出租，所以Object.values遍历方式特殊。</b>
+for (const [key, {open, close}] of Object.entries(restaurant.openingHrs)) {
+  console.log(`On ${key} we open at ${open} and close at ${close}`)
+} // 数组和对象解构
+  </details>
+<details><summary>语法更新</summary>
+<b>以前</b>
+order: function (starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]]
+},
+
+<b>现在</b>
+order(starterIndex, mainIndex) {
+    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]]
+},
+
+<b>以前</b>
+{
+  a: b
+  openingHrs: openingHrs
+}
+
+<b>现在</b>
+{
+  a: b
+  openingHrs,
+}
+
+  </details>
+<details><summary>new</summary>
+new 运算符创建一个 |用户定义的对象类型| 的实例 //或// 具有 |构造函数的内置对象| 的实例。
+<samp>function Car(make, model, year) {
+  this.make = make;
+  this.model = model;
+  this.year = year;
+}
+
+const car1 = new Car('Eagle', 'Talon TSi', 1993);
+
+console.log(car1);
+// Expected output: "Eagle"</samp>
+  </details>
+</details>
+<details open><summary>Iteration</summary>
+具体：能用for .. of 遍历
+</details>
+<details><summary>运算符</summary>
 <details><summary>the Spread Operator / 展开操作符</summary>
 	// The Spread Operator 展开运算符 (...)
 	const arr = [1,2,3]
@@ -1138,6 +1182,7 @@ team1 > team2 &&
 
 <details><summary>Optional Chaining / 可选链运算符</summary>
 // 检索周一是否营业
+console.log(restaurant.openingHrs.mon) // 访问一个不存在的属性: undefined
 if (restaurant.openingHrs.mon) console.log(restaurant.openingHrs.mon.open)
 // 但如果openingHrs也没有，继续访问mon会报错
 
@@ -1165,77 +1210,38 @@ const users =[{name: 'Admin', email:{'hello@git-scm.com'}}]
 console.log(users[0]?.name ?? 'User array empty') // 访问到undefined
 </details>
 </details>
-<details><summary>用于数组的循环 for..of</summary>
-const menu = [...restaurant.starterMenu, ...restaurant.mainMenu]
-for (const item of menu) console.log(item)
-// 列出列表中的每一项
 
-for (const [i, el] of menu.entries()) document.write(`${i + 1}, ${el}`)
-// entries() 返回[]
 
-</details>
-<details><summary>es6 对象语法增强</summary>
 
-<b>以前</b>
-order: function (starterIndex, mainIndex) {
+<samp hidden>
+const restaurant = {
+  name: 'Classico Italiano',
+  location: ',,, Firenze, Italy',
+  categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
+
+  starterMenu: ['Focaccia', 'Bruschetta', 'Garlic Bread', 'Caprese Salad', ],
+  mainMenu: ['Pizza', 'Pasta', 'Risotto'],
+
+  order: function(starterIndex, mainIndex) {
     return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]]
-},
+  },
 
-<b>现在</b>
-order(starterIndex, mainIndex) {
-    return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]]
-},
+  openingHrs: {
+    thu: {
+      open: 12,
+      close: 22
+    },
+    fri: {
+      open: 11,
+      close: 23
+    },
+    sat: {
+      open: 0,
+      close: 24
+    }
+  }
 
-<b>以前</b>
-{
-  a: b
-  openingHrs: openingHrs
 }
-
-<b>现在</b>
-{
-  a: b
-  openingHrs,
-}
-
-</details>
-
-
-<samp>
-    const restaurant = {
-        name: 'Classico Italiano',
-        location: ',,, Firenze, Italy',
-        categories: ['Italian', 'Pizzeria', 'Vegetarian', 'Organic'],
-
-
-        starterMenu: [
-          'Focaccia',
-          'Bruschetta',
-          'Garlic Bread',
-          'Caprese Salad',
-        ],
-        mainMenu: ['Pizza', 'Pasta', 'Risotto'],
-
-        order: function (starterIndex, mainIndex) {
-          return [this.starterMenu[starterIndex], this.mainMenu[mainIndex]]
-        },
-
-        openingHrs: {
-          thu: {
-            open: 12,
-            close: 22
-          },
-          fri: {
-            open: 11,
-            close: 23
-          },
-          sat: {
-            open: 0,
-            close: 24
-          }
-        }
-		
-      }
 </samp>
 
 </details>

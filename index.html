@@ -5,7 +5,7 @@
 
 <head>
 <meta charset="UTF-8">
-<!--弃用低效率的table布局，改用flex grid（页面排版不变，居然少了1000行的代码）-->
+<!--弃用低效率的table布局，改用flex grid（页面排版不变，减少1000行代码）-->
 <!--使用@layer创建级联层，浏览器版本需达到：
 Chrome/Edge 99以上, Safari 15.4以上, Firefox 97以上, Opera 85以上.
 千万别用IE!!!-->
@@ -31,10 +31,6 @@ var {
 display: none;
 }
 
-p {
-margin: 0;
-padding: 0;
-}
 
 del {
 display: none;
@@ -180,17 +176,15 @@ line-height: 1.5em;
 
 @layer article {
 .author {
-height: 20px;
 text-align: center;
-margin-bottom: 15px;
 font-size: 13px;
+margin-block: 0.2em;
 }
 
 .title {
 color: #05006C;
 font-size: 24px;
-margin-top: 10px;
-margin-bottom: 0;
+margin-block: 0.5em;
 text-align: center;
 }
 
@@ -410,10 +404,7 @@ font-size: 12px;
 }
 
 footer {
-display: flex;
-row-gap: 12px;
-flex-direction: column;
-align-items: center;
+text-align: center;
 margin-top: 1rem;
 font-size: 12px;
 }
@@ -429,12 +420,12 @@ width: 750px;
 
 <body>
 <nav>
-<section class="left"><a href=http://news.sina.com.cn class="img"><img
+<section class="left"><a href="https://news.sina.com.cn" class="img"><img
 src="http://image2.sina.com.cn/ent/images/sina_xwzx.gif" width='144px' height="34px" alt="新闻中心"></a>
 <div class="links">
-<a href=http://home.sina.com.cn/ class=a02>新浪首页</a> &gt;
-<a href=http://news.sina.com.cn/ class=a02>新闻中心</a> &gt;
-<a href=http://news.sina.com.cn/society/ class=a02>社会新闻</a> &gt; 正文
+<a href="https://home.sina.com.cn" class=a02>新浪首页</a> &gt;
+<a href="https://news.sina.com.cn" class=a02>新闻中心</a> &gt;
+<a href="https://news.sina.com.cn/society/" class=a02>社会新闻</a> &gt; 正文
 </div>
 </section>
 <section class="right">
@@ -454,7 +445,7 @@ src="http://image2.sina.com.cn/ent/images/sina_xwzx.gif" width='144px' height="3
 <div class="left">
 <!--画中画广告开始-->
 <!--社会新闻内页轮播画中画开始-->
-<iframe frameborder=0 width=360 height=300
+<iframe frameborder='0' width='360' height="300"
 src="http://176.adsina.allyes.com/main/adfshow?user=AFP6_for_SINA|news|societypip&db=sina&border=0&local=yes"></iframe>
 <!--社会新闻内页轮播画中画结束-->
 <!--画中画广告结束-->
@@ -552,26 +543,26 @@ PLUGINSPAGE="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Vers
 <input type="submit" name="submit_" value="发送本新闻到手机">
 </form>
 <div>
-【<a href=http://stat.sina.com.cn/cgi-bin/sms/edit_sms.cgi?${title显示}>推荐</a>】【<a
+【<a href="http://stat.sina.com.cn/cgi-bin/sms/edit_sms.cgi?${title显示}">推荐</a>】【<a
 href="javascript:doZoom(16)">大</a> <a href="javascript:doZoom(14)">中</a> <a
 href="javascript:doZoom(12)">小字</a>】【<a href="javascript:doPrint()">打印</a>】【<a
-href=http://www.sina.com.cn/ddt />下载点点通</a>】【<a href="javascript:window.close()">关闭</a>】<br>
+href="http://www.sina.com.cn/ddt">下载点点通</a>】【<a href="javascript:window.close()">关闭</a>】<br>
 </div>
 </article>
 <hr>
 <footer>
-<section><a href=/guest.html>新闻中心意见反馈留言板</a>　电话：010-82612286　　　<a href="javascript:window.alert(no);"
-onclick="window.alert(no)">欢迎批评指正</a></section>
-<section><a href=http://corp.sina.com.cn/chn/ class=sinatail>新浪简介</a> |
-<a href=http://corp.sina.com.cn/eng/ class=sinatail>About Sina</a> |
-<a href=http://ads.sina.com.cn/ class=sinatail>广告服务</a> |
-<a href=http://corp.sina.com.cn/chn/sina_job.html class=sinatail>招聘信息</a> |
-<a href=http://www.sina.com.cn/intro/lawfirm.shtml class=sinatail>网站律师</a> |
-<a href=http://englishcenter.sina.com class=sinatail>SINA English</a> |
-<a href=http://tech.sina.com.cn/focus/sinahelp.shtml class=sinatail>产品答疑</a>
-</section>
-<section>Copyright &copy; 1996 - 2005 SINA Inc. All Rights Reserved</section>
-<section><a href=http://www.sina.com.cn/intro/copyright.shtml class=sinatail>版权所有</a> 新浪网</section>
+<p><a href="/guest.html">新闻中心意见反馈留言板</a>　电话：010-82612286　　　<a href="javascript:window.alert(no);"
+onclick="window.alert(no)">欢迎批评指正</a></p>
+<p><a href="http://corp.sina.com.cn/chn/">新浪简介</a> |
+<a href="http://corp.sina.com.cn/eng/">About Sina</a> |
+<a href="http://ads.sina.com.cn/">广告服务</a> |
+<a href="http://corp.sina.com.cn/chn/sina_job.html">招聘信息</a> |
+<a href=http://www.sina.com.cn/intro/lawfirm.shtml>网站律师</a> |
+<a href=http://englishcenter.sina.com>SINA English</a> |
+<a href=http://tech.sina.com.cn/focus/sinahelp.shtml>产品答疑</a>
+</p>
+<p>Copyright &copy; 1996 - 2005 SINA Inc. All Rights Reserved</p>
+<p><a href=http://www.sina.com.cn/intro/copyright.shtml>版权所有</a> 新浪网</p>
 </footer>
 </body>
 
