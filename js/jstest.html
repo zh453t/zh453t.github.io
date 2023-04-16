@@ -40,7 +40,6 @@ const restaurant = {
     }
   }
 }
-
 const game = {
   team1: 'Bayern Munich',
   team2: 'Borrussia Dortmund',
@@ -75,22 +74,14 @@ const game = {
   score: '3:0',
   scored: ['Lewandowski', 'Gnarby', 'Lewandowski'],
   date: 'Nov 9th, 2037',
+  // odds 赔率
   odds: {
     team1: 1.33,
     x: 3.25,
     team2: 6.5,
   },
 };
-// #1
-for (const x of game.scored) {
-console.log(x)
-}
-let totalodd = 0
-for (const avodd of Object.values(game.odds)) {
-  totalodd+=avodd
-}
-totalodd /= Object.values(game.odds).length
-console.log(totalodd)
+
 </script>
 </body>
 </html>
