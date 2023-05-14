@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>一元二次方程计算器</title>
+  <style>
+    body {
+      display: flex;
+      height: 90vh;
+      align-items: center;
+      justify-content: center;
+      background-color: #fafafa;
+    }
+
+    main {
+      border: 1px dashed #000;
+      padding: 1em 3em 2em 3em;
+      font-size: large;
+
+      font-family: Cambria Math;
+    }
+
+    section.input {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+
+    input {
+      line-height: 2;
+      padding-inline: 1em;
+      width: 7em;
+      margin-inline: 0.5em;
+      font-weight: bold;
+    }
+
+    button {
+      appearance: none;
+      padding: 0.5em 1em;
+      margin-inline: 10px;
+    }
+
+    output {
+      line-height: 2;
+    }
+
+    section.output {
+      margin-block: 1em;
+      padding-left: 1em;
+      border-left: 3px solid salmon;
+    }
+  </style>
+</head>
+
+<body>
+  
+  <main>
+    <h3>Calc</h3>
+    <section class="input">
+      <input type="text" id="a" placeholder="a">
+      <b>x<sup>2</sup> +</b>
+      <input type="text" id="b" placeholder="b">
+      <b>x +</b>
+      <input type="text" id="c" placeholder="c">
+      <b>= 0</b>
+      <button id="submit">计算</button>
+
+    </section>
+    <section class="output">
+      <div> x<sub>1</sub> = <output id="x1"></output></div>
+      <div> x<sub>2</sub> = <output id="x2"></output></div>
+    </section>
+  </main>
+  <script>
+    let a = document.getElementById('a').value
+    let b = document.getElementById('b').value
+    let c = document.getElementById('c').value
+    const i = "i";
+
+    function checkQuad() {
+      if (a == 0) {
+        if (b == '0') {
+          document.getElementById('x2').textContent = "Not a quadratic equation"
+        }
+
+        if (c != 0) {
+          let x1 = -c / b;
+          document.getElementById('x2').textContent = "Not a quadratic equation, but here is your answer for x";
+          document.getElementById('x1').textContent = x1;
+        }
+      } else if (a == "" && c != 0) {
+        x1 = -c / b;
+        x2 = "Not a quadratic equation";
+        document.getElementById('x1').textContent = x1;
+        document.getElementById('x2').textContent = x2;
+      }
+      else {
+        quad();
+      }
+    }
+    function quad() {
+      let det = b ** 2 - 4 * a * c
+      let rootpart = Math.sqrt(det) / (2 * a)
+      let rootparti = `${Math.sqrt(-det) / (2 * a)}i`
+      if (parseFloat(rootparti) < 0) {
+        rootparti1 = rootparti;
+        rootparti2 = `${-1 * parseFloat(rootparti)}i`
+      } else {
+        rootparti1 = `${-1 * parseFloat(rootparti)}i`
+        rootparti2 = rootparti;
+      }
+
+      if (rootparti1 == "1i") {
+        rootparti1 = i;
+        rootparti2 = "-i";
+      } else if (rootparti1 == "-1i") {
+        rootparti1 = "-i";
+        rootparti2 = i;
+      }
+
+      if (det == 0) {
+        x1 = x2 = -b / (2 * a);
+      } else if (det > 0) {
+        x1 = (-b + Math.sqrt(det)) / (2 * a);
+        x2 = (-b - Math.sqrt(det)) / (2 * a);
+      } else if ((-b / (2 * a)) == 0) {
+        x1 = rootparti1;
+        x2 = rootparti2;
+      }
+      
+      else {
+        x1 = `${-b / (2 * a)} + ${rootparti1}`;
+        x2 = `${-b / (2 * a)} + ${rootparti2}`;
+      }
+      document.getElementById('x1').textContent = x1;
+      document.getElementById('x2').textContent = x2;
+    }
+
+    document.getElementById('submit').onclick = () => {
+      a = document.getElementById('a').value
+      b = document.getElementById('b').value
+      c = document.getElementById('c').value
+      console.log(a, b, c)
+      checkQuad()
+    }
+// will solve for complex numbers
+
+//
+  </script>
+</body>
+
+</html>
