@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="lib/public.css">
+  <script src="lib/airline.js"></script>
+  <title>String Methods</title>
+</head>
+<body>
+<h1>字符串</h1>
+<progress></progress>
+<h4>和数组相似：</h4>
+<div class="flex center gap" style="align-items: flex-start;">
+<samp><b class="red">[]</b>
+console.log(plane[0]) // A
+console.log('Hello'[1]) // e
+</samp>
+<samp><b class="red">.indexOf() </b>查询在数组第一次出现的位置
+console.log(airline.indexOf('P')) // 2
+console.log(airline.indexOf('Portugal')) // 6 ==> 大小写敏感
+<b class="red">.lastIndexOf()</b> 最后一个</samp>
+<samp><b class="red">.length</b>
+console.log('hhh'.length) // 3</samp>
+</div>
+<h3>.slice()</h3>
+<p>截取</p>
+<samp>console.log(airline.slice(4)) // 'Air Portugal' 从第5位开始
+console.log(airline.slice(-1)) // 'l' 倒着截，-2: 'al'
+<b class="red">-x 倒数第几,从-1开始</b>
+
+console.log(airline.slice(4, 7)) // 'Air' 从5开始，8结束，8不包含
+console.log(airline.slice(0, airline.indexOf(' '))) // 找到第一个词
+</samp>
+<p>在传入函数时，js会把基本数据类型转换成类似于object的形式</p>
+<samp>const objectStr = new String('Hello')
+console.log(objectStr) // String { "Hello" }
+  0: "H"
+  1: "e"
+  2: "l"
+  3: "l"
+  4: "o"
+  length: 5
+
+console.log(typeof objectStr) // object</samp>
+<h3>大小写转换</h3>
+<p>.toLowerCase(), toUpperCase()</p>
+<samp>首字母大写：
+const hello = 'hElLo'
+const helloLower = hello.toLowerCase()
+const helloCorrect = helloLower[0].toUpperCase() + helloLower.slice(1)
+console.log(helloCorrect)</samp>
+<p><b class="red">.trim()</b>字符串的两端清除空格，返回一个新的字符串<br>此上下文中的空格是指所有的空白字符（空格、tab、不换行空格等）以及所有行终止符字符（如 LF、CR 等）。</p>
+<samp>const helllo = `   HellLO  
+  `
+const hellloTrimmed = helllo.toLowerCase().trim() // helllo
+.toLowerCase()返回一个字符串，可以继续操作.trim()</samp>
+
+<h3>例：</h3>
+<samp>const checkMiddleSeat = function (seat) {
+  // |窗|ABC|过道|DEF|窗 &lt;=中小型客机
+  if (seat.slice(-1) == 'B' || seat.slice(-1) == 'E') {
+    console.log('This is a middle seat.')
+  } else console.log('This is NOT a middle seat.')
+}
+checkMiddleSeat('22C')</samp>
+</body>
+</html>
