@@ -79,21 +79,17 @@
     const i = "i";
 
     function checkQuad() {
+      // 检查二次项系数是否为0
+      
+      // a,b均为0
       if (a == 0) {
-        if (b == '0') {
-          document.getElementById('x2').textContent = "Not a quadratic equation"
-        }
 
-        if (c != 0) {
+        // 一元一次方程
+        if (b != 0) {
           let x1 = -c / b;
-          document.getElementById('x2').textContent = "Not a quadratic equation, but here is your answer for x";
           document.getElementById('x1').textContent = x1;
-        }
-      } else if (a == "" && c != 0) {
-        x1 = -c / b;
-        x2 = "Not a quadratic equation";
-        document.getElementById('x1').textContent = x1;
-        document.getElementById('x2').textContent = x2;
+          document.getElementById('x2').textContent = "Not a quadratic equation, but here is your answer for x";
+        } else {document.getElementById('x1').textContent = "Not a quadratic equation"} // 无解
       }
       else {
         quad();
@@ -103,6 +99,7 @@
       let det = b ** 2 - 4 * a * c
       let rootpart = Math.sqrt(det) / (2 * a)
       let rootparti = `${Math.sqrt(-det) / (2 * a)}i`
+
       if (parseFloat(rootparti) < 0) {
         rootparti1 = rootparti;
         rootparti2 = `${-1 * parseFloat(rootparti)}i`
@@ -137,11 +134,10 @@
       document.getElementById('x2').textContent = x2;
     }
 
-    document.getElementById('submit').onclick = () => {
+/*触发*/document.getElementById('submit').onclick = () => {
       a = document.getElementById('a').value
       b = document.getElementById('b').value
       c = document.getElementById('c').value
-      console.log(a, b, c)
       checkQuad()
     }
 // will solve for complex numbers

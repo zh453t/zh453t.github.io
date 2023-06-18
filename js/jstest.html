@@ -40,15 +40,48 @@ const restaurant = {
     }
   }
 }
+const game = {
+  team1: 'Bayern Munich',
+  team2: 'Borrussia Dortmund',
+  players: [
+    [
+      'Neuer',
+      'Pavard',
+      'Martinez',
+      'Alaba',
+      'Davies',
+      'Kimmich',
+      'Goretzka',
+      'Coman',
+      'Muller',
+      'Gnarby',
+      'Lewandowski',
+    ],
+    [
+      'Burki',
+      'Schulz',
+      'Hummels',
+      'Akanji',
+      'Hakimi',
+      'Weigl',
+      'Witsel',
+      'Hazard',
+      'Brandt',
+      'Sancho',
+      'Gotze',
+    ],
+  ],
+  score: '3:0',
+  scored: ['Lewandowski', 'Gnarby', 'Lewandowski'],
+  date: 'Nov 9th, 2037',
+  // odds 赔率
+  odds: {
+    team1: 1.33,
+    x: 3.25,
+    team2: 6.5,
+  },
+};
 
-
-
-let openingDays = Object.keys(restaurant.openingHrs)
-let openStr = `We are opening on ${openingDays.length} days: `
-for (const day of openingDays) {
-  openStr += `${day}, `
-}
-console.log(openStr)
 </script>
 </body>
 </html>

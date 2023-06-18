@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Map</title>
+  <link rel="stylesheet" href="public.css">
 <!--<script>
 'use strict'
 const rest = new Map()
@@ -16,7 +17,7 @@ console.log(rest.size)
 rest.set([1,2], true)
 console.log(rest.get([1,2])) // undefined
 
-</script>-->
+</script>
 <script>
 'use strict'
 const question = new Map([
@@ -36,23 +37,44 @@ for (const [key, value] of question) {
 const answer = Number(prompt('Your answer'))
 
  console.log(question.get(question.get('correct') === answer))
+</script>-->
+<script>
+const today = {month: 6,date: 3,function: false}
+const mapToday = new Map(Object.entries(today))
+
 </script>
 </head>
 <body>
   <h1>Map</h1>
+  <h3>:2D</h3>
+  <progress></progress>
   <p>创建：new Map()</p>
   <p>添加：map.set(key, value)</p>
   <p><i>可以连续调用：mmap.set().set().set()</i><br>等于mmap.set()<br>.set()<br>.set()</p>
   <p>获取：map.get(key)</p>
   <h4>！任意格式数据：无论在哪里</h4>
+  <samp>const doc = new Map()
+doc.set(document.querySelector('h1'), 'Heading')</samp>
   <p>删除：map.delete(key)</p>
   <p>大小：map.size => key数量</p>
   <h4>若不是基本数据类型：</h4>
   <p>rest.set([1,2], true)<br>
-console.log(rest.get([1,2])) // undefined</p>
-  <b>需提前存变量</b>
-  <h2>另一种创建方法</h2>
+console.log(rest.get([1,2])) // undefined ====><b>需提前存变量</b></p>
+  <h3>另一种创建方法</h3>
   <p>new Map ([ [key1, value1], [key2, value2], ...]) // <ins>和Object.entries()返回的一样</ins> => 可快速转换</p>
-  <p>.keys(), .values()适用</p>
+<samp>
+const today = {month: 6,date: 3,function: false}
+const mapToday = new Map(Object.entries(today))
+console.log(mapToday) // Map(3) { month → 6, date → 3, function → false }
+</samp>
+  <p>.entries(), .keys(), .values()适用</p>
+<h4>for..of循环：</h4><samp>for (const [key, value] of mapToday) {
+  if (typeof value == 'number') {
+    console.log(key, value)
+  }
+}</samp>
+<p>可转换成数组：const arrToday = [...mapToday] // Array(3) [ (2) […], (2) […], (2) […] ]</p>
+<progress></progress>
+
 </body>
 </html>

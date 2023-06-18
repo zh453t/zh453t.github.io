@@ -1,0 +1,15 @@
+samp {
+    display: block;
+    font-family: monospace;
+    background-color: #f9fbfc;
+    padding: 1em 2em;
+    width: fit-content;
+    border: 1px dashed #abc;
+}
+html {
+    font-family: Consolas, 等线;
+    line-height: 1.5;
+    background-color: #f3f3f3;
+    font-size: 18px;
+}
+body {padding-inline: 5vw;}
