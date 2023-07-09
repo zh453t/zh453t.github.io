@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>FFmpeg</title>
+  <link rel="stylesheet" href="../js/lib/public.css">
+  <style>code {
+    font-family: inherit;
+    padding: 0.2em 1em;
+    background-color: #fff;
+    border-radius: 2px;
+    border: 1px dashed #ddd;
+    font-weight: bold;
+    color: darkmagenta;
+    vertical-align: middle;
+  }</style>
+</head>
+<body>
+  <h2>FFmpeg</h2>
+<h3>参数：</h3>
+<strong>$ ffmpeg {1} {2} <b>-i</b> {3} {4} {5}</strong>
+<ol><li>全局参数</li><li>输入文件参数</li>
+<li>-i 输入文件</li><li>输出文件参数</li><li>输出文件</li></ol>
+参数太多的时候，为便于查看，命令可写成多行。
+ffmpeg \
+[全局参数] \
+[输入文件参数] \
+-i [输入文件] \
+[输出文件参数] \
+[输出文件]
+
+最简单的命令：<samp>$ ffmpeg -i input.avi output.mp4</samp>
+<details open><summary>全局参数</summary>
+<code>-c</code> 指定编码器
+<b>ffmpeg configure -encoders 查看ffmpeg支持的编解码器 (codec) 列表</b>
+ - 常用：-c copy // 复制音视频流
+ - copy 也是-c:a 和 -c:v 的编码器之一
+<code>-i</code>: 指定输入文件
+ - 查看视频文件的元信息，比如编码格式和比特率，可以只使用-i参数。
+ 上面命令会输出很多冗余信息，加上-hide_banner参数，可以只显示元信息。
+</details>
+<details open><summary>输出文件参数</summary>
+<b>编码器</b>
+<code>-c:v</code> 指定视频编码器
+<code>-c:α</code> 指定音频编码器
+<code>-an</code> 去除音频流
+<code>-av</code> 去除视频流
+
+<b>码率</b>
+<code>-minrate</code> xxxK (bps)
+<code>-maxrate</code>
+
+<code>-bufsize</code> buffer size, 缓冲区, 一般设2000K
+
+<b>可以用<code>-preset</code></b>
+ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow
+
+</details>
+<details><summary>视频操作</summary></details>
+<script src="file:///D:/Music/url/linkbase.js"></script>
+</body>
+</html>

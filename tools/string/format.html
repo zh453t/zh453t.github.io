@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>format</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      color: #333;
+      background-color: #fcfcfc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 3vh;
+      gap: 2em;
+      font-size: 20px;
+
+    }
+
+    textarea {
+      padding: 1em 2em;
+      line-height: 1.4;
+      font-size: 30px;
+      font-weight: bold;
+      height: fit-content;
+      font-family: Cascadia Code, Consolas, sans-serif;
+    }
+
+    output {
+      display: block;
+      background-color: #fff;
+      width: 50em;
+      padding: 1em 2em;
+      white-space: pre-wrap;
+      line-height: 1.4;
+
+      font-size: 30px;
+      font-weight: bold;
+      font-family: Cascadia Code, Consolas, sans-serif;
+      border: 1px #999 solid;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>格式</h2>
+  <textarea cols="50" rows="5" placeholder="输入"></textarea>
+  <output></output>
+  <script>
+    'use strict'
+    document.querySelector('textarea').addEventListener('input', function () {
+      document.querySelector('output').textContent = this.value.trim().toLowerCase().replaceAll(' ', '_')
+    })
+  </script>
+</body>
+
+</html>

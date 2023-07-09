@@ -14,38 +14,42 @@ const mapToday = new Map(Object.entries(today))
 </script>
 </head>
 <body>
-  <h1>Map</h1>
-  <h3>:2D</h3>
-  <progress></progress>
-  <p>创建：new Map()</p>
-  <p>添加：map.set(key, value)</p>
-  <p><i>可以连续调用：mmap.set().set().set()</i><br>等于mmap.set()<br>.set()<br>.set()</p>
-  <p>获取：map.get(key)</p>
-  <h4>！任意格式数据：无论在哪里</h4>
-  <samp>const doc = new Map()
+<h1>Map</h1>
+<h3>:2D</h3>
+<progress></progress>
+<b>创建</b>
+new Map()
+
+添加
+map.set(key, value)
+<i>可以连续调用：mmap.set().set().set()</i>
+获取：map.get(key)
+<h4>！任意格式数据：无论在哪里</h4>
+<samp>const doc = new Map()
 doc.set(document.querySelector('h1'), 'Heading')</samp>
-  <p>删除：map.delete(key)</p>
-  <p>大小：map.size => key数量</p>
-  <h4>若不是基本数据类型：</h4>
-  <p>rest.set([1,2], true)<br>
-console.log(rest.get([1,2])) // undefined ====><b>需提前存变量</b></p>
-  <h3>另一种创建方法</h3>
-  <p>new Map ([ [key1, value1], [key2, value2], ...]) // <ins>和Object.entries()返回的一样</ins> => 可快速转换</p>
+删除：map.delete(key)
+大小：map.size => key数量
+
+<h4>若不是基本数据类型：</h4>
+rest.set([1,2], true)<br>
+console.log(rest.get([1,2])) // undefined ====><b>需提前存变量</b>
+
+<h3>另一种创建方法</h3>
+new Map ([ [key1, value1], [key2, value2], ...]) // <ins>和Object.entries()返回的一样</ins> => 可快速转换
 <samp>
 const today = {month: 6,date: 3,function: false}
 const mapToday = new Map(Object.entries(today))
 console.log(mapToday) // Map(3) { month → 6, date → 3, function → false }
 </samp>
-  <p>.entries(), .keys(), .values()适用</p>
-  <p><b>[...gameEvents.keys()]</b></p>
+.entries(), .keys(), .values()适用
+<b>[...gameEvents.keys()]</b>
 <h4>for..of循环：</h4><samp>for (const [key, value] of mapToday) {
 if (typeof value == 'number') {
-  console.log(key, value)
+console.log(key, value)
 }
 }</samp>
-<p>可转换成数组：const arrToday = [...mapToday] // Array(3) [ (2) […], (2) […], (2) […] ]</p>
+可转换成数组：const arrToday = [...mapToday] // Array(3) [ (2) […], (2) […], (2) […] ]
 <progress></progress>
-<h3>例：</h3>
 <samp>const rest = new Map()
 rest.set('name', 'Classico Italiano')
 .set(1, 'Fiorenze, Italy')
@@ -57,14 +61,14 @@ console.log(rest.size)
 rest.set([1,2], true)
 console.log(rest.get([1,2])) // undefined</samp>
 <samp>const question = new Map([
-  ['question', `What's the best programming language in the world?`],
-  [1, 'c'],
-  [2, 'php'],
-  [3, 'javascript'],
-  ['correct', 2],
-  [true, 'Correct!'],
-  [false, 'try again']]
-  )
+['question', `What's the best programming language in the world?`],
+[1, 'c'],
+[2, 'php'],
+[3, 'javascript'],
+['correct', 2],
+[true, 'Correct!'],
+[false, 'try again']]
+)
 console.log(question)
 for (const [key, value] of question) {
   if (typeof key === 'number') console.log(`Answer ${key}: ${value}`)
@@ -72,7 +76,6 @@ for (const [key, value] of question) {
 
 const answer = Number(prompt('Your answer'))
 console.log(question.get(question.get('correct') === answer))</samp>
-<h4>练：</h4>
 <samp>// 1
 // let eventsTemp = []
 // for (const event of gameEvents.values()) {
@@ -97,5 +100,6 @@ for (const event of gameEvents) {
   if (event[0] < 45) {FirstSecondHalf  = '[FIRST HALF]'} else {FirstSecondHalf  = '[SECOND HALF]'}
   console.log(`${FirstSecondHalf} ${event[0]}: ${event[1]}`)
   }</samp>
+<script src="lib/public.js"></script>
 </body>
 </html>

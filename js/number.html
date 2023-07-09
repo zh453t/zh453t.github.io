@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Number</title>
+  <link rel="stylesheet" href="lib/public.css">
+</head>
+<body>
+  <h1>Number</h1>
+<strong>浮点</strong>
+0.1 + 0.2 // 0.30000000000000004
+0.1 + 0.2 == 0.3 // false
+0.1 + 0.2 == 0.30000000000000004 // true
+
+
+<b>Number()</b>
+function Number()
+  EPSILON: 2.220446049250313e-16
+  MAX_SAFE_INTEGER: 9007199254740991
+  MAX_VALUE: 1.7976931348623157e+308
+  MIN_SAFE_INTEGER: -9007199254740991
+  MIN_VALUE: 5e-324
+  NEGATIVE_INFINITY: -Infinity
+  NaN: NaN
+  POSITIVE_INFINITY: Infinity
+
+<details><summary>判断</summary>
+  isNaN()
+  和全局函数 isNaN() 相比，Number.isNaN() 不会自行将参数转换成数字，只有在参数是值为 NaN 的数字时，才会返回 true。
+  Number.isNaN(NaN)
+  -> true 
+
+  Number.isNaN('') // false
+    (这是因为Number('') == 0)
+
+  Number.isNaN(Infinity) 
+  Number.isNaN(1 / 0)
+  -> false
+  
+  isFinite()
+  比isNaN更好
+  Number.isFinite(Infinity);	// false
+  Number.isFinite(NaN);		// false
+  Number.isFinite(-Infinity);	// false
+
+  Number.isFinite(0);		// true
+  Number.isFinite(2e64);	// true
+
+  Number.isFinite('0');		// false, would've been true with
+  				// global isFinite('0')
+  Number.isFinite(null);	// false, would've been true with
+  				// global isFinite(null)
+
+  isInteger()
+  
+  isSafeInteger()
+</details>
+<details><summary>转换</summary>
+  1. 传统：Number() parseFloat() parseInt()
+  2. 简洁：+string
+  +'60' => 60
+
+  parseFloat()
+  parseInt()
+  (str, <b>进制</b>:可选，默认10)
+
+  特殊：
+  <b>parseInt('23px')</b> // 23
+  <b>parseInt('e12') </b> // NaN
+  parseInt/Float能从字符串里寻找数字，但字符串要以0~9开头
+  <b>parseFloat(  '-12.12s'  )</b> // -12.12
+
+</details>
+<details><summary>计算</summary>
+<b>Math</b>
+Math.E
+Math.LN10
+Math.LN2
+Math.LOG10E
+Math.LOG2E
+Math.PI // Pi
+Math.SQRT1_2
+Math.SQRT2
+
+Math.abs(x)
+
+返回一个数的绝对值。
+
+Math.sqrt()
+开方
+
+Math.round(x)
+返回四舍五入后的整数。
+Math.trunc(x)
+返回一个数的整数部分，直接去除其小数点及之后的部分。
+Math.floor(x)
+返回小于一个数的最大整数，即一个数<b>向下取整</b>后的值。
+Math.ceil(x)
+函数总是四舍五入并返回大于等于给定数字的最小整数。<b>向上取整</b>
+<samp>Math.round(-14.1)
+-14
+Math.ceil(-14.1)
+-14 
+
+Math.round(14.25)
+14
+Math.ceil(14.25)
+15 </samp>
+<samp>Math.floor(-1.1)
+-2
+Math.trunc(-1.1)
+-1 </samp>
+
+四舍五入小数：
+let b = new Number(7) 
+NumberObj.toFixed()
+(2.7).toFixed(2)
+"2.70" 
+(2.732).toFixed(2)
+"2.73" 
+(2.738).toFixed(2)
+"2.74" 
+
+Math.sign(x)
+返回一个数的符号，得知一个数是正数、负数还是 0。
+
+%
+取余
+</details>
+
+<samp>const randomInt = function(min, max) {
+return Math.trunc(Math.random()*(max - min) + 1) + min
+}
+
+Math.random()					0 ... 1
+Math.random()*(max - min)			0 ... (max - min)
+Math.trunc(Math.random()*(max - min)+ 1)	{x∈Z, 0＜x≤(max - min)}
+Math.trunc(Math.random()*(max - min)+ 1)+min	{x∈Z, min＜x≤(max - min + min)}
+Math.trunc(Math.random()*(max - min)+ 1)+min	{x∈Z, min＜x≤max}</samp>
+
+const aBillion = 1_000_000_000 // ✅
+
+<details><summary>BigInt</summary>
+Number.MAX_SAFE_INTEGER // 2 ** 53 - 1 = 9007199254740991
+Number.MAX_SAFE_INTEGER + 1 // 9007199254740992
+Number.MAX_SAFE_INTEGER + 2 // 9007199254740992
+Number.MAX_SAFE_INTEGER + 3 // 9007199254740994
+Javascript不能精确表示MAX_SAFE_INTEGER以上的数字
+此时需要用到BigInt
+
+<b>构造</b>
+15618964861687418796416354178694135<b>n</b>
+BigInt(15618964861687418796416354178694135) // 15618964861687418114713163246075904n
+<b>注意：上面两种构造方式结果不一样</b>
+
+<b>运算</b>
+四则运算+-x÷
+100n + 100n = 200n
+<b>注意：BigInt不能和数字混合运算</b>
+100n + 100
+Uncaught TypeError: can't convert BigInt to number
+
+<b>例外:</b>
+100n + 'hello' // '100hello'
+10n / 3n = 3n
+</details>
+<script src="lib/public.js"></script>
+<script>
+const isEven = n => n % 2 === 0
+const isOdd = n => n % 2 === 1
+Object = 'fuck'
+Number = 'fuck'
+Math = 'fuck'
+Array = 'fuck'
+Intl = 'fuck'
+Date = 'fuck'
+</script>
+</body>
+</html>

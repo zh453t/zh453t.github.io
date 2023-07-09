@@ -3,35 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="lib/public.css">
-  <script src="lib/airline.js"></script>
-  <title>String Methods</title>
+
+  <title>字符串</title>
+  <style>textarea {font: inherit;}</style>
 </head>
 <body>
-<h1>字符串</h1>
+<h3>字符串</h3>primitives, objects
 <progress></progress>
-<h4>和数组相似：</h4>
 <div class="flex center gap" style="align-items: flex-start;">
-<samp><b class="red">[]</b>
-console.log(plane[0]) // A
-console.log('Hello'[1]) // e
+<samp><b>[]</b>
+plane[0] // A
+'Hello'[1] // e
 </samp>
-<samp><b class="red">.indexOf() </b>查询在数组第一次出现的位置
-console.log(airline.indexOf('P')) // 2
-console.log(airline.indexOf('Portugal')) // 6 ==> 大小写敏感
-<b class="red">.lastIndexOf()</b> 最后一个</samp>
-<samp><b class="red">.length</b>
-console.log('hhh'.length) // 3</samp>
+<samp><b>.indexOf() </b>查询在数组第一次出现的位置
+airline.indexOf('P') // 2
+airline.indexOf('Portugal') // 6 ==> <b>大小写敏感</b>
+airline.indexOf('r') // 首次: 6
+airline.indexOf('Portugal') // 大小写敏感
+// slice(start: num)
+airline.slice(4) // 第4位'A'开始提取
+// slice(start: num, end: num)
+airline.slice(4,7) // 不含结尾(air后的' ')</samp>
+<samp><b>.length</b>
+'hhh'.length // 3</samp>
 </div>
-<h3>.slice()</h3>
-<p>截取</p>
-<samp>console.log(airline.slice(4)) // 'Air Portugal' 从第5位开始
-console.log(airline.slice(-1)) // 'l' 倒着截，-2: 'al'
-<b class="red">-x 倒数第几,从-1开始</b>
 
-console.log(airline.slice(4, 7)) // 'Air' 从5开始，8结束，8不包含
-console.log(airline.slice(0, airline.indexOf(' '))) // 找到第一个词
+<strong>.slice()</strong>
+截取
+(开始位置) || (开始位置, 结束位置)
+<samp><b>-x 倒数第几,从-1开始</b>
+airline.slice(4, 7) // 'Air' 从5开始，8结束，8不包含
+// slice(indexOf())
+airline.slice(airline.lastIndexOf('P')) // Portugal
+
+airline.slice(4) // 'Air Portugal' 从第(0123)4位
+// slice(负数)
+airline.slice(-1) // 'l' 从后往前，-2: 'al'
+airline.slice(1, -2) // 'AP Air Portug'
+
 </samp>
-<p>在传入函数时，js会把基本数据类型转换成类似于object的形式</p>
+<p>在传入函数时，js会把基本数据类型封装成类似于object的形式</p>
 <samp>const objectStr = new String('Hello')
 console.log(objectStr) // String { "Hello" }
   0: "H"
@@ -42,26 +53,98 @@ console.log(objectStr) // String { "Hello" }
   length: 5
 
 console.log(typeof objectStr) // object</samp>
-<h3>大小写转换</h3>
-<p>.toLowerCase(), toUpperCase()</p>
-<samp>首字母大写：
-const hello = 'hElLo'
-const helloLower = hello.toLowerCase()
-const helloCorrect = helloLower[0].toUpperCase() + helloLower.slice(1)
-console.log(helloCorrect)</samp>
+<strong>大小写</strong>
+.toLowerCase()
+.toUpperCase()
+
+
 <p><b class="red">.trim()</b>字符串的两端清除空格，返回一个新的字符串<br>此上下文中的空格是指所有的空白字符（空格、tab、不换行空格等）以及所有行终止符字符（如 LF、CR 等）。</p>
 <samp>const helllo = `   HellLO  
   `
 const hellloTrimmed = helllo.toLowerCase().trim() // helllo
 .toLowerCase()返回一个字符串，可以继续操作.trim()</samp>
 
-<h3>例：</h3>
-<samp>const checkMiddleSeat = function (seat) {
-  // |窗|ABC|过道|DEF|窗 &lt;=中小型客机
-  if (seat.slice(-1) == 'B' || seat.slice(-1) == 'E') {
-    console.log('This is a middle seat.')
-  } else console.log('This is NOT a middle seat.')
+<samp>const checkMiddleSeat = (seat) => {
+  const seatID = seat.slice(-1)
+  if (seatID == 'B' || 'E') console.log('You got the middle seat😂')
+  else console.log('You got lucky😃')
+} |窗|ABC|过道|DEF|窗</samp>
+<b>替换</b>
+.replace()
+(替换前, 替换后)
+<samp>const announcement = 'All passangers come to bording door 23. Bording door 23.'
+console.log(announcement.replace('door', 'gate')) // 'All passangers come to bording door 23. Bording <b>door</b> 23.'</samp>
+只会替换第一个。
+
+解决：
+1. 使用.replaceAll()
+2. 正则表达式
+console.log(announcement.replaceAll(<b>/door/g</b>, 'gate'))
+(/g, global)
+
+<b>分割</b>
+.split() (分割标志)
+'a|b|c'.split('|') // Array(3) [ "a", "b", "c" ]
+
+<b>合并</b>
+[ "a", "b", "c" ].join(',') // "a,b,c"
+
+首字母大写：
+1. word[0].toUpperCase() + word.slice(1)
+2. word.replace(word[0], word[0].toUpperCase())
+<samp>const capitalizeName = (name) => {
+  const namesTemp = name.toLowerCase().split(' ')
+  
+  let namesUpper = []
+  
+  for (let word of namesTemp) {
+    // namesUpper.push(word[0].toUpperCase() + word.slice(1))
+    namesUpper.push(word.replace(word[0], word[0].toUpperCase()))
+  }
+
+  return namesUpper.join(' ')
 }
-checkMiddleSeat('22C')</samp>
+</samp>
+
+<b>查找</b>
+.include()
+返回布尔值
+
+.startsWith()
+从哪里开始
+<samp>const checkBaggage = function(items) {
+  const baggage = items.toLowerCase() // 通用，便于后续操作
+  if (baggage.includes('knife') || baggage.includes('gun')) console.log('You are not allowed on the board')
+  else console.log('Welcome on board')
+}
+checkBaggage('I have a laptop, some food and a pocket Knife.')
+checkBaggage('Socks and Camera')
+checkBaggage('Got some snacks and a gun for protection')</samp>
+
+<b>填充</b>
+.padStart() 在前面填充
+.padEnd() 在后面填充
+const message = 'Go to gate 23!'
+message.padStart(26, '*') "************Go to gate 23!" 
+(<b>总字符</b>, 填充符号)
+message.padStart(26, '*').padEnd(40, '*') "************Go to gate 23!**************" 
+<samp>const maskCreditCard = (number) => {
+  let cardStr = `${number}`
+  const length = cardStr.length
+  const start = cardStr.slice(0, 4)
+  const end = cardStr.slice(-4).padStart(length - 4, '*')
+  cardStr = cardStr.replace(cardStr.slice(4), end)
+  return cardStr
+}
+
+maskCreditCard(1145145456494812)
+maskCreditCard('1145145456494156812')</samp>
+<b>重复</b>
+.repeat()
+(次数:num)
+<textarea cols="30" rows="10"></textarea>
+<button>转换</button>
+<script src="lib/convertToCamelCase.js"></script>
+<script src="lib/public.js"></script>
 </body>
 </html>

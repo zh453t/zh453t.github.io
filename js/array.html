@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>数组</title>
+  <link rel="stylesheet" href="lib/public.css">
+</head>
+<body>
+<h3>数组</h3>
+数组也是对象。
+
+<h4>构造</h4>Array()
+Array([a,b,c])
+
+Array(num)
+let arr = new Array(5) // <b>[ &lt;5 empty slots> ]</b>
+用.map填充无效
+用.fill填充
+
+<b>.fill()</b>
+fill(value, start:可选, end:可选)
+用于填充空数组 或者覆盖当前数组：
+let arrr = [1,1,2]
+arrr.fill('1') // ['1', '1', '1']
+
+<b>from</b>
+Array.from() 静态方法从可迭代或类数组对象创建一个新的浅拷贝的数组实例。
+
+console.log(Array.from('foo'));
+// Expected output: Array ["f", "o", "o"]
+
+console.log(Array.from([1, 2, 3], x => x + x));
+// Expected output: Array [2, 4, 6]
+
+Array.from(arrayLike, mapFn:可选, <i>thisArg: 可选</i>)
+mapFn 可选
+  调用数组每个元素的函数。如果提供，每个将要添加到数组中的值首先会传递给该函数，然后将 mapFn 的返回值增加到数组中。使用以下参数调用该函数：
+  element
+  数组当前正在处理的元素。
+  index
+  数组当前正在处理的元素的索引。
+
+
+
+
+<h4>操作</h4>
+<b>.slice(start, (end))</b>
+与字符串相同。此方法不会更改现有数组，而是返回一个新数组。
+
+arr.slice() 返回原数组的浅拷贝
+和[...arr]相同
+
+<b>.splice()</b>
+方法通过移除或者替换已存在的元素和/或添加新元素就地改变一个数组的内容。
+splice(start)
+splice(start, deleteCount)
+splice(start, deleteCount, item1)
+splice(start, deleteCount, item1, item2, itemN)
+
+start: 删除开始位置
+deleteCount: 可选，删除数量
+item1, …, itemN 可选
+  从 start 开始要加入到数组中的元素。
+  如果不指定任何元素，splice() 将只从数组中删除元素。
+<samp>let arr = [1, 2, 3]
+arr.splice(1, 1) // arr = [1,3]
+arr.splice(1) // arr = [1]
+arr.splice(1, 1, 4) // arr = [ 1, 4, 3 ]
+arr.splice(1, 2, 4) // arr = [ 1, 4 ]
+</samp>
+ - <b>toSpliced()</b>
+
+<b>.reverse()</b>
+reverse() 方法就地反转数组中的元素，并返回同一数组的引用。
+arr.reverse() // [3, 2, 1] 且 arr = [3, 2, 1]
+- <b>.toReversed()</b>不会改变原数组，与reverse功能相同。
+
+<strong>.concat()</strong>
+合并数组，此方法不会更改现有数组，而是返回一个新数组。
+array.concat(array2)
+
+<b>.at()</b>
+at() 方法接收一个整数值并返回该索引对应的元素，允许正数和负数。负整数从数组中的最后一个元素开始倒数。
+array.at(-1)
+
+<b>forEach()</b>
+循环
+forEach((element, index, array) => {
+  
+})
+callbackFn 为数组中每个元素执行的函数。并会丢弃它的返回值。该函数被调用时将传入以下参数：
+<strong>element</strong>
+数组中正在处理的当前元素。
+<strong>index</strong>
+数组中正在处理的当前元素的索引。
+<strong>array</strong>
+调用了 forEach() 的数组本身。
+
+<samp>const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
+
+movements.forEach(function(movement) {
+  if (movement > 0) {
+    console.log(`You deposited ${movement}`)
+  } else {
+    console.log(`You withdrew ${Math.abs(movement)}`)
+  }
+})</samp>
+
+适用于map和set
+于set时，value和key相同, 因为set没有key, 没有顺序。
+<samp>const numbers = new Set([1, 1, 2, 3, 4, 5, 6, 6])
+numbers.forEach((value, key, set) => {
+  console.log(value, key, set)
+  // 1 1  Set(6) [ 1, 2, 3, 4, 5, 6 ]
+})</samp>
+
+<h3>创建新数组：</h3>
+<b>map()</b>
+map() 方法<b>创建一个新数组</b>，这个新数组由原数组中的每个元素都调用一次提供的函数后的返回值组成 。
+map(callBackFn)
+和forEach相同, 传入element, index, array
+
+[1, 2, 3].map(num => num * 2) // [2, 4, 6]
+<i>必须return</i>
+
+<b>filter()</b>
+filter(callBackFn)
+[1, 2, 3].filter(num => num > 2) // [3]
+和forEach相同, 传入element, index, array
+
+<b>reduce()</b>
+reduce() 方法对数组中的每个元素按序执行一个提供的 reducer 函数，每一次运行 reducer 会将先前元素的计算结果作为参数传入，最后将其结果汇总为单个返回值。
+reduce(callbackFn)
+reduce(callbackFn, initialValue)
+
+callbackFn 为数组中每个元素执行的函数。其返回值将作为下一次调用 callbackFn 时的 accumulator 参数。对于最后一次调用，返回值将作为 reduce() 的返回值。
+<b>accumulator</b>: 上一次调用 callbackFn 的结果。在第一次调用时，如果指定了 initialValue 则为指定的值，否则为 array[0] 的值。
+<b>currentValue</b>: 当前元素的值。在第一次调用时，如果指定了 initialValue，则为 array[0] 的值，否则为 array[1]。
+<b>currentIndex</b>: currentValue的Index
+array: this
+
+[1, 2, 3].reduce((a, c) => a + c )
+-> 6
+
+
+
+<b>.find()</b>
+callBackFn
+传入element, index, array
+返回数组中满足函数的第一个元素的值。
+
+<b>.findIndex()</b>
+callBackFn
+返回数组中满足函数的第一个元素的。
+
+<b>.some()</b>
+callBackFn
+some() 类似于数学中的“存在量词（∃）”。特别地，在对于一个空数组，任何条件下它都返回 false。
+和.includes()差不多
+
+<b>.every()</b>
+every 和数学中的全称量词"任意（∀）"类似。特别的，对于空数组，它只返回 true。
+
+<b>.flat()</b>
+flat() 方法创建一个新的数组，并根据指定深度递归地将所有子数组元素拼接到新的数组中。
+flat(depth) // 指定要提取嵌套数组的结构深度，默认值为 1。
+
+const arr = [[1, 2, 3], [4, 5, 6], 7, 8]
+arr.flat() // [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+
+const arrDeep = [[[1, 2], 3], [[4, 5], 6], 7, 8]
+
+arrDeep.flat() // 
+Array(6) [ (2) […], 3, (2) […], 6, 7, 8 ]
+0: Array [ 1, 2 ]
+1: 3
+2: Array [ 4, 5 ]
+3: 6
+4: 7
+5: 8
+
+arrDeep.flat(2) // [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+
+<b>.flatMap()</b>
+flat() + map()
+const accountMovements = accounts.map(acc => acc.movements)
+
+const allMovements = accountMovements.flat()
+
+// .flatMap()
+const allMovements2 = accountMovements.flatMap(acc => acc.movements)
+
+<b>.sort</b>
+方法就地对数组的元素进行排序，并返回对相同数组的引用。默认排序是将元素转换为字符串，然后按照它们的 UTF-16 码元值升序排序。
+其中：1-9, A-Z
+
+sort(compareFn)
+compareFn 可选
+定义排序顺序的函数。返回值应该是一个数字，其正负性表示两个元素的相对顺序。该函数使用以下参数调用
+a: 第一个用于比较的元素。不会是 undefined。
+b: 第二个用于比较的元素。不会是 undefined。
+
+
+返回值 > 0	a 在 b 后，如 [b, a]
+返回值 < 0	a 在 b 前，如 [a, b]
+返回值 === 0	保持 a 和 b 原来的顺序
+
+<samp>function compareFn(a, b) {
+  if (根据排序标准，a 小于 b) {
+    return -1;
+  }
+  if (根据排序标准，a 大于 b) {
+    return 1;
+  }
+  // a 一定等于 b
+  return 0;
+}</samp>
+
+<script src="lib/array.js"></script>
+
+<!--
+const checkDogs = (dogsJulia, dogsKate) => {
+  let dogsJuliaCorrected = [...dogsJulia]
+  dogsJuliaCorrected = dogsJuliaCorrect.slice(1, -2)
+  let dogs = dogsJuliaCorrected.concat(dogsKate)
+  dogs.forEach((dog, index) => {
+    if (dog >= 3) {
+      console.log(`Dog Number ${index + 1} is an adult, and it's ${dog} years old`)
+    } else { console.log(`Dog Number ${index + 1} is still a puppy`) }
+  })
+}
+
+const toHumanAge = function (dogs) {
+  const humanAge = dogs.map((dog) => dog <= 2 ? dog * 2 : 16 + (dog * 4))
+  return humanAge
+}
+
+const dogAge = [5, 2, 4, 1, 15, 8, 3]
+const humanAge = toHumanAge(dogAge)
+const dogsAdult = humanAge.filter(cur => cur >= 18)
+const humanAgeAvg = humanAge.reduce((acc, cur) => acc + cur) / humanAge.length
+// 或
+const humanAgeAvg2 = humanAge.reduce((acc, cur) => acc + (cur / humanAge.length), 0)
+
+
+let arr = new Array(5)
+let arrr = [1,1,2]
+arrr.fill('1')
+
+-->
+<!--
+const x = Array.from({length: 8}, (_, index)=> index + 1)
+
+const dice = Array.from({length: 100}, (value) => Math.trunc(Math.random() * 7))
+-->
+
+<!--
+const convertTitleCase = (title) => {
+  const exceptions = ['a', 'an', 'the', 'than', 'but', 'or', 'at', 'on', 'in', 'with']
+
+  const capitialize = str => `${str[0].toUpperCase()}${str.slice(1)}`
+  const titleCase = title.trim().toLowerCase().split(' ').map(word => exceptions.some(v => v === word) ? word : capitialize(word))
+  return capitialize(titleCase.join(' '))
+}
+-->
+</body>
+</html>

@@ -1,21 +1,80 @@
 samp {
-    display: block;
-    font-family: Cascadia Code, Consolas;
-    background-color: #f9fbfc;
-    padding: 1em 2em;
-    width: fit-content;
-    border: 1px dashed #abc;
-    white-space: pre;
+	display: block;
+	background-color: #f9fbfc;
+	padding: 1em 2em;
+	width: fit-content;
+	border: 1px dashed #abc;
+	font-family: inherit;
+	margin-block: 0.5em;
+	position: relative;
 }
-html {
-    font-family: Consolas, 等线;
-    line-height: 1.5;
-    background-color: #f3f3f3;
-    font-size: 18px;
-}
-body {padding-inline: 5vw;}
-.flex {display: flex;} 
-.center {justify-content: center;}
-.gap {gap: 3vw;}
 
-.red {color: darkred}
+samp::before {
+	content: '例：';
+	font-weight: bold;
+	color: darkred;
+	display: flex;
+	position: absolute;
+	top: 0;
+	left: -2em;
+	width: 2em;
+	height: 2em;
+	align-items: center;
+	justify-content: center;
+}
+
+html {
+	font-family: Lucida Console, monospace, sans-serif;
+	line-height: 1.7;
+	background-color: #f3f3f3;
+	font-size: 20px;
+	color: #336;
+}
+
+body {
+	padding-inline: 8vw;
+	white-space: pre-wrap;
+}
+
+.flex {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.center {
+	justify-content: center;
+}
+
+.gap {
+	gap: 4em;
+}
+
+b {
+	color: darkred
+}
+
+summary {
+	color: darkred;
+	font-weight: bold;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin-block: 0;
+}
+
+h4 {
+	color: cadetblue;
+}
+
+button {
+	padding: 0.5em 1em;
+	cursor: pointer;
+	font-size: 20px;
+	font-weight: bold;
+	color: cadetblue;
+}

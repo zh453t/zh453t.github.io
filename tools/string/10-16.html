@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>10进制转16进制</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      color: #333;
+      background-color: #fcfcfc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 3vh;
+      gap: 2em;
+      font-size: 20px;
+
+    }
+
+    textarea {
+      padding: 1em 2em;
+      line-height: 1.4;
+      font-size: 30px;
+      font-weight: bold;
+      height: fit-content;
+      font-family: Cascadia Code, Consolas, sans-serif;
+    }
+
+    output {
+      display: block;
+      background-color: #fff;
+      width: 50em;
+      padding: 1em 2em;
+      white-space: pre-wrap;
+      line-height: 1.4;
+
+      font-size: 30px;
+      font-weight: bold;
+      font-family: Cascadia Code, Consolas, sans-serif;
+      border: 1px #999 solid;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>10进制转16进制 <button>交换</button></h2>
+  <textarea cols="50" rows="5" placeholder="输入10进制"></textarea>
+  <output></output>
+  <script>
+    'use strict'
+    const toHexadecimal = function (separator, stringValue) {
+      // 对于多个数据split, join
+      const valueArr = stringValue.split(separator)
+      const outArr = valueArr.map(v => parseInt(v).toString(16))
+      
+      return outArr.join(separator)
+    }
+
+    const separatorArr = [
+      ' ', ',', ' ', '\n'
+    ]
+
+    // 执行
+    document.querySelector('textarea').addEventListener('input', function () {
+      const input = this.value.trim() // 初始化
+      let output = parseInt(input).toString(16)
+
+      for (const separator of separatorArr) {
+        if (input.includes(separator)) {
+          output = toHexadecimal(separator, input)
+        }
+      }
+      document.querySelector('output').textContent = output
+    })
+  </script>
+  <footer>支持多组数据，用空格，逗号等隔开</footer>
+</body>
+
+</html>

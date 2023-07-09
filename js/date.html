@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Date</title>
+	<link rel="stylesheet" href="lib/public.css">
+</head>
+
+<body>
+<h1>Date</h1>
+<b>构造</b>: new Date()
+返回当前时间
+Date Fri Jul 07 2023 18:26:56 GMT+0800 (China Standard Time)
+
+new Date('June 4, 1989')
+Date Sun Jun 04 1989 03:00:00 GMT+0900 (China Daylight Time)
+1987年至1991年，中国在每年4月中旬的第一个星期日1时起至9月中旬的第一个星期日1时止实行夏令时。具体如下：
+1987年4月12日至9月13日，
+1988年4月10日至9月11日，
+1989年4月16日至9月17日，
+1990年4月15日至9月16日，
+1991年4月14日至9月15日。
+
+new Date('June 6 20') // Date Thu Jun 04 2020 00:00:00 GMT+0800 (China Standard Time)
+new Date('2021-04-26T21:00:00Z') ✅// Date Tue Apr 27 2021 05:00:00 GMT+0800 (China Standard Time)
+new Date(2037,<b>10</b>,15,22,0,0,0) ✅// Date Sun <b>Nov</b> 15 2037 22:00:00 GMT+0800 (China Standard Time)
+<b>月份从0开始，10 => 11月</b>
+new Date(0) // Date Thu Jan 01 1970 08:00:00 GMT+0800 (China Standard Time)
+unix时间戳, 1970-1-1 00:00:00.000开始(GMT标准时间)
+new Date(60000) // Date Thu Jan 01 1970 08:01:00 GMT+0800
+
+<b>方法</b>
+getFullYear()
+<s>getYear()</s>
+getDate()
+getDay() 星期几
+  Sun -> 0
+  Mon -> 1
+getHours()
+getMinutes()
+getSeconds()
+getTime() // unix时间戳
+
+Date.now() 直接获得当前时间的unix时间戳
+
+
+更新现有时间：
+setFullYear(2040)
+setDate()
+...
+
+<strong>toString()</strong>
+Fri Jul 07 2023 20:03:29 GMT+0800 (China Standard Time)
+
+<strong>toTimeString()</strong>
+"20:03:29 GMT+0800 (China Standard Time)" 
+
+<strong>toISOString()</strong>
+"2023-07-07T12:03:29.502Z"
+
+
+<h4>计算：</h4>
++future // 2141906400000
+
+<script src="lib/public.js"></script>
+<script>
+const now = new Date()
+const future = new Date(2037,10,15,22,0,0,0)
+// console.log(future)
+// console.log(future.getDate())
+// console.log(future.getDay())
+
+console.log(+future) // 2141906400000
+
+const calcDaysPassed = (date1, date2) => {
+	const msPassed = +date2 - +date1
+	const daysPassed = msPassed / 1000 /60/60/24
+	return daysPassed
+}
+console.log(calcDaysPassed(future,now))
+</script>
+</body>
+
+</html>
