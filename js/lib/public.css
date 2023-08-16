@@ -7,6 +7,7 @@ samp {
 	font-family: inherit;
 	margin-block: 0.5em;
 	position: relative;
+
 }
 
 samp::before {
@@ -24,11 +25,12 @@ samp::before {
 }
 
 html {
-	font-family: Lucida Console, monospace, sans-serif;
+	font-family: Lucida Console, Microsoft JhengHei UI, monospace, sans-serif;
 	line-height: 1.7;
 	background-color: #f3f3f3;
 	font-size: 20px;
 	color: #336;
+	tab-size: 1em;
 }
 
 body {
@@ -56,6 +58,7 @@ b {
 summary {
 	color: darkred;
 	font-weight: bold;
+	cursor: cell;
 }
 
 h1,

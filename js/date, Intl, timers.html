@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Date</title>
+	<link rel="stylesheet" href="lib/public.css">
+</head>
+
+<body>
+<details><summary>Date</summary>
+<b>构造</b>: new Date()
+返回当前时间
+Date Fri Jul 07 2023 18:26:56 GMT+0800 (China Standard Time)
+
+new Date('June 4, 1989')
+Date Sun Jun 04 1989 03:00:00 GMT+0900 (China Daylight Time)
+1987年至1991年，中国在每年4月中旬的第一个星期日1时起至9月中旬的第一个星期日1时止实行夏令时。具体如下：
+1987年4月12日至9月13日，
+1988年4月10日至9月11日，
+1989年4月16日至9月17日，
+1990年4月15日至9月16日，
+1991年4月14日至9月15日。
+
+new Date('June 6 20') // Date Thu Jun 04 2020 00:00:00 GMT+0800 (China Standard Time)
+new Date('2021-04-26T21:00:00Z') ✅// Date Tue Apr 27 2021 05:00:00 GMT+0800 (China Standard Time)
+new Date(2037,<b>10</b>,15,22,0,0,0) ✅// Date Sun <b>Nov</b> 15 2037 22:00:00 GMT+0800 (China Standard Time)
+<b>月份从0开始，10 => 11月</b>
+new Date(0) // Date Thu Jan 01 1970 08:00:00 GMT+0800 (China Standard Time)
+unix时间戳, 1970-1-1 00:00:00.000开始(GMT标准时间)
+new Date(60000) // Date Thu Jan 01 1970 08:01:00 GMT+0800
+
+<b>方法</b>
+getFullYear()
+<s>getYear()</s>
+getDate()
+getDay() 星期几
+  Sun -> 0
+  Mon -> 1
+getHours()
+getMinutes()
+getSeconds()
+getTime() // unix时间戳
+
+Date.now() 直接获得当前时间的unix时间戳
+
+
+更新现有时间：
+setFullYear(2040)
+setDate()
+...
+
+<strong>toString()</strong>
+Fri Jul 07 2023 20:03:29 GMT+0800 (China Standard Time)
+
+<strong>toTimeString()</strong>
+"20:03:29 GMT+0800 (China Standard Time)" 
+
+<strong>toISOString()</strong>
+"2023-07-07T12:03:29.502Z"
+
+
+<h4>计算：</h4>
++future // 2141906400000
+
+<samp>const calcDaysPassed = (date1, date2) => {
+	const msPassed = +date2 - +date1
+	const daysPassed = msPassed / 1000 /60/60/24
+	return daysPassed
+}
+console.log(calcDaysPassed(future,now))</samp>
+</details>
+
+<details><summary>Intl</summary>
+Intl 对象是 ECMAScript 国际化 API 的一个命名空间
+Intl.DateTimeFormat('en-US')
+
+Intl.DateTimeFormat(locales, options)
+
+const options = {
+	hour: 'numeric',
+	minute: 'numeric',
+	day: 'numeric',
+	month: 'short',
+	year: 'numeric',
+	weekday: 'long',
+
+}
+<b>numeric</b> 数字的
+<b>short</b> 简短，不可用于year
+<b>long</b> 长，不可用于year
+
+
+<b>Intl.NumberFormat()</b>
+.format(num, options)
+
+<details><summary>options 配置</summary>
+<b>首先: style: [下列之一]</b>
+<b>currency</b>: 
+	currency用在格式化汇率。支持的值是ISO 4217汇率标识，比如美元是 "USD", 欧元是 "EUR", 或者人民币是 "CNY" — see the Current currency & funds code list. There is no default value; if the style is "currency", the currency property must be provided.
+currencyDisplay
+
+	How to display the currency in currency formatting. The default is "symbol".
+
+			"symbol": use a localized currency symbol such as €.
+			"narrowSymbol": use a narrow format symbol ("$100" rather than "US$100").
+			"code": use the ISO currency code.
+			"name": use a localized currency name such as "dollar".
+
+currencySign
+
+	In many locales, accounting format means to wrap the number with parentheses instead of appending a minus sign. You can enable this formatting by setting the currencySign option to "accounting". The default value is "standard".
+localeMatcher
+
+	The locale matching algorithm to use. Possible values are "lookup" and "best fit"; the default is "best fit". For information about this option, see the Intl page.
+notation
+
+	The formatting that should be displayed for the number. The default is "standard".
+
+			"standard": plain number formatting.
+			"scientific": return the order-of-magnitude for formatted number.
+			"engineering": return the exponent of ten when divisible by three.
+			"compact": string representing exponent; defaults to using the "short" form.
+
+numberingSystem
+
+	Numbering System. Possible values include: "arab", "arabext", "bali", "beng", "deva", "fullwide", "gujr", "guru", "hanidec", "khmr", "knda", "laoo", "latn", "limb", "mlym", "mong", "mymr", "orya", "tamldec", "telu", "thai", "tibt".
+signDisplay
+
+	When to display the sign for the number. The default is "auto".
+
+			"auto": sign display for negative numbers only, including negative zero.
+			"always": always display sign.
+			"exceptZero": sign display for positive and negative numbers, but not zero.
+			"negative": sign display for negative numbers only, excluding negative zero. Experimental
+			"never": never display sign.
+
+style
+
+	The formatting style to use. The default is "decimal".
+
+			"decimal" for plain number formatting.
+			"currency" for currency formatting.
+			"percent" for percent formatting.
+			"unit" for unit formatting.
+
+unit
+
+	The unit to use in unit formatting, Possible values are core unit identifiers, defined in UTS #35, Part 2, Section 6. A subset of units from the full list was selected for use in ECMAScript. Pairs of simple units can be concatenated with "-per-" to make a compound unit. There is no default value; if the style is "unit", the unit property must be provided.
+unitDisplay
+
+	The unit formatting style to use in unit formatting. The default is "short".
+
+			"long" (e.g., 16 litres).
+			"short" (e.g., 16 l).
+			"narrow" (e.g., 16l).
+
+useGrouping Experimental
+
+	Whether to use grouping separators, such as thousands separators or thousand/lakh/crore separators. The default is auto.
+
+			"always": display grouping separators even if the locale prefers otherwise.
+			"auto": display grouping separators based on the locale preference, which may also be dependent on the currency.
+			false: do not display grouping separators.
+			"min2": display grouping separators when there are at least 2 digits in a group.
+			true: alias for always.
+
+roundingMode Experimental
+
+	Options for rounding modes. The default is halfExpand.
+
+			"ceil": round toward +∞. Positive values round up. Negative values round "more positive".
+			"floor" round toward -∞. Positive values round down. Negative values round "more negative".
+			"expand": round away from 0. The magnitude of the value is always increased by rounding. Positive values round up. Negative values round "more negative".
+			"trunc": round toward 0. This magnitude of the value is always reduced by rounding. Positive values round down. Negative values round "less negative".
+			"halfCeil": ties toward +∞. Values above the half-increment round like ceil (towards +∞), and below like floor (towards -∞). On the half-increment, values round like ceil.
+			"halfFloor": ties toward -∞. Values above the half-increment round like ceil (towards +∞), and below like floor (towards -∞). On the half-increment, values round like floor.
+			"halfExpand": ties away from 0. Values above the half-increment round like expand (away from zero), and below like trunc (towards 0). On the half-increment, values round like expand.
+			"halfTrunc": ties toward 0. Values above the half-increment round like expand (away from zero), and below like trunc (towards 0). On the half-increment, values round like trunc.
+			"halfEven": ties towards the nearest even integer. Values above the half-increment round like expand (away from zero), and below like trunc (towards 0). On the half-increment values round towards the nearest even digit.
+
+	These options reflect the ICU user guide, where "expand" and "trunc" map to ICU "UP" and "DOWN", respectively. The rounding modes example below demonstrates how each mode works.
+roundingPriority Experimental
+
+	Specify how rounding conflicts will be resolved if both "FractionDigits" (minimumFractionDigits/maximumFractionDigits) and "SignificantDigits" (minimumSignificantDigits/maximumSignificantDigits) are specified:
+
+			"auto": the result from the significant digits property is used (default).
+			"morePrecision": the result from the property that results in more precision is used.
+			"lessPrecision": the result from the property that results in less precision is used.
+
+	Note that for values other than auto the result with more precision is calculated from the maximumSignificantDigits and maximumFractionDigits (minimum fractional and significant digit settings are ignored).
+roundingIncrement Experimental
+
+	Specifies the rounding-increment precision. Must be one of the following integers: 1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 2500, 5000. 
+
+const o = {
+	style: 'currency',
+	currency: 'RMB',
+	currencyDisplay: 'symbol'
+}
+</details></details>
+
+<details><summary>Timers / 定时器</summary>
+<b>setTimeout: 简单计划在xx毫秒后执行一个函数</b>
+setTimeout(callBackFn, time:毫秒, 传入函数的参数:可选...)
+<samp>const ing = ['olive', 'spinach']
+const pizzaTimer = setTimeout((ing1, ing2) => {console.log(`Here is you pizza with ${ing1}, ${ing2}`)}, 1000, ...ing)
+if (ing.includes('spinach')) clearTimeout(pizzaTimer)</samp>
+clearTimeout(setTimeout())
+
+<b>setInterval</b>
+interval 间隔
+设置函数每隔一段时间执行一次
+<samp>setInterval(() => {
+	const now = new Date()
+	console.log(now)
+}, 1000);</samp>
+clearInterval
+
+
+<b>setTimeout和setInterval会返回计划的ID，重复设置同一函数，其返回的ID不同</b>
+const logID = setTimeout(console.log, 1000, 'fuck')
+console.log(logID) // 3
+
+<b>ID用于传入clearTimeout和clearInterval函数</b>
+clearTimeout(logID)
+clearInterval(logID)
+
+
+</details>
+<script src="lib/public.js"></script>
+<script>
+	
+</script>
+</body>
+
+</html>
