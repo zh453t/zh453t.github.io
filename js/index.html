@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Module</title>
+	<link rel="stylesheet" href="lib/public.css">
+	<script src="lib/clean.js"></script>
+	<!-- <script defer type="module" src="lib/modules.js"></script> -->
+</head>
+
+<body>
+	<h2>Modules</h2>
+	在实际使用时，记得 type="module"
+	无需另外引用 import 的文件
+	<samp><b>es6之前是怎么实现的</b>
+	const shoppingCard2 = (function() {
+	const shippingCost = 10
+	const cart = []
+
+	const addToCart = function (product, quantity) {
+		cart.push({ product, quantity })
+		console.log(`${quantity} ${product} is added to cart`)
+	}
+
+	return {
+		addToCart,
+		cart,
+		shippingCost
+	}
+})()
+
+shoppingCard2.addToCart('apple', 4)
+console.log(shoppingCard2.cart) // 在iife执行后，addToCart 还可以修改 cart 变量，这就是闭包
+</samp>
+	<section><h3>import</h3>
+		调用 module 时，在开始时引用
+		但无论写到哪一行， import 语句总会挂起，首先执行 <small>和函数一样</small>
+		
+		import {&lt;变量名称>} from &lt;module所在地址>
+		import {&lt;变量名称> |as &lt;变量别名>|} from &lt;module所在地址>
+		import * as &lt;object名称> from &lt;module所在地址>
+
+		其实 {} 已经表示通过一个对象 export 和 import 
+
+		import 只是引用! 不是简单的复制
+		import 的变量
+	</section><section><h3>export</h3>
+		在 module 文件中使用		
+		export {&lt;变量名称>, ...}
+	</section><section><h3>await</h3>
+	在 module 中， await 可以在顶层代码中使用
+	这会阻碍代码运行
+	调用这个 module 的代码也会等待
+	</section>
+
+</body>
+
+</html>

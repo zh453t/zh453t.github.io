@@ -1,4 +1,4 @@
 'use strict'
-for (let samp of document.querySelectorAll('samp')) {
-  samp.onclick = () => samp.setAttribute('hidden', true)
-}
+document.querySelectorAll('samp').forEach(samp =>  {
+  samp.onclick = () => samp.style.display = 'none'
+})

@@ -1,5 +1,7 @@
 samp {
 	display: block;
+	height: 1em;
+	overflow: scroll;
 	background-color: #f9fbfc;
 	padding: 1em 2em;
 	width: fit-content;
@@ -25,7 +27,7 @@ samp::before {
 }
 
 html {
-	font-family: Lucida Console, Microsoft JhengHei UI, monospace, sans-serif;
+	font-family: 'Lucida Console', 'Pingfang SC';
 	line-height: 1.7;
 	background-color: #f3f3f3;
 	font-size: 20px;
@@ -34,7 +36,7 @@ html {
 }
 
 body {
-	padding-inline: 8vw;
+	padding-left: 8vw;
 	white-space: pre-wrap;
 }
 
@@ -68,11 +70,9 @@ h4,
 h5,
 h6 {
 	margin-block: 0;
-}
-
-h4 {
 	color: cadetblue;
 }
+
 
 button {
 	padding: 0.5em 1em;
@@ -80,4 +80,20 @@ button {
 	font-size: 20px;
 	font-weight: bold;
 	color: cadetblue;
+}
+
+@layer marquee {
+	.marquee {
+		width: 15em;
+		line-height: 2;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+	.marquee p {
+		padding-left: 100%;
+		animation: marquee 7s linear infinite;
+	}
+	@keyframes marquee {
+		to { translate: -120% 0; }
+	}
 }

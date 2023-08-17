@@ -3,11 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>Map</title>
-<<<<<<< HEAD
   <link rel="stylesheet" href="lib/public.css">
-=======
-  <link rel="stylesheet" href="public.css">
->>>>>>> be1e4c50ece8f2cfd0f2e42e1cdb1889fd8d4eb3
 <!--<script>
 'use strict'
 </script>-->
@@ -63,7 +59,6 @@ rest.delete(2)
 console.log(rest.size)
 
 rest.set([1,2], true)
-<<<<<<< HEAD
 console.log(rest.get([1,2])) // undefined</samp>
 <samp>const question = new Map([
 ['question', `What's the best programming language in the world?`],
@@ -74,22 +69,6 @@ console.log(rest.get([1,2])) // undefined</samp>
 [true, 'Correct!'],
 [false, 'try again']]
 )
-=======
-console.log(rest.get([1,2])) // undefined
-
-</script>
-<script>
-'use strict'
-const question = new Map([
-  ['question', `What's the best programming language in the world?`],
-  [1, 'c'],
-  [2, 'php'],
-  [3, 'javascript'],
-  ['correct', 2],
-  [true, 'Correct!'],
-  [false, 'try again']]
-  )
->>>>>>> be1e4c50ece8f2cfd0f2e42e1cdb1889fd8d4eb3
 console.log(question)
 for (const [key, value] of question) {
   if (typeof key === 'number') console.log(`Answer ${key}: ${value}`)
@@ -106,7 +85,6 @@ console.log(question.get(question.get('correct') === answer))</samp>
 const events = new Set(gameEvents.values())
 console.log(events)
 
-<<<<<<< HEAD
 // 2
 gameEvents.delete(64)
 
@@ -123,47 +101,5 @@ for (const event of gameEvents) {
   console.log(`${FirstSecondHalf} ${event[0]}: ${event[1]}`)
   }</samp>
 <script src="lib/public.js"></script>
-=======
- console.log(question.get(question.get('correct') === answer))
-</script>-->
-<script>
-const today = {month: 6,date: 3,function: false}
-const mapToday = new Map(Object.entries(today))
-
-</script>
-</head>
-<body>
-  <h1>Map</h1>
-  <h3>:2D</h3>
-  <progress></progress>
-  <p>创建：new Map()</p>
-  <p>添加：map.set(key, value)</p>
-  <p><i>可以连续调用：mmap.set().set().set()</i><br>等于mmap.set()<br>.set()<br>.set()</p>
-  <p>获取：map.get(key)</p>
-  <h4>！任意格式数据：无论在哪里</h4>
-  <samp>const doc = new Map()
-doc.set(document.querySelector('h1'), 'Heading')</samp>
-  <p>删除：map.delete(key)</p>
-  <p>大小：map.size => key数量</p>
-  <h4>若不是基本数据类型：</h4>
-  <p>rest.set([1,2], true)<br>
-console.log(rest.get([1,2])) // undefined ====><b>需提前存变量</b></p>
-  <h3>另一种创建方法</h3>
-  <p>new Map ([ [key1, value1], [key2, value2], ...]) // <ins>和Object.entries()返回的一样</ins> => 可快速转换</p>
-<samp>
-const today = {month: 6,date: 3,function: false}
-const mapToday = new Map(Object.entries(today))
-console.log(mapToday) // Map(3) { month → 6, date → 3, function → false }
-</samp>
-  <p>.entries(), .keys(), .values()适用</p>
-<h4>for..of循环：</h4><samp>for (const [key, value] of mapToday) {
-  if (typeof value == 'number') {
-    console.log(key, value)
-  }
-}</samp>
-<p>可转换成数组：const arrToday = [...mapToday] // Array(3) [ (2) […], (2) […], (2) […] ]</p>
-<progress></progress>
-
->>>>>>> be1e4c50ece8f2cfd0f2e42e1cdb1889fd8d4eb3
 </body>
 </html>

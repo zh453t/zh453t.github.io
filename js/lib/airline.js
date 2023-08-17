@@ -44,3 +44,11 @@ lufthansa.buyPlane = function () {
   this.planes++
   console.log(this.planes)
 }
+
+
+const checkMiddleSeat = (seat) => {
+  const seatID = seat.slice(-1)
+  if (seatID == 'B' || 'E') console.log('You got the middle seat😂')
+  else console.log('You got lucky😃')
+}
+checkMiddleSeat('21B')
