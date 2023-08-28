@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>base64</title>
+<base target="_blank" />
+<script defer type="module" src="lib/base64.js"></script>
+<!-- <script defer src="../lib/base64us.js"></script> -->
+<style>
+input:where([type='button'], [type='radio'], [type='checkbox']) {
+cursor: pointer;
+}
+input[disabled] {
+cursor: not-allowed;
+}
+label {
+cursor: pointer;
+display: block;
+margin-block: 1em;
+}
+small {
+color: gray;
+}
+body {
+color: #333;
+background-color: #fcfcfc;
+font-size: 1.4rem;
+display: grid;
+justify-content: center;
+grid-template:
+'encode decode'
+'config config';
+flex-wrap: wrap;
+padding-top: 1em;
+font-weight: bold;
+gap: 5vw;
+font-family: Consolas, Pingfang SC, 等线;
+}
+fieldset {
+display: flex;
+flex-direction: column;
+align-items: center;
+margin: 0;
+
+:where(p, legend, label) {
+user-select: none;
+}
+}
+
+output {
+display: block;
+padding: 0.1em 0.5em;
+border: 1px solid #444;
+max-width: 40vw;
+font-family: Consolas, Microsoft Jhenghei, monospace;
+word-wrap: break-word;
+white-space: pre-wrap;
+}
+button {
+padding: 0.7em 1em;
+border-radius: 25%;
+border: none;
+font: inherit;
+cursor: pointer;
+}
+
+legend {
+padding-inline: 0.5rem;
+}
+input,
+textarea {
+font-family: Consolas, Microsoft Jhenghei, monospace;
+color: #555;
+}
+textarea {
+width: 28em;
+height: 5em;
+font-family: Cascadia Code, Pingfang SC, 等线, monospace;
+padding: 0.4em 0.8em;
+font-size: 1.26rem;
+font-weight: bold;
+}
+#enc--btn,
+#dec--btn {
+margin-block: 1.2em;
+}
+.encode {
+grid-area: encode;
+}
+.decode {
+grid-area: decode;
+}
+address {
+display: none;
+}
+.config {
+/* width: 20vw; */
+grid-area: config;
+display: grid;
+grid-template-columns: 1fr 1fr;
+grid-template-areas: 'ec dc'
+'exp exp';
+align-items:	first baseline;
+padding-inline: 2em;
+
+form {
+padding: 5px 2em;
+&.encode {
+border-right:  1px dashed gray;
+grid-area: ec;
+}
+&.decode {
+grid-area: dc;
+}
+}
+section.ps {
+	padding: 0 2em;
+	border-top:  1px dashed gray;
+	grid-area: exp;
+	min-height: 3em;
+	color: gray;
+	}
+	}
+	</style>
+	</head>
+	<body>
+	<fieldset>
+<legend>编码</legend>
+<p>输入字符串：</p>
+<textarea type="text" placeholder="Enter Text..." id="enc--input"></textarea> <button type="button" id="enc--btn">编码</button>
+<output id="enc-out">输出</output>
+</fieldset>
+<fieldset>
+<legend>解码</legend>
+<p>输入字符串：</p>
+<textarea placeholder="Enter Text..." id="dec--input" cols="30" rows="10"></textarea> <button type="button" id="dec--btn">解码</button>
+<output id="dec--output">还原</output>
+</fieldset>
+<fieldset class="config">
+<legend>选项</legend>
+<form class="encode">
+<h3>编码时：</h3>
+<label>使用<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/btoa#unicode_%E5%AD%97%E7%AC%A6%E4%B8%B2">Uint16Array</a> <input type="radio" value="useBinary" name="encode" /><br /><small> （效率高，解码时需要勾选相应的选项）</small></label>
+
+<label>使用内置URI方法* <input type="radio" class="useURI" value="useURI" name="encode" checked /></label>
+<label>使用base64.us的方法 <input type="radio" class="useURI" value="useBase64US" name="encode" /></label>
+
+<!-- <label style="text-decoration: line-through #aaa 2px;">不使用额外方法<br /><small>（遇到中文等字符报错）</small></label> -->
+</form>
+<form class="decode">
+<h3>解码时：</h3>
+<label>这段base64使用了内置URI方法 <input type="radio" name="decode" value="useURI" checked /></label>
+<label>这段base64使用了<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/btoa#unicode_%E5%AD%97%E7%AC%A6%E4%B8%B2">Uint16Array</a> <input type="radio" name="decode" value="useBinary" /></label>
+<label>这段base64可能是从<a href="https://base64.us">base64.us</a>等网站加密/编码的 <input type="radio" name="decode" value="base64US" /></label>
+<label> -> 原文转换成了16进制 <input type="radio" name="decode" value="base64USHex"  /></label>
+</form>
+<section class="ps">
+	<p>*内置URI编码方法： encodeURIComponent() 和 decodeURIComponent(), 将ascii之外字符解析成%xx的形式, 例如 <span style="color:dodgerblue">的 => %E7%9A%84</span> <br>再通过 btoa() 方法转换成 base64， 效率低。</p>
+	<p>-> 前两项都使用了js内置的base64编解码方法，而其他的则是使用重写过的base64编解码方法。</p>
+</section>
+<address><a href="https://cms.35g.tw/coding/javascript-btoa-string-contains-an-invalid-character">感谢：</a><br />应先过一遍uri</address>
+</fieldset>
+<!--JUU5JUEyJTg2JUU1JUFGJUJDJUU2JTlEJUE1JUU0JUJBJTg2-->
+
+</body>
+</html>
