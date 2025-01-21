@@ -1,98 +1,149 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Base64 Image Decoder</title>
-		<style>
-			body {
-				font-family: Arial, sans-serif;
-				margin: 0;
-				padding: 0;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-				min-height: 100vh;
-				background-color: #f4f4f9;
-			}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64 Image Decoder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: #f4f4f9;
+    }
 
-			h1 {
-				color: #333;
-			}
+    h1 {
+      color: #333;
+    }
 
-			.container {
-				text-align: center;
-				padding: 20px;
-				background: #ffffff;
-				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-				border-radius: 8px;
-				max-width: 400px;
-				width: 90%;
-			}
+    .container {
+      text-align: center;
+      padding: 20px;
+      background: #ffffff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      max-width: 400px;
+      width: 90%;
+    }
 
-			input[type='file'] {
-				margin-top: 20px;
-				padding: 10px;
-				border: 1px solid #ddd;
-				border-radius: 4px;
-				cursor: pointer;
-			}
+    input[type="file"] {
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+    }
 
-			img {
-				margin-top: 20px;
-				max-width: 100%;
-				border-radius: 8px;
-				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-			}
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
 
-			.error {
-				color: red;
-				margin-top: 10px;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="container">
-			<h1>Base64 Image Decoder</h1>
-			<input type="file" id="fileInput" accept=".txt" />
-			<p class="error" id="error"></p>
-			<a target="_blank"><img id="outputImage" alt="Decoded Image will appear here" /></a>
-		</div>
+    button:hover {
+      background-color: #0056b3;
+    }
 
-		<script>
-			document.querySelector('#fileInput').addEventListener('change', function (event) {
-				const file = event.target.files[0];
-				const errorElement = document.getElementById('error');
-				const outputImage = document.getElementById('outputImage');
-				const link = document.querySelector('a');
+    img {
+      margin-top: 20px;
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-				errorElement.textContent = '';
-				outputImage.src = '';
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
 
-				if (file) {
-					const reader = new FileReader();
+		h3 {
+			margin-block: 0.5em;
+		}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Base64 Image Decoder & Encoder</h1>
+		<h3>上传 base64 txt</h3>
+    <input type="file" id="fileInput" title="上传 txt 文档" accept=".txt" />
+		<h3>上传图片</h3>
+    <input type="file" id="imageInput" accept="image/*" />
+    <button id="downloadBtn" style="display:none;">Download Base64 File</button>
+    <p class="error" id="error"></p>
+    <img id="outputImage" alt="Decoded Image will appear here" />
+  </div>
 
-					reader.onload = function (e) {
-						try {
-							const base64String = e.target.result;
-							const base64Result = `data:image/png;base64,${base64String}`;
-							outputImage.src = base64Result;
-							link.href = base64Result;
-						} catch (err) {
-							errorElement.textContent = 'Error decoding the file. Please make sure it contains valid Base64-encoded image data.';
-						}
-					};
+  <script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      const errorElement = document.getElementById('error');
+      const outputImage = document.getElementById('outputImage');
 
-					reader.onerror = function () {
-						errorElement.textContent = 'Error reading the file.';
-					};
+      errorElement.textContent = '';
+      outputImage.src = '';
 
-					reader.readAsText(file);
-				} else {
-					errorElement.textContent = 'No file selected.';
-				}
-			});
-		</script>
-	</body>
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          try {
+            const base64String = e.target.result;
+            outputImage.src = `data:image/png;base64,${base64String}`;
+          } catch (err) {
+            errorElement.textContent = 'Error decoding the file. Please make sure it contains valid Base64-encoded image data.';
+          }
+        };
+
+        reader.onerror = function() {
+          errorElement.textContent = 'Error reading the file.';
+        };
+
+        reader.readAsText(file);
+      } else {
+        errorElement.textContent = 'No file selected.';
+      }
+    });
+
+    document.getElementById('imageInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      const errorElement = document.getElementById('error');
+      const downloadBtn = document.getElementById('downloadBtn');
+
+      errorElement.textContent = '';
+
+      if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+          const base64String = e.target.result.split(',')[1];
+          const blob = new Blob([base64String], { type: 'text/plain' });
+          const url = URL.createObjectURL(blob);
+
+          downloadBtn.style.display = 'block';
+          downloadBtn.href = url;
+          downloadBtn.download = `${file.name}.txt`;
+          downloadBtn.textContent = 'Download Base64 File';
+        };
+
+        reader.onerror = function() {
+          errorElement.textContent = 'Error reading the image file.';
+        };
+
+        reader.readAsDataURL(file);
+      } else {
+        errorElement.textContent = 'No image file selected.';
+      }
+    });
+  </script>
+</body>
 </html>
