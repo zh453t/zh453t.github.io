@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Base64 Image Decoder</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				min-height: 100vh;
+				background-color: #f4f4f9;
+			}
+
+			h1 {
+				color: #333;
+			}
+
+			.container {
+				text-align: center;
+				padding: 20px;
+				background: #ffffff;
+				box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+				border-radius: 8px;
+				max-width: 400px;
+				width: 90%;
+			}
+
+			input[type='file'] {
+				margin-top: 20px;
+				padding: 10px;
+				border: 1px solid #ddd;
+				border-radius: 4px;
+				cursor: pointer;
+			}
+
+			img {
+				margin-top: 20px;
+				max-width: 100%;
+				border-radius: 8px;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			}
+
+			.error {
+				color: red;
+				margin-top: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Base64 Image Decoder</h1>
+			<input type="file" id="fileInput" accept=".txt" />
+			<p class="error" id="error"></p>
+			<a target="_blank"><img id="outputImage" alt="Decoded Image will appear here" /></a>
+		</div>
+
+		<script>
+			document.querySelector('#fileInput').addEventListener('change', function (event) {
+				const file = event.target.files[0];
+				const errorElement = document.getElementById('error');
+				const outputImage = document.getElementById('outputImage');
+				const link = document.querySelector('a');
+
+				errorElement.textContent = '';
+				outputImage.src = '';
+
+				if (file) {
+					const reader = new FileReader();
+
+					reader.onload = function (e) {
+						try {
+							const base64String = e.target.result;
+							const base64Result = `data:image/png;base64,${base64String}`;
+							outputImage.src = base64Result;
+							link.href = base64Result;
+						} catch (err) {
+							errorElement.textContent = 'Error decoding the file. Please make sure it contains valid Base64-encoded image data.';
+						}
+					};
+
+					reader.onerror = function () {
+						errorElement.textContent = 'Error reading the file.';
+					};
+
+					reader.readAsText(file);
+				} else {
+					errorElement.textContent = 'No file selected.';
+				}
+			});
+		</script>
+	</body>
+</html>
