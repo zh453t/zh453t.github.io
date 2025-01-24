@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+	<!-- 由 Deepseek-R1 主要完成 -->
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>双源独立搜索</title>
+		<style>
+			:root {
+				--primary: hsl(223, 55%, 25%);
+				--primary-background: hsl(220 100% 95%);
+				--secondary: hsl(25.2, 69.3%, 37.1%);
+				--secondary-background: hsl(25.7, 74.5%, 90.8%);
+				--surface: hsl(0 0% 100%);
+				--background: hsl(240 6% 90%);
+			}
+
+      body {
+            font-family: system-ui, sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            background: var(--background);
+            display: grid;
+            place-items: start center;
+        }
+
+        main {
+            width: min(100% - 2rem, 720px);
+            margin-block: 2rem;
+        }
+
+        .search-box {
+            --shadow: 0 2px 8px hsl(0 0% 0% / 0.1);
+            width: 100%;
+            padding: 1.2rem;
+            border: 2px solid transparent;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+            font-size: 1.1em;
+        }
+
+        .search-box:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        output {
+            display: grid;
+            gap: 8px;
+            margin-top: 1.5rem;
+        }
+
+        .result-item {
+            --bg: var(--surface);
+            display: grid;
+            padding: 1rem;
+            background: var(--bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            transition: transform 0.2s ease;
+        }
+
+        .result-item:hover {
+            /* transform: translateY(-2px); */
+			transform: scale(1.02);
+			cursor: copy;
+			/* transition 不支持!? */
+			/* scale: 1.02; */
+        }
+
+        .source {
+            justify-self: end;
+            padding: 0.3em 0.6em;
+            border-radius: 4px;
+            font-size: 0.9em;
+            font-weight: 500;
+            background: hsl(0 0% 95%);
+        }
+
+        .source[data-source="2024"] {
+            color: var(--primary);
+            background: var(--primary-background);
+        }
+
+        .source[data-source="2025"] {
+            color: var(--secondary);
+            background: var(--secondary-background);
+        }
+
+        .highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* h1 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        } */
+
+        a.tutorial {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        a:visited {
+            color: var(--primary);
+        }
+
+        /* 浮动按钮 */
+        /* a.tutorial {
+            display: block;
+            position: fixed;
+            bottom: 2em;
+            left: 2em;
+            width: 6em;
+            height: 3em;
+            line-height: 3em;
+            background-color: var(--primary-background);
+            color: var(--primary);
+            font-weight: bold;
+            text-align: center;
+            font-size: large;
+            text-decoration: none;
+            border: 2px solid var(--primary);
+            border-radius: 0.5em;
+        } */
+    </style>
+</head>
+<body>
+    <main>
+        <h1>分享链接历史搜索 (<a class="tutorial" href="./tutorial.html" target="_blank">alac-downloader教程</a>)</h1>
+        <form role="search">
+            <input 
+                type="search" 
+                id="search-input" 
+                class="search-box" 
+                placeholder="输入搜索内容... (有些名字为英语的艺人可能需要搜中文译名)" 
+                autofocus
+            >
+        <output for="search-input" class="results" aria-live="polite">
+            <!-- 搜索结果将动态插入到这里 -->
+        </output>
+    </main>
+    <!-- <a class="tutorial" href="./tutorial.html">教程</a> -->
+
+<script type="module">
+	// 初始化数据源（用户需自行填充）
+	const searchBox = document.querySelector('.search-box');
+    const resultsContainer = document.querySelector('.results');
+
+    // 禁用搜索框直到数据加载完成
+    searchBox.disabled = true;
+    searchBox.placeholder = '正在加载数据...';
+
+    // 加载数据的函数
+    const loadData = async (url) => {
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`加载失败: ${response.status}`);
+            return await response.json();
+        } catch (error) {
+            console.error(`加载数据时出错 (${url}):`, error);
+            return [];
+        }
+    };
+
+    // 初始化数据源
+    let sources;
+    const initializeData = async () => {
+        const [data1, data2] = await Promise.all([
+            loadData('./artist-2024.json'),
+            loadData('./artist-2025.json')
+        ]);
+
+        // 预处理数据为不可变结构
+        sources = Object.freeze({
+            data1: Object.freeze(data1.map(text => ({
+                text,
+                normalized: text.toLowerCase(),
+                source: '2024'
+            }))),
+            data2: Object.freeze(data2.map(text => ({
+                text,
+                normalized: text.toLowerCase(),
+                source: '2025'
+            })))
+        });
+
+        // 启用搜索框
+        searchBox.disabled = false;
+        searchBox.placeholder = '输入搜索内容... (有些名字为英语的艺人可能需要搜中文译名)';
+        searchBox.focus();
+    };
+
+    // 防抖优化搜索
+    const search = (query, { limit = 50 } = {}) => {
+        if (!sources) return []; // 数据未加载完成时返回空结果
+
+        const normalized = query.trim().toLowerCase();
+        if (!normalized) return [];
+
+        return Object.values(sources).flatMap(source => 
+            source.flatMap(item => 
+                item.normalized.includes(normalized)
+                ? [{ ...item, matches: getMatchIndices(item.normalized, normalized) }]
+                : []
+            )
+        ).slice(0, limit);
+    };
+
+    // 获取所有匹配位置
+    const getMatchIndices = (text, query) => {
+        const indices = [];
+        let pos = text.indexOf(query);
+        while (pos > -1) {
+            indices.push(pos);
+            pos = text.indexOf(query, pos + query.length);
+        }
+        return indices;
+    };
+
+    // 高亮匹配文本
+    const highlight = (text, indices, queryLength) => {
+        const segments = [];
+        let last = 0;
+        
+        for (const start of indices.sort((a, b) => a - b)) {
+            const end = start + queryLength;
+            segments.push(
+                text.slice(last, start),
+                `<span class="highlight">${text.slice(start, end)}</span>`
+            );
+            last = end;
+        }
+        segments.push(text.slice(last));
+
+        return segments.join('');
+    };
+
+    // 渲染结果
+    const renderResults = (results, query) => {
+        resultsContainer.replaceChildren(...results.map(result => {
+            const element = document.createElement('article');
+            element.className = 'result-item';
+            
+            element.innerHTML = `
+                <div>${highlight(result.text, result.matches, query.length)}</div>
+                <div class="source" data-source="${result.source}">
+                    ${result.source.toUpperCase()}
+                </div>
+            `;
+
+            return element;
+        }));
+    };
+
+    // 组合优化
+    const debounce = (fn, delay = 100) => {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => fn(...args), delay);
+        };
+    };
+
+    // 事件处理
+    const handleSearch = debounce(event => {
+        const query = event.target.value.trim();
+        const results = search(query);
+        renderResults(results, query);
+    });
+
+    // 初始化
+    (async () => {
+        await initializeData(); // 加载数据
+        searchBox.addEventListener('input', handleSearch); // 绑定事件
+    })();
+</script>
+
+</body>
+</html>
