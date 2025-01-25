@@ -1,18 +1,289 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+	<!-- 主要由 https://chat.deepseek.com 完成 -->
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>教程</title>
-		<base target="_blank">
+		<base target="_blank" />
+		<style>
+			/* 定义层级 */
+			@layer base, components, utilities;
+
+			/* 基础样式 */
+			@layer base {
+				:root {
+					--primary: hsl(196, 61%, 14%);
+					--background: hsl(80, 27%, 96%);
+					--surface: hsl(0, 0%, 100%);
+					--text: hsl(0, 0%, 20%);
+					--text-light: hsl(0, 0%, 40%);
+					--shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+					--radius: 12px;
+					--transition: all 0.2s ease;
+					--code-bg: hsl(220, 80%, 95%); /* 代码框背景色 */
+					--code-text: hsl(229, 72%, 17%); /* 代码文字颜色 */
+					--code-border: hsl(220, 80%, 80%); /* 代码框边框颜色 */
+					--radius: 6px; /* 圆角大小 */
+					--padding: 0.5em 0.75em; /* 内边距 */
+				}
+
+				body {
+					font-family: candara, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+					line-height: 1.6;
+					margin: 0;
+					padding: 2rem;
+					background: var(--background);
+					color: var(--text);
+				}
+
+				h1,
+				h2 {
+					color: var(--primary);
+					margin-bottom: 1.2rem;
+				}
+
+				h2 {
+					font-size: 1.8rem;
+					font-weight: 600;
+					margin-top: 2rem;
+				}
+
+				li>h4 {
+					margin-block-start: 0;
+				}
+
+				h5 {
+					font-size: 1rem;
+					margin-left: 1rem;
+				}
+
+
+				a {
+					text-decoration: none;
+					color: var(--text);
+					font-weight: 600;
+					display: inline-flex;
+					align-items: center;
+					gap: 0.5rem;
+				}
+
+				a::after {
+					content: '↗';
+					font-size: 0.9em;
+					color: var(--text-light);
+					transition: var(--transition);
+				}
+
+				a:hover {
+					color: var(--primary);
+				}
+
+				a:hover::after {
+					transform: translate(2px, -2px);
+					color: var(--primary);
+				}
+			}
+
+			/* 组件样式 */
+			@layer components {
+				code {
+					background-color: var(--code-bg);
+					color: var(--code-text);
+					padding: var(--padding);
+					border-radius: var(--radius);
+					border: 1px solid var(--code-border);
+					font-family: SFMono-Regular, Lucida Console, Consolas, Microsoft Yahei UI, Liberation Mono, Menlo, monospace;
+					font-size: 0.9em;
+					margin-inline: 0.5em;
+				}
+
+				pre code {
+					display: block;
+					padding: 1em;
+					overflow-x: auto;
+					border-radius: var(--radius);
+					border: 1px solid var(--code-border);
+					background-color: var(--code-bg);
+					color: var(--code-text);
+					font-size: 0.9em;
+					line-height: 1.5;
+				}
+
+				code:hover {
+					background-color: hsl(221, 76%, 92%);
+					border-color: hsl(220, 80%, 70%);
+				}
+
+				main {
+					display: grid;
+					gap: 2rem;
+				}
+
+				ul,
+				ol {
+					padding: 0;
+					margin: 0;
+					display: grid;
+					gap: 1rem;
+				}
+
+				ul {
+					list-style: none;
+				}
+
+				li,
+				section > p {
+					background: var(--surface);
+					padding: 1.5rem;
+					border-radius: var(--radius);
+					box-shadow: var(--shadow);
+					transition: var(--transition);
+				}
+				li {
+					list-style-position: inside;
+				}
+
+				li:has(a):hover {
+					transform: translateY(-4px);
+					box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+				}
+			}
+
+			/* 工具样式 */
+			@layer utilities {
+				/* 宽屏布局（≥ 768px） */
+				@media (min-width: 768px) {
+					main {
+						grid-template-columns: repeat(2, 1fr); /* 两列布局 */
+					}
+
+					section.span-two-columns {
+						grid-column: span 2;
+					}
+				}
+
+				/* 响应式布局 */
+				@media (max-width: 600px) {
+					h1 {
+						font-size: 2rem;
+					}
+
+					h2 {
+						font-size: 1.5rem;
+					}
+
+					li {
+						padding: 1rem;
+					}
+				}
+			}
+		</style>
 	</head>
 	<body>
 		<h1>教程链接（需要梯子）</h1>
-		<h2>Windows</h2>
-		<ul>
-			<li><a href="https://telegra.ph/Apple-Music-Alac%E9%AB%98%E8%A7%A3%E6%9E%90%E5%BA%A6%E6%97%A0%E6%8D%9F%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E6%95%99%E7%A8%8B-04-02-2">telegraph (使用 MUMU 模拟器)</a></li>
-			<li><a href="https://applemusic.mintlify.app/guide/windows">mintlify.app (内容有错，是ubuntu的安装方法)</a></li>
-		</ul>
-		<h2><a href="https://applemusic.mintlify.app/guide/android">Android</a></h2>
+		<main>
+			<section>
+				<h2>Windows</h2>
+				<ul>
+					<li><a href="https://telegra.ph/Apple-Music-Alac%E9%AB%98%E8%A7%A3%E6%9E%90%E5%BA%A6%E6%97%A0%E6%8D%9F%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E6%95%99%E7%A8%8B-04-02-2">telegraph (使用 MUMU 模拟器)</a></li>
+					<li><a href="https://applemusic.mintlify.app/guide/windows">mintlify.app (内容有错，是ubuntu的安装方法)</a></li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Android</h2>
+				<ul>
+					<li><a href="https://applemusic.mintlify.app/guide/android">Android 教程</a></li>
+				</ul>
+			</section>
+			<section class="span-two-columns">
+				<h2>Windows 教程 <a style="color: #777;font-size: smaller;margin-left: 1em;" href="https://telegra.ph/Apple-Music-Alac%E9%AB%98%E8%A7%A3%E6%9E%90%E5%BA%A6%E6%97%A0%E6%8D%9F%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E6%95%99%E7%A8%8B-04-02-2">[来源]</a></h2>
+				<h3>1. 安装配置MUMU模拟器</h3>
+				<ol>
+					<li>下载 <a href="https://github.com/itouakirai/apple-music-jshook-script/releases/download/wsa/MuMuInstaller_3.1.13.0.exe">MUMU模拟器安装包</a></li>
+					<li>下载 <a href="https://github.com/itouakirai/apple-music-jshook-script/releases/download/wsa/amdl.mumudata">MUMU模拟器备份还原包</a></li>
+					<li>安装MUMU模拟器并运行MUMU多开器12，新建 --&gt; 导入并新建 --&gt; 选择还原包</li>
+				</ol>
+				<h3>2. 正式使用</h3>
+				<ol>
+					<li>运行模拟器中的 AppleMusic 应用（需要确保已登录有订阅的账号并在后台持续运行）</li>
+					<li>运行 ZeroTermux 开始下载</li>
+				</ol>
+				<h4>使用下载命令</h4>
+				<pre><code>go run main.go [专辑/播放列表/艺人链接]
+---
+go run main.go https://music.apple.com/cn/album/night-palace/1764954656
+go run main.go https://music.apple.com/cn/artist/fishmans/304929223
+
+go run main.go --select https://music.apple.com/cn/album/selected-ambient-works-85-92/1668862636
+go run main.go --atmos https://music.apple.com/cn/album/electric-ladyland/359528125
+</code></pre>
+				<ul>
+					<li><b>指定专辑中几首歌：</b> 使用时输入要下载的曲目数字，多个时用空格隔开 <code>go run main.go --select [专辑链接]</code></li>
+					<li><b>下载杜比全景声</b> <code>go run main.go --atmos [杜比专辑链接]</code></li>
+				</ul>
+				<h3>获取歌词及aac-lc</h3>
+				需要获取 media-user-token 并将其填入下载项目文件夹下 config.yaml 内对应的值<br /><br />
+				<ol>
+					<li>打开桌面端网页浏览器使用有订阅的账号登录网页版 Apple Music ,在主页按<code>F12</code>打开开发者工具</li>
+					<li>依次点击 Application -> Storage -> Cookies -> https://music.apple.com</li>
+					<li>找到名称<code>media-user-token</code>对应的值，复制</li>
+					<li>
+						在 ZeroTermux 中从右侧屏幕边缘向左滑动，打开文件管理器，依次点击 <code>home -> amdl -> config.yaml</code> 并打开编辑，替换第一个选项的值，保存，如下：
+						<pre><code>media-user-token: "[<b>粘贴到这里</b>]" #If you need to obtain the lyrics, need to change it
+authorization-token: "your-authorization-token" #You don't need to change it; it can automatically obtain token
+language: ""</code></pre>
+					</li>
+				</ol>
+				<h4>更新下载项目</h4>
+				<p>双击 ZeroTermux 屏幕，运行对应快捷指令即可<br />每次更新都需要重新修改 config.yaml 内的值，确保文件下载到MUMU的映射文件夹下</p>
+				<pre><code>alac-save-folder: /sdcard/$MuMu12Shared/AM-DL
+atmos-save-folder: /sdcard/$MuMu12Shared/AM-DL-Atmos</code></pre>
+				<h3>更多 config.yaml 配置项</h3>
+				<ul>
+					<li>
+						<h4>歌词</h4>
+						<p>将歌词写入 m4a 的标签：<code>embed-lrc: true</code></p>
+						<p>保存歌词文件：<code>save-lrc-file: false</code></p>
+					</li>
+					<li>
+						<h4>封面</h4>
+						<p>嵌入封面：<code>embed-cover: true</code></p>
+						<p>封面最大尺寸：<code>cover-size: 5000x5000</code></p>
+						<h4>动态封面</h4>
+						<p>保存动态封面，需要环境变量里有 <a href="https://www.gyan.dev/ffmpeg/builds/">ffmpeg</a>：<code>save-animated-artwork: false # If enabled, requires ffmpeg</code></p>
+					</li>
+					<li>
+						<h4>文件命名规则</h4>
+						<h5>专辑</h5>
+						<pre><code>#{AlbumId} {AlbumName} {ArtistName} {ReleaseDate} {ReleaseYear} {UPC} {Copyright} {Quality} {Codec} {Tag} {RecordLabel}
+#example: {ReleaseYear} - {ArtistName} - {AlbumName}({AlbumId})({UPC})({Copyright}){Codec}
+<b>album-folder-format: "{AlbumName} ({ReleaseYear}) [{Quality}]"</b></code></pre>
+						<h5>播放列表 / playlist</h5>
+						<pre><code>#{PlaylistId} {PlaylistName} {ArtistName} {Quality} {Codec} {Tag}
+<b>playlist-folder-format: "{PlaylistName}"</b></code></pre>
+						<h5>歌曲</h5>
+						<pre><code>#{SongId} {SongNumer} {SongName} {DiscNumber} {TrackNumber} {Quality} {Codec} {Tag}
+#example: Disk {DiscNumber} - Track {TrackNumber} {SongName} [{Quality}]{{Tag}}"
+<b>song-file-format: "{SongNumer}. {SongName}"</b></code></pre>
+						<h5>艺术家</h5>
+						<pre><code>#{ArtistId} {ArtistName}/{UrlArtistName}
+#if artist-folder-format set "",will not make artist folder
+artist-folder-format: "{ArtistName}"</code></pre>
+					</li>
+					<li>
+						<h4>最高采样率 (alac: kHz)</h4>
+						<pre><code>alac-max: 96000  #192000 96000 48000 44100
+atmos-max: 2768  #2768 2448</code></pre>
+					</li>
+
+				</ul>
+			</section>
+			<section class="span-two-columns">
+				<h2>传统方法：使用 Android Studio</h2>
+				正在施工
+			</section>
+		</main>
 	</body>
 </html>

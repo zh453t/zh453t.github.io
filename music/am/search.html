@@ -1,135 +1,166 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 	<!-- 由 Deepseek-R1 主要完成 -->
+     <!-- 更新日期：2025-01-25 -->
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>双源独立搜索</title>
+		<!-- <title>双源独立搜索</title> -->
+        <title>Search</title>
 		<style>
-			:root {
-				--primary: hsl(223, 55%, 25%);
-				--primary-background: hsl(220 100% 95%);
-				--secondary: hsl(25.2, 69.3%, 37.1%);
-				--secondary-background: hsl(25.7, 74.5%, 90.8%);
-				--surface: hsl(0 0% 100%);
-				--background: hsl(240 6% 90%);
-			}
+/* 定义层级 */
+@layer base, components, utilities;
 
-      body {
-            font-family: system-ui, sans-serif;
-            margin: 0;
-            min-height: 100vh;
-            background: var(--background);
-            display: grid;
-            place-items: start center;
-        }
+/* 基础样式 */
+@layer base {
+    :root {
+        --primary: hsl(223, 55%, 25%);
+        --primary-background: hsl(220 100% 95%);
+        --secondary: hsl(25.2, 69.3%, 37.1%);
+        --secondary-background: hsl(25.7, 74.5%, 90.8%);
+        --surface: hsl(0 0% 100%);
+        --background: hsl(240 6% 90%);
+    }
 
-        main {
-            width: min(100% - 2rem, 720px);
-            margin-block: 2rem;
-        }
+    body {
+        font-family: system-ui, sans-serif;
+        margin: 0;
+        min-height: 100vh;
+        background: var(--background);
+        display: grid;
+        place-items: start center;
+    }
 
-        .search-box {
-            --shadow: 0 2px 8px hsl(0 0% 0% / 0.1);
-            width: 100%;
-            padding: 1.2rem;
-            border: 2px solid transparent;
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            transition: all 0.2s ease;
-            font-size: 1.1em;
-        }
 
-        .search-box:focus-visible {
-            outline: 2px solid var(--primary);
-            outline-offset: 2px;
-        }
+}
 
-        output {
-            display: grid;
-            gap: 8px;
-            margin-top: 1.5rem;
-        }
+/* 组件样式 */
+@layer components {
+    main {
+        width: min(100% - 2rem, 720px);
+        margin-block: 2rem;
+    }
 
-        .result-item {
-            --bg: var(--surface);
-            display: grid;
-            padding: 1rem;
-            background: var(--bg);
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            transition: transform 0.2s ease;
-        }
+    input.search-box {
+        --shadow: 0 2px 8px hsl(0 0% 0% / 0.1);
+        width: 100%;
+        padding: 1.2rem;
+        border: 2px solid transparent;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        transition: all 0.2s ease;
+        font-size: 1.1em;
+    }
 
-        .result-item:hover {
-            /* transform: translateY(-2px); */
-			transform: scale(1.02);
-			cursor: copy;
-			/* transition 不支持!? */
-			/* scale: 1.02; */
-        }
+    input.search-box:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+    }
 
-        .source {
-            justify-self: end;
-            padding: 0.3em 0.6em;
-            border-radius: 4px;
-            font-size: 0.9em;
-            font-weight: 500;
-            background: hsl(0 0% 95%);
-        }
+    output {
+        display: grid;
+        gap: 8px;
+        margin-top: 1.5rem;
+    }
 
-        .source[data-source="2024"] {
-            color: var(--primary);
-            background: var(--primary-background);
-        }
+    .result-item {
+        --bg: var(--surface);
+        display: grid;
+        padding: 1rem;
+        background: var(--bg);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        transition: transform 0.2s ease;
+    }
 
-        .source[data-source="2025"] {
-            color: var(--secondary);
-            background: var(--secondary-background);
-        }
+    .result-item:hover {
+        transform: scale(1.02);
+        cursor: pointer;
+    }
 
-        .highlight {
-            color: var(--primary);
-            font-weight: 600;
-        }
+    .source {
+        justify-self: end;
+        padding: 0.3em 0.6em;
+        border-radius: 4px;
+        font-size: 0.9em;
+        font-weight: 500;
+        background: hsl(0 0% 95%);
+    }
 
-        /* h1 {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        } */
+    .source[data-source="2024"] {
+        color: var(--primary);
+        background: var(--primary-background);
+    }
 
+    .source[data-source="2025"] {
+        color: var(--secondary);
+        background: var(--secondary-background);
+    }
+
+    .highlight {
+        color: var(--primary);
+        font-weight: 600;
+    }
+
+    @layer a-link {
         a.tutorial {
-            color: var(--primary);
-            text-decoration: none;
-        }
-        a:visited {
-            color: var(--primary);
-        }
+        color: var(--primary);
+        text-decoration: none;
+    }
 
-        /* 浮动按钮 */
-        /* a.tutorial {
-            display: block;
-            position: fixed;
-            bottom: 2em;
-            left: 2em;
-            width: 6em;
-            height: 3em;
-            line-height: 3em;
-            background-color: var(--primary-background);
-            color: var(--primary);
-            font-weight: bold;
-            text-align: center;
-            font-size: large;
-            text-decoration: none;
-            border: 2px solid var(--primary);
-            border-radius: 0.5em;
-        } */
+    a.tutorial:visited {
+        color: var(--primary);
+    }
+    
+    /* 浮动按钮 */
+    a.donate {
+        display: block;
+        position: fixed;
+        bottom: 2em;
+        left: 2em;
+        width: 6em;
+        height: 3em;
+        line-height: 3em;
+        background-color: var(--secondary-background);
+        color: var(--secondary);
+        font-weight: bold;
+        text-align: center;
+        font-size: large;
+        text-decoration: none;
+        border: 2px solid var(--secondary);
+        border-radius: 0.5em;
+    }
+
+    a.donate:visited {
+        color: var(--secondary);
+    }
+    }
+}
+
+/* 工具样式 */
+@layer utilities {
+    /* 这里可以添加一些工具类，例如： */
+    /* .text-center {
+        text-align: center;
+    }
+
+    .mt-1 {
+        margin-top: 1rem;
+    } */
+
+    /* 响应式工具类 */
+    @media (max-width: 600px) {
+        .mobile-hidden {
+            display: none;
+        }
+    }
+}
     </style>
+    <base target="_blank">
 </head>
 <body>
     <main>
-        <h1>分享链接历史搜索 (<a class="tutorial" href="./tutorial.html" target="_blank">alac-downloader教程</a>)</h1>
+        <h1>分享链接历史搜索 (<a class="tutorial" href="./tutorial.html">alac-downloader教程</a>)</h1>
         <form role="search">
             <input 
                 type="search" 
@@ -142,13 +173,17 @@
             <!-- 搜索结果将动态插入到这里 -->
         </output>
     </main>
-    <!-- <a class="tutorial" href="./tutorial.html">教程</a> -->
+    <a class="donate" href="./donate.html">Donate</a>
 
 <script type="module">
 	// 初始化数据源（用户需自行填充）
 	const searchBox = document.querySelector('.search-box');
     const resultsContainer = document.querySelector('.results');
 
+    const LINKS = {
+        '2024': 'https://pan.baidu.com/s/1mw3O6uyGlvzZbGVHZc4xOw?pwd=h451',
+        '2025': 'https://pan.baidu.com/s/1DQfHvPzt-nj4NHr0VuRIzg?pwd=h431'
+    }
     // 禁用搜索框直到数据加载完成
     searchBox.disabled = true;
     searchBox.placeholder = '正在加载数据...';
@@ -229,7 +264,7 @@
             const end = start + queryLength;
             segments.push(
                 text.slice(last, start),
-                `<span class="highlight">${text.slice(start, end)}</span>`
+                `<a class="highlight">${text.slice(start, end)}</a>`
             );
             last = end;
         }
@@ -243,6 +278,9 @@
         resultsContainer.replaceChildren(...results.map(result => {
             const element = document.createElement('article');
             element.className = 'result-item';
+            element.addEventListener("click", () => {
+                location.assign(LINKS[result.source])
+            })
             
             element.innerHTML = `
                 <div>${highlight(result.text, result.matches, query.length)}</div>
@@ -275,6 +313,15 @@
     (async () => {
         await initializeData(); // 加载数据
         searchBox.addEventListener('input', handleSearch); // 绑定事件
+
+        // 初始显示`·`的搜索结果，以显示中文音译的名字
+        // 初始化搜索的字符
+        const INITIAL_SEARCH_CHARS = ['·', '・'];
+
+        const results = INITIAL_SEARCH_CHARS.reduce((previousResults, currentChar) => {
+            return previousResults.concat(search(currentChar))
+        }, []);
+        renderResults(results, "");
     })();
 </script>
 
