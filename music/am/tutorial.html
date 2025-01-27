@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>教程</title>
 		<base target="_blank" />
-		<link rel="stylesheet" href="../tutorial.css">
+		<link rel="stylesheet" href="../tutorial.css" />
 	</head>
 	<body>
 		<h1>教程链接（需要梯子）</h1>
@@ -16,6 +16,7 @@
 				<ul>
 					<li><a href="https://telegra.ph/Apple-Music-Alac%E9%AB%98%E8%A7%A3%E6%9E%90%E5%BA%A6%E6%97%A0%E6%8D%9F%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E6%95%99%E7%A8%8B-04-02-2">telegraph (使用 MUMU 模拟器)</a></li>
 					<li><a href="https://applemusic.mintlify.app/guide/windows">mintlify.app (内容有错，是ubuntu的安装方法)</a></li>
+					<li><a href="#androidstudio" target="_self">Android Studio 方法</a></li>
 				</ul>
 			</section>
 
@@ -26,7 +27,7 @@
 				</ul>
 			</section>
 			<section class="span-two-columns">
-				<h2>Windows 教程 <a style="color: #777;font-size: smaller;margin-left: 1em;" href="https://telegra.ph/Apple-Music-Alac%E9%AB%98%E8%A7%A3%E6%9E%90%E5%BA%A6%E6%97%A0%E6%8D%9F%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E6%95%99%E7%A8%8B-04-02-2">[来源]</a></h2>
+				<h2>Windows 教程 <a style="color: #777; font-size: smaller; margin-left: 1em" href="https://telegra.ph/Apple-Music-Alac%E9%AB%98%E8%A7%A3%E6%9E%90%E5%BA%A6%E6%97%A0%E6%8D%9F%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E6%95%99%E7%A8%8B-04-02-2">[来源]</a></h2>
 				<h3>1. 安装配置MUMU模拟器</h3>
 				<ol>
 					<li>下载 <a href="https://github.com/itouakirai/apple-music-jshook-script/releases/download/wsa/MuMuInstaller_3.1.13.0.exe">MUMU模拟器安装包</a></li>
@@ -39,6 +40,7 @@
 					<li>运行 ZeroTermux 开始下载</li>
 				</ol>
 				<h4>使用下载命令</h4>
+				<p>需要安装<a href="https://golang.google.cn/dl/">go</a></p>
 				<pre><code>go run main.go [专辑/播放列表/艺人链接]
 ---
 go run main.go https://music.apple.com/cn/album/night-palace/1764954656
@@ -50,6 +52,7 @@ go run main.go --atmos https://music.apple.com/cn/album/electric-ladyland/359528
 				<ul>
 					<li><b>指定专辑中几首歌：</b> 使用时输入要下载的曲目数字，多个时用空格隔开 <code>go run main.go --select [专辑链接]</code></li>
 					<li><b>下载杜比全景声</b> <code>go run main.go --atmos [杜比专辑链接]</code></li>
+					<li><b>下载 aac-lc</b> <code>go run main.go --aac [杜比专辑链接]</code></li>
 				</ul>
 				<h3>获取歌词及aac-lc</h3>
 				需要获取 media-user-token 并将其填入下载项目文件夹下 config.yaml 内对应的值<br /><br />
@@ -105,12 +108,76 @@ artist-folder-format: "{ArtistName}"</code></pre>
 						<pre><code>alac-max: 96000  #192000 96000 48000 44100
 atmos-max: 2768  #2768 2448</code></pre>
 					</li>
-
 				</ul>
 			</section>
-			<section class="span-two-columns">
+			<section id="androidstudio" class="span-two-columns">
 				<h2>传统方法：使用 Android Studio</h2>
-				正在施工
+				<h3>环境配置</h3>
+				<p><a href="https://pan.baidu.com/s/1yhs44EwsfnFu73YV0Kk4QQ?pwd=amdl">百度网盘</a>内有一些安装包</p>
+				<ol>
+					<li>安装<a href="https://www.python.org/downloads/">python (>=3.7)</a>,<a href="https://golang.google.cn/dl/">go</a></li>
+					<li>
+						<p>安装<a href="https://developer.android.google.cn/studio?hl=zh-cn">Android Studio</a>，下载 <a href="https://developer.android.google.cn/tools/releases/platform-tools?hl=zh-cn#downloads">adb</a>[<a href="https://pan.baidu.com/s/1yhs44EwsfnFu73YV0Kk4QQ?pwd=amdl">百度网盘</a>] 并添加到环境变量</p>
+						<p>1. 复制解压 adb 的文件夹路径</p>
+						<p>2. Win+S 搜索 path 点进去第一个结果</p>
+						<p>3. 环境变量 -> 新建 -> 粘贴</p>
+					</li>
+					<li>安装<a href="https://gpac.io/downloads/gpac-nightly-builds/">gpac</a><br />可能是用于爬 atmos 时将 .ec3 封装为 .m4a</li>
+					<li><a href="https://developer.android.google.cn/studio/run/managing-avds?hl=zh-cn">设置虚拟机</a>可以选择最新系统，注意选择<strong>没有 Google APIs </strong>的镜像</li>
+					<li>
+						<a href="https://www.52pojie.cn/thread-1128884-1-1.html">安装 frida</a>
+					</li>
+					<li>
+						<p>在虚拟机中安装 SAI <a href="https://github.com/Aefyr/SAI/releases">github</a><a href="https://f-droid.org/packages/com.aefyr.sai.fdroid/">f-droid (被墙)</a><a href="https://pan.baidu.com/s/1yhs44EwsfnFu73YV0Kk4QQ?pwd=amdl">百度网盘</a></p>
+						<code>adb push com.aefyr.sai.fdroid_60.apk /system/temp/</code> (文件夹随便)
+					</li>
+					<li>
+						<h4>在虚拟机中安装 Apple Music</h4>
+						<div class="two-columns">
+							<div>
+								<h5>x86 平台</h5>
+								<p>1. 下载 Apple Music <a href="https://pan.baidu.com/s/1yhs44EwsfnFu73YV0Kk4QQ?pwd=amdl">apk</a> (最新版本可用性未知)</p>
+								<p>2. <code>adb push [.apkm地址] /system/temp/ </code> (文件夹随便)</p>
+								<p>3. 使用 SAI 找到 Apple Music 的 .apkm 文件并安装</p>
+								<p>4. 打开 Apple Music 并登录</p>
+							</div>
+							<div>
+								<h5>arm 平台</h5>
+								<p>1. 下载最新版本 Apple Music</p>
+								<p>2. 打开 Apple Music 并登录</p>
+							</div>
+						</div>
+					</li>
+					<li>
+						<h4>安装 downloader</h4>
+						<p>第一种方法 (需要<a href="https://git-scm.com/">git</a>)：用 cmd 随便打开一个目录（不用特意新建）<code>git clone https://github.com/zhaarey/apple-music-downloader.git</code></p>
+						<p>第二种方法，打开<a href="https://github.com/zhaarey/apple-music-downloader">Github 链接</a>点绿色的 Code 按钮，在弹出的窗口内点 Download ZIP，下载后解压至某个文件夹中</p>
+					</li>
+				</ol>
+				<h3>正式运行</h3>
+				<ol>
+					<li>打开虚拟机</li>
+					<li>
+						转发端口并给 frida-server 超级用户权限
+						<pre><code>adb forward tcp:10020 tcp:10020
+adb forward tcp:20020 tcp:20020
+adb shell su 0 '/data/local/tmp/frida-server-16.2.1-android-x86_64'</code></pre>
+					</li>
+					<li>
+						启动 frida
+						<div class="two-columns">
+							<div>
+								<h5>x86 平台</h5>
+								<code>frida -U -l agent.js -f com.apple.android.music </code>
+							</div>
+							<div>
+								<h5>arm 平台</h5>
+								<code>frida -U -l agent-arm64.js -f com.apple.android.music </code>
+							</div>
+						</div>
+					</li>
+					<li>剩余 <code>go run main.go</code> 步骤同上。</li>
+				</ol>
 			</section>
 		</main>
 	</body>

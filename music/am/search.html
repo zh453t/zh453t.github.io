@@ -17,7 +17,7 @@
         --primary: hsl(223, 55%, 25%);
         --primary-background: hsl(220 100% 95%);
         --secondary: hsl(25.2, 69.3%, 37.1%);
-        --secondary-background: hsl(25.7, 74.5%, 90.8%);
+        --secondary-background: hsla(26, 74%, 91%, 0.34);
         --surface: hsl(0 0% 100%);
         --background: hsl(240 6% 90%);
     }
@@ -127,37 +127,37 @@
 
 
     @layer a-link {
-        a.tutorial {
-        color: var(--primary);
-        text-decoration: none;
-    }
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
 
-    a.tutorial:visited {
-        color: var(--primary);
-    }
-    
-    /* 浮动按钮 */
-    a.donate {
-        display: block;
-        position: fixed;
-        bottom: 2em;
-        left: 2em;
-        width: 6em;
-        height: 3em;
-        line-height: 3em;
-        background-color: var(--secondary-background);
-        color: var(--secondary);
-        font-weight: bold;
-        text-align: center;
-        font-size: large;
-        text-decoration: none;
-        border: 2px solid var(--secondary);
-        border-radius: 0.5em;
-    }
+        a:visited {
+            color: var(--primary);
+        }
+        
+        /* 浮动按钮 */
+        a.fixed-button {
+            display: block;
+            position: fixed;
+            bottom: 2em;
+            left: 2em;
+            width: 6em;
+            height: 3em;
+            line-height: 3em;
+            background-color: var(--secondary-background);
+            color: var(--secondary);
+            font-weight: bold;
+            text-align: center;
+            font-size: large;
+            text-decoration: none;
+            border: 2px solid var(--secondary);
+            border-radius: 0.5em;
+        }
 
-    a.donate:visited {
-        color: var(--secondary);
-    }
+        a.donate:visited {
+            color: var(--secondary);
+        }
     }
 }
 
@@ -184,7 +184,8 @@
 </head>
 <body>
     <main>
-        <h1>分享链接历史搜索 (<a class="tutorial" href="./tutorial.html">alac-downloader教程</a>)</h1>
+        <h1>分享链接历史搜索</h1>
+        <p><a href="./tutorial.html">alac-downloader 教程</a> // <a href="../qobuz/tutorial.html">qobuz-dl 教程</a> // <a href="./donate.html">捐赠</a></p>
         <form role="search">
             <input 
                 type="search" 
@@ -197,7 +198,6 @@
             <!-- 搜索结果将动态插入到这里 -->
         </output>
     </main>
-    <a class="donate" href="./donate.html">Donate</a>
 
 <script type="module">
 // 初始化数据源（用户需自行填充）
@@ -313,9 +313,7 @@ const getMatchIndices = (text, query) => {
 };
 
 // 添加 escapeRegExp 函数
-function escapeRegExp(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
+const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
 // 修改 highlight 函数
 const highlight = (item, query) => {
