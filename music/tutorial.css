@@ -5,10 +5,10 @@
 @layer base {
 	:root {
 		--primary: hsl(196, 61%, 14%);
-		--background: hsl(80, 27%, 96%);
+		--background: hsl(80, 13%, 96%);
 		--surface: hsl(0, 0%, 100%);
-		--text: hsl(0, 0%, 20%);
-		--text-light: hsl(0, 0%, 40%);
+		--text: hsl(0, 0%, 8%);
+		--text-light: hsl(0, 0%, 30%);
 		--shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 		--radius: 12px;
 		--transition: all 0.2s ease;
