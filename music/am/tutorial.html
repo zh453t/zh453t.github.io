@@ -14,7 +14,7 @@
 			<section>
 				<h2>Windows</h2>
 				<ol>
-					<li><a href="https://telegra.ph/Apple-Music-Alac%E9%AB%98%E8%A7%A3%E6%9E%90%E5%BA%A6%E6%97%A0%E6%8D%9F%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E6%95%99%E7%A8%8B-04-02-2">telegraph (使用 MUMU 模拟器)</a></li>
+					<li><a href="https://telegra.ph/Apple-Music-Alac%E9%AB%98%E8%A7%A3%E6%9E%90%E5%BA%A6%E6%97%A0%E6%8D%9F%E9%9F%B3%E4%B9%90%E4%B8%8B%E8%BD%BD%E6%95%99%E7%A8%8B-04-02-2">原文链接</a></li>
 					<li><a href="#android_studio" target="_self">Android Studio 方法</a></li>
 				</ol>
 			</section>
@@ -89,7 +89,7 @@ language: ""</code></pre>
 					<li>
 						<h4>歌词</h4>
 						<p>将歌词写入 m4a 的标签：<code>embed-lrc: true</code></p>
-						<p>保存歌词文件：<code>save-lrc-file: false</code></p>
+						<p>保存歌词文件：<code>save-lrc-file: true</code></p>
 					</li>
 					<li>
 						<h4>封面</h4>
@@ -141,19 +141,24 @@ atmos-max: 2768  #2768 2448</code></pre>
 					<li><a href="https://developer.android.google.cn/studio/run/managing-avds?hl=zh-cn">设置虚拟机</a>可以选择最新系统，注意选择<strong>没有 Google APIs </strong>的镜像</li>
 					<li>
 						<p>在虚拟机中安装 SAI <a href="https://github.com/Aefyr/SAI/releases">github</a><a href="https://f-droid.org/packages/com.aefyr.sai.fdroid/">f-droid (被墙)</a><a href="https://pan.baidu.com/s/1yhs44EwsfnFu73YV0Kk4QQ?pwd=amdl">百度网盘</a></p>
-						<code>adb push com.aefyr.sai.fdroid_60.apk /system/temp/</code> (文件夹随便)
+						<p>1. 找到 SAI 的 apk 文件的存放路径</p>
+						<p>2. 使用 adb 将 apk 传输至模拟器的文件系统中<code>adb push [保存路径/com.aefyr.sai.fdroid_60.apk] /system/temp/</code> (文件夹随便)</p>
+					</li>
+					<li>
+						<p>1. 前往 <a href="https://github.com/frida/frida/releases">Releases · frida/frida</a> 点开 "Show ... assets" 展开，一直往下翻找到 <code>frida-<strong>server</strong>-[版本号]-android-x86_64.xz </code> 下载</p>
+						<p>2. 使用 7-zip 等软件解压，解压后的文件没有扩展名</p>
+						<p>3. <code>adb push [解压后的文件地址] /data/local/tmp/ </code>(地址随便，文中默认<code>/data/local/tmp/</code>)</p>
 					</li>
 					<li>
 						<h4>在虚拟机中安装 Apple Music</h4>
-						<h5>x86 平台</h5>
-						<p>1. 下载 Apple Music <a href="https://pan.baidu.com/s/1yhs44EwsfnFu73YV0Kk4QQ?pwd=amdl">apk</a> (最新版本可用性未知)</p>
+						<p>1. 下载 Apple Music <a href="https://pan.baidu.com/s/1yhs44EwsfnFu73YV0Kk4QQ?pwd=amdl">apk</a> (最新版本<strong>不可用</strong>)</p>
 						<p>2. <code>adb push [.apkm地址] /system/temp/ </code> (文件夹随便)</p>
 						<p>3. 使用 SAI 找到 Apple Music 的 .apkm 文件并安装</p>
 						<p>4. 打开 Apple Music 并登录</p>
 					</li>
 					<li>
 						<h4>安装 downloader</h4>
-						<p>第一种方法 (需要<a href="https://git-scm.com/">git</a>)：用 cmd 随便打开一个目录（不用特意新建）<code>git clone https://github.com/zhaarey/apple-music-downloader.git</code></p>
+						<p>第一种方法 (需要<a href="https://git-scm.com/">git</a>)：用 cmd / powershell 随便打开一个目录（不用特意新建）<code>git clone https://github.com/zhaarey/apple-music-downloader.git</code></p>
 						<p>第二种方法，打开<a href="https://github.com/zhaarey/apple-music-downloader">Github 链接</a>点绿色的 Code 按钮，在弹出的窗口内点 Download ZIP，下载后解压至某个文件夹中</p>
 					</li>
 				</ol>
