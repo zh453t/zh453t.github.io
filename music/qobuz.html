@@ -8,8 +8,12 @@
 			body {
 				padding: 1em 2em;
 				line-break: anywhere;
-				color: oklch(14.218% 0.02161 206.736);
+				color: oklch(18.073% 0.02578 204.357);
 				background-color: oklch(99% 0.01 241.3);
+			}
+			h1,
+			h2 {
+				color: oklch(25.908% 0.0566 244.451);
 			}
 			ul {
 				display: grid;
@@ -33,12 +37,11 @@
 				margin: 1em 1em;
 				font-size: 1.5em;
 				color: oklch(36.8% 0.03 186.7);
-
-				a {
-					color: inherit;
-					font-weight: bold;
-					cursor: pointer;
-				}
+			}
+			a {
+				color: inherit;
+				font-weight: bold;
+				cursor: pointer;
 			}
 
 			/* table */
@@ -47,41 +50,38 @@
 				border: 2px solid rgb(140 140 140);
 				letter-spacing: 1px;
 				font-size: 1.1em;
+			}
+			table caption {
+				caption-side: bottom;
+				padding: 10px;
+				font-weight: bold;
+			}
 
-				caption {
-					caption-side: bottom;
-					padding: 10px;
-					font-weight: bold;
-				}
+			thead,
+			tfoot {
+				background-color: rgb(228 240 245);
+			}
 
-				thead,
-				tfoot {
-					background-color: rgb(228 240 245);
-				}
+			th,
+			td {
+				border: 1px solid rgb(160 160 160);
+				padding: 0.5em 1em;
+			}
 
-				th,
-				td {
-					border: 1px solid rgb(160 160 160);
-					padding: 0.5em 1em;
-				}
+			td:last-of-type {
+				text-align: center;
+			}
 
-				td:last-of-type {
-					text-align: center;
-				}
+			tbody > tr:nth-of-type(even) {
+				background-color: rgb(237 238 242);
+			}
 
-				tbody > tr:nth-of-type(even) {
-					background-color: rgb(237 238 242);
-				}
+			tfoot th {
+				text-align: right;
+			}
 
-				tfoot {
-					th {
-						text-align: right;
-					}
-
-					td {
-						font-weight: bold;
-					}
-				}
+			tfoot td {
+				font-weight: bold;
 			}
 		</style>
 		<base target="_blank" />

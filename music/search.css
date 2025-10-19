@@ -1,0 +1,164 @@
+/* 定义层级 */
+@layer base, components, utilities;
+
+/* 基础样式 */
+@layer base {
+	:root {
+		/* 主题色 (蓝色系) - 保持深蓝主色调，色度更饱满 */
+		--primary: oklch(22% 0.07 253);
+		--primary-background: oklch(95.5% 0.06 253);
+
+		/* 辅色 (橙色系) - 调整为更和谐的琥珀色/焦糖橙色 */
+		--secondary: oklch(50% 0.13 55);
+		--secondary-background: oklch(94% 0.05 55 / 0.34);
+
+		/* 高光色 (黄色系) - 调整为更柔和、更清晰的金色高光 */
+		--highlight: oklch(70% 0.14 90);
+
+		/* 背景与边框 (中性色) - 统一为更干净的冷色调 */
+		--background: oklch(96.78% 0.00867 248.208);
+		--border: oklch(41.3% 0.03613 257.81);
+	}
+
+	body {
+		font-family: system-ui, sans-serif;
+		min-height: 100vh;
+		background: var(--background);
+		color: var(--primary);
+		padding: 1em 20vw;
+	}
+}
+
+/* 组件样式 */
+@layer components {
+	main {
+		min-width: min(100% - 2rem, 720px);
+		margin-block: 5vh;
+	}
+
+	input.search-box {
+		border: 1px solid var(--border);
+		--shadow: 0 2px 8px hsl(0 0% 0% / 0.1);
+		width: 100%;
+		padding: 0.9rem;
+		border-radius: 8px;
+		box-shadow: var(--shadow);
+		transition: all 0.2s ease;
+		font-size: 1.1em;
+	}
+
+	input.search-box:focus-visible {
+		border-color: transparent;
+		outline: 2px solid var(--primary);
+		outline-offset: 2px;
+	}
+
+	output {
+		display: grid;
+		gap: 1em;
+		margin-top: 1.5rem;
+	}
+
+	@layer result-item {
+		.result-item {
+			display: grid;
+			padding: 1rem;
+			border: 1px solid var(--border);
+			border-radius: 8px;
+			transition: transform 0.2s ease;
+		}
+
+		.result-item:hover {
+			transform: scale(1.02);
+			cursor: pointer;
+		}
+
+		.source {
+			justify-self: end;
+			padding: 0.3em 0.6em;
+			border-radius: 4px;
+			font-size: 0.9em;
+			font-weight: 500;
+			background: hsl(0 0% 95%);
+		}
+
+		.source[data-source='am'] {
+			color: var(--primary);
+			background: var(--primary-background);
+		}
+
+		.source[data-source='qobuz'] {
+			color: var(--secondary);
+			background: var(--secondary-background);
+		}
+
+		.highlight {
+			color: var(--highlight);
+			font-weight: 700;
+		}
+
+		.artist {
+			font-size: 0.9em;
+			color: var(--text-light);
+		}
+
+		.album {
+			font-weight: 600;
+			margin: 0.3em 0;
+		}
+
+		.meta {
+			color: var(--text-light);
+			font-size: 0.9em;
+		}
+
+		.meta span:not(:last-child)::after {
+			content: '•';
+			margin: 0 0.5em;
+		}
+	}
+
+	@layer a-link {
+		a {
+			color: inherit;
+			text-decoration: none;
+		}
+
+		a:visited {
+			color: inherit;
+		}
+
+		/* 浮动按钮 */
+		a.fixed-button {
+			display: block;
+			position: fixed;
+			bottom: 2em;
+			left: 2em;
+			width: 6em;
+			height: 3em;
+			line-height: 3em;
+			background-color: var(--secondary-background);
+			color: var(--secondary);
+			font-weight: bold;
+			text-align: center;
+			font-size: large;
+			text-decoration: none;
+			border: 2px solid var(--secondary);
+			border-radius: 0.5em;
+		}
+
+		a.donate:visited {
+			color: var(--secondary);
+		}
+	}
+}
+
+/* 工具样式 */
+@layer utilities {
+	/* 响应式工具类 */
+	@media (max-width: 600px) {
+		.mobile-hidden {
+			display: none;
+		}
+	}
+}
