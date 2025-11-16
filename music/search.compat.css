@@ -34,10 +34,10 @@
 	a {
 		color: inherit;
 		text-decoration: none;
+	}
 
-		&:visited {
-			color: inherit;
-		}
+	a:visited {
+		color: inherit;
 	}
 }
 
@@ -54,11 +54,6 @@
 		transition: all 0.2s ease;
 	}
 
-	a.donate:hover {
-		color: var(--secondary);
-		background-color: var(--secondary-background);
-	}
-
 	main {
 		min-inline-size: min(100% - 2rem, 720px);
 		margin-block: 5vh;
@@ -72,12 +67,12 @@
 		border-radius: 8px;
 		transition: all 0.2s ease;
 		font-size: 1.1em;
+	}
 
-		&:focus-visible {
-			border-color: transparent;
-			outline: 2px solid var(--primary);
-			outline-offset: 2px;
-		}
+	.search-box:focus-visible {
+		border-color: transparent;
+		outline: 2px solid var(--primary);
+		outline-offset: 2px;
 	}
 
 	output {
@@ -92,83 +87,83 @@
 		border: 1px solid var(--border);
 		border-radius: 8px;
 		transition: transform 0.2s ease;
+	}
 
-		&:hover {
-			transform: scale(1.02);
-			cursor: pointer;
-		}
+	.result-item:hover {
+		transform: scale(1.02);
+		cursor: pointer;
+	}
 
-		.source {
-			justify-self: end;
-			padding: 0.3em 0.6em;
-			border-radius: 4px;
-			font-size: 0.9em;
-			font-weight: 500;
-			background: hsl(0 0% 95%);
+	.result-item .source {
+		justify-self: end;
+		padding: 0.3em 0.6em;
+		border-radius: 4px;
+		font-size: 0.9em;
+		font-weight: 500;
+		background: hsl(0 0% 95%);
+	}
 
-			&[data-source='am'] {
-				color: var(--primary);
-				background: var(--primary-background);
-			}
+	.result-item .source[data-source='am'] {
+		color: var(--primary);
+		background: var(--primary-background);
+	}
 
-			&[data-source='qobuz'] {
-				color: var(--secondary);
-				background: var(--secondary-background);
-			}
-		}
+	.result-item .source[data-source='qobuz'] {
+		color: var(--secondary);
+		background: var(--secondary-background);
+	}
 
-		.highlight {
-			color: var(--highlight);
-			font-weight: 600;
-			background-color: oklch(95% 0.05 100 / 0.7);
-			border-radius: 3px;
-			padding-inline: 0.15em;
-			box-shadow: 0 0 5px oklch(95% 0.05 100 / 0.5);
-		}
-		.artist {
-			font-size: 0.9em;
-			color: var(--text-light);
-		}
+	.result-item .highlight {
+		color: var(--highlight);
+		font-weight: 600;
+		background-color: oklch(95% 0.05 100 / 0.7);
+		border-radius: 3px;
+		padding-inline: 0.15em;
+		box-shadow: 0 0 5px oklch(95% 0.05 100 / 0.5);
+	}
+	.result-item .artist {
+		font-size: 0.9em;
+		color: var(--text-light);
+	}
 
-		.album {
-			font-weight: 600;
-			margin-block: 0.3em;
-		}
+	.result-item .album {
+		font-weight: 600;
+		margin-block: 0.3em;
+	}
 
-		.meta {
-			color: var(--text-light);
-			font-size: 0.9em;
+	.result-item .meta {
+		color: var(--text-light);
+		font-size: 0.9em;
+	}
 
-			& span:not(:last-child)::after {
-				content: '•';
-				margin-inline: 0.5em;
-			}
-		}
+	.result-item .meta span:not(:last-child)::after {
+		content: '•';
+		margin-inline: 0.5em;
+	}
 
-		.track-match-list {
-			list-style-type: none;
-			padding-inline-start: 0;
-			margin: 0.75em 0 0 0;
-			border-top: 1px solid var(--border);
-			padding-block-start: 0.75em;
-		}
+	.result-item .track-match-list {
+		list-style-type: none;
+		padding-inline-start: 0;
+		margin: 0.75em 0 0 0;
+		border-top: 1px solid var(--border);
+		padding-block-start: 0.75em;
+	}
 
-		.track-match-item {
-			font-size: 0.9em;
-			color: var(--text-light);
-			line-height: 1.5;
-			padding-inline-start: 1.5em;
-			position: relative;
+	.result-item .track-match-item {
+		font-size: 0.9em;
+		color: var(--text-light);
+		line-height: 1.5;
+		padding-inline-start: 1.5em;
+		position: relative;
+	}
 
-			&::before {
-				content: '↳';
-				position: absolute;
-				inset-inline-start: 0.25em;
-				inset-block-start: 0;
-				color: var(--secondary);
-				font-weight: 600;
-			}
-		}
+	.result-item .track-match-item::before {
+		content: '↳';
+		position: absolute;
+		inset-inline-start: 0.25em;
+		inset-block-start: 0;
+		color: var(--secondary);
+		font-weight: 600;
 	}
 
 	/* 浮动按钮 */
@@ -187,10 +182,10 @@
 		font-size: large;
 		border: 2px solid var(--secondary);
 		border-radius: 0.5em;
+	}
 
-		&.donate:visited {
-			color: var(--secondary);
-		}
+	.fixed-button.donate:visited {
+		color: var(--secondary);
 	}
 }
 

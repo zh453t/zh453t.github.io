@@ -5,19 +5,18 @@
  * @description 存储跳转链接的对象。
  */
 const link = {
-	qobuz: 'https://pan.baidu.com/s/1KZKdzanzOuOucnm0JeIhog?pwd=qbdl',
+	qobuz: 'link1',
+	am: 'link2'
 };
 
 /**
  * @category DOM Elements
- * @description 搜索输入框元素。
  * @type {HTMLInputElement}
  */
 const searchBox = document.querySelector('.search-box');
 
 /**
  * @category DOM Elements
- * @description 搜索结果容器元素。
  * @type {HTMLOutputElement}
  */
 const resultsContainer = document.querySelector('.results');
@@ -59,67 +58,72 @@ let sources;
  */
 const initializeData = async () => {
 	let rawData = {
+		// 假设您的新数据文件路径依然是 './qobuz/data.json'
 		qobuz: await loadData('./qobuz/data.json'),
 	};
 
-	/**
-	 * @category Internal Functions
-	 * @function parseEntry
-	 * @description 解析单个原始数据字符串（符合 "Artist - Album (year) [codec]" 或 "Artist" 格式）为结构化对象。
-	 * @param {string} text - 原始数据字符串。
-	 * @param {string} sourcePrefix - 数据源标识符 (例如 'qobuz')。
-	 * @returns {object} 解析后的数据对象。
-	 */
-	const parseEntry = (text, sourcePrefix) => {
-		// 判断是否为 "Artist Name - Album Title (year) [codec]" 格式
-		const match = text.match(/(.*?) - (.*?) \((\d+)\) \[(.*?)\]/);
-		if (match) {
-			return {
-				raw: text,
-				artist: match[1],
-				album: match[2],
-				year: match[3],
-				codec: match[4],
-				normalized: text.toLowerCase(),
-				source: `${sourcePrefix}`,
-			};
-		} else {
-			// 如果不是，则认为是纯 artist 格式
-			return {
-				raw: text,
-				artist: text,
-				album: '', // 专辑名为空
-				year: '', // 年份为空
-				codec: '', // 编码格式为空
-				normalized: text.toLowerCase(),
-				source: `${sourcePrefix}`,
-			};
-		}
-	};
-
-	// 预处理数据
+	// 为每个专辑对象添加 'source' 属性以便在渲染时复用
 	sources = {
-		qobuz: Object.freeze(rawData.qobuz.flat().map((t) => parseEntry(t, 'qobuz'))),
+		qobuz: Object.freeze(
+			rawData.qobuz.map((album) => ({
+				...album,
+				source: 'qobuz', // 添加 'source' 属性
+			}))
+		),
+		am: Object.freeze(
+			rawData.qobuz.map((album) => ({
+				...album,
+				source: 'am',
+			}))
+		),
 	};
 
 	// 启用搜索框
 	searchBox.disabled = false;
-	searchBox.placeholder = '输入搜索内容... (支持艺人、专辑名搜索)';
+	searchBox.placeholder = '搜索艺人、专辑、曲目...'; // 更新提示
 	searchBox.focus();
 };
 
 /**
  * @category Functions
+ * @function normalizeSearchQuery
+ * @description 将搜索查询中的特殊字符替换为下划线以匹配数据格式。
+ * @param {string} query - 原始搜索查询。
+ * @returns {string} 规范化后的搜索查询。
+ */
+const normalizeSearchQuery = (query) => {
+	return query.replace(/['/:]/g, '_');
+};
+
+/**
+ * @category Functions
  * @function search
- * @description 根据查询字符串在所有数据源中搜索匹配的条目（匹配艺人或专辑名）。
+ * @description 根据查询字符串在所有数据源中搜索匹配的条目。
  * @param {string} query - 搜索查询字符串。
- * @returns {Array<object>} 匹配的搜索结果数组。
+ * @returns {Array<object>} 匹配的搜索结果（专辑对象）数组。
  */
 const search = (query) => {
 	const normalized = query.trim().toLowerCase();
 	if (!normalized || !sources) return [];
 
-	return Object.values(sources).flatMap((platform) => Object.values(platform).filter((item) => item.artist.toLowerCase().includes(normalized) || item.album.toLowerCase().includes(normalized)));
+	// 创建规范化版本，将特殊字符替换为下划线
+	const normalizedForMatching = normalizeSearchQuery(normalized);
+
+	return Object.values(sources).flatMap((platformData) =>
+		platformData.filter((item) => {
+			// 匹配艺人（使用规范化查询）
+			const artistMatch = item.artist.toLowerCase().includes(normalizedForMatching);
+			// 匹配专辑（使用规范化查询）
+			const albumMatch = item.album.toLowerCase().includes(normalizedForMatching);
+
+			// 匹配曲目（使用规范化查询）
+			const trackMatch = item.tracks.some((track) => 
+				track.title.toLowerCase().includes(normalizedForMatching)
+			);
+
+			return artistMatch || albumMatch || trackMatch;
+		})
+	);
 };
 
 /**
@@ -132,45 +136,54 @@ const search = (query) => {
 const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 /**
- * @category Functions
- * @function highlight
- * @description 根据查询字符串高亮显示搜索结果项（艺人名和专辑名），并生成 HTML 字符串。
- * @param {object} item - 搜索结果对象 (来自 parseEntry)。
- * @param {string} query - 用于高亮的搜索查询字符串。
- * @returns {string} 包含高亮标记的 HTML 字符串。
- */
-const highlight = (item, query) => {
-	const regex = new RegExp(`(${escapeRegExp(query)})`, 'gi'); // 使用 escapeRegExp 转义 query
+   * @category Functions
+   * @function highlight
+   * @description 根据查询高亮显示搜索结果（艺人、专辑和匹配的曲目）。
+   * @param {object} item - 搜索结果对象 (专辑对象)。
+   * @param {string} query - 用于高亮的搜索查询字符串。
+   * @returns {string} 包含高亮标记的 HTML 字符串。
+   */
+  const highlight = (item, query) => {
+    const regex = new RegExp(`(${escapeRegExp(query)})`, 'gi');
+    const normalizedQuery = query.toLowerCase();
 
-	// 高亮 artist 和 album
-	const highlightArtist = item.artist.replace(regex, '<span class="highlight">$1</span>');
-	const highlightAlbum = item.album.replace(regex, '<span class="highlight">$1</span>');
+    // 高亮艺人和专辑
+    const highlightArtist = item.artist.replace(regex, '<span class="highlight">$1</span>');
+    const highlightAlbum = item.album.replace(regex, '<span class="highlight">$1</span>');
 
-	// 动态渲染内容
-	let content = '';
-	if (item.album) {
-		// 如果有专辑信息，显示完整格式
-		content = `
-          <div class="artist">${highlightArtist}</div>
-          <div class="album"><strong>${highlightAlbum}</strong></div>
-          <div class="meta">
-              <span class="year">${item.year}</span>
-              <span class="codec">${item.codec}</span>
-          </div>
-        `;
-	} else {
-		// 如果没有专辑信息，只显示 artist
-		content = `
-          <div class="artist">${highlightArtist}</div>
-        `;
-	}
+    // 【优化】查找并高亮匹配的曲目，生成 <li> 列表项
+    const matchingTrackItems = item.tracks
+      .filter(track => track.title.toLowerCase().includes(normalizedQuery))
+      .map(track => 
+        // 使用 <li> 标签，语义更清晰
+        `<li class="track-match-item">
+           ${track.number}. ${track.title.replace(regex, '<span class="highlight">$1</span>')}
+         </li>`
+      )
+      .join(''); // 将所有 <li> 拼接在一起
 
-	return `
-        <div class="result-content">
-            ${content}
+    // 【优化】如果存在匹配的曲目，则将它们包裹在一个 <ul> 容器中
+    const matchingTracksHTML = matchingTrackItems ? 
+      `<ul class="track-match-list">${matchingTrackItems}</ul>` : 
+      '';
+
+    // 构建内容
+    let content = `
+        <div class="artist">${highlightArtist}</div>
+        <div class="album">${highlightAlbum}</div>
+        <div class="meta">
+            <span class="year">${item.year}</span>
+            <span class="codec">${item.codec}</span>
         </div>
-      `;
-};
+        ${matchingTracksHTML} 
+    `;
+
+    return `
+      <div class="result-content">
+          ${content}
+      </div>
+    `;
+  };
 
 /**
  * @category Functions
@@ -183,24 +196,22 @@ const highlight = (item, query) => {
 const renderResults = (results, query) => {
 	resultsContainer.replaceChildren(
 		...results.map((result) => {
-			// 1. 直接创建 <a> 标签
+			// 【优化】使用 <a> 标签，语义化、可访问性、UX 均更佳
 			const element = document.createElement('a');
-
-			// 2. 将 .result-item 的样式和角色赋给 <a>
 			element.className = 'result-item';
+			
+			// 根据 result.source 动态设置 href
+			// result.source 可能是 'qobuz' 或 'am'
+			element.href = link[result.source]; 
 
-			// 3. 设置链接地址
-			element.href = link.qobuz;
-
-			// 45. 渲染内容
+			// 渲染内容
 			element.innerHTML = `
-        ${highlight(result, query)}
-        <div class="source" data-source="${result.source}">
-            ${result.source.toUpperCase()}
-        </div>
-      `;
+          ${highlight(result, query)}
+          <div class="source" data-source="${result.source}">
+              ${result.source.toUpperCase()}
+          </div>
+        `;
 
-			// 6. 返回 <a> 元素
 			return element;
 		})
 	);
@@ -238,7 +249,6 @@ const handleSearch = debounce((event) => {
 /**
  * @category Initialization
  * @description 立即执行函数 (IIFE)，用于初始化应用。
- * 异步加载数据，然后将搜索事件监听器绑定到搜索框。
  */
 (async () => {
 	await initializeData(); // 加载数据
