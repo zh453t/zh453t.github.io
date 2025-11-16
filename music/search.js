@@ -1,36 +1,25 @@
 'use strict';
 
-/**
- * @category Constants
- * @description 存储跳转链接的对象。
- */
-const link = {
-	qobuz: 'link1',
-	am: 'link2'
+const links = {
+	qobuz: 'https://pan.baidu.com/s/1KZKdzanzOuOucnm0JeIhog?pwd=qbdl',
+	am: 'https://pan.baidu.com/s/1SYyQkwJYxKiXokgGY7GHdQ?pwd=amdl',
+	qbtmp: 'https://pan.baidu.com/s/1rNcrBE3NYoray8Q4X41fdw?pwd=temp',
+	amtmp: 'https://pan.baidu.com/s/1HMoCc-hd1S1lIVgRSfIpKA?pwd=amd3',
 };
 
-/**
- * @category DOM Elements
- * @type {HTMLInputElement}
- */
+// 搜索结果数量限制
+const MAX_RESULTS = 50;
+
 const searchBox = document.querySelector('.search-box');
+const resultsEl = document.querySelector('.results');
 
-/**
- * @category DOM Elements
- * @type {HTMLOutputElement}
- */
-const resultsContainer = document.querySelector('.results');
-
-// 禁用搜索框直到数据加载完成
 searchBox.disabled = true;
 searchBox.placeholder = '正在加载数据...';
 
 /**
- * @category Functions
- * @function loadData
- * @description 异步从指定 URL 加载 JSON 数据。
- * @param {string} url - 要获取的数据的 URL。
- * @returns {Promise<Array<any>>} 解析后的 JSON 数据数组，如果失败则为空数组。
+ * 从URL异步加载JSON数据
+ * @param {string} url - 数据源URL
+ * @returns {Promise<Array>} 解析后的数据数组
  */
 const loadData = async (url) => {
 	try {
@@ -38,192 +27,168 @@ const loadData = async (url) => {
 		if (!response.ok) throw new Error(`加载失败: ${response.status}`);
 		return await response.json();
 	} catch (error) {
-		console.error(`加载数据时出错 (${url}):`, error);
+		console.error(`数据加载错误 (${url}):`, error);
 		return [];
 	}
 };
 
-/**
- * @category State
- * @description 存储所有预处理和解析后的数据源。
- * @type {Object<string, Array<Object>>}
- */
-let sources;
+/** @type {Object<string, Array>} 存储所有平台专辑数据 */
+let data;
 
 /**
- * @category Functions
- * @function initializeData
- * @description 异步加载、解析和预处理所有数据源，并在完成后启用搜索框。
+ * 为专辑数据添加来源标记
+ * @param {Array} albums - 原始专辑数据
+ * @param {string} source - 数据来源标识
+ * @returns {Array} 处理后的专辑数据
+ */
+const processAlbums = (albums, source) => Object.freeze(albums.map((album) => ({ ...album, source })));
+
+/**
+ * 初始化应用数据
  * @returns {Promise<void>}
  */
-const initializeData = async () => {
-	let rawData = {
-		// 假设您的新数据文件路径依然是 './qobuz/data.json'
+const init = async () => {
+	const rawData = {
 		qobuz: await loadData('./qobuz/data.json'),
+		qbtmp: await loadData('./qobuz/temp.json'),
+		am: await loadData('./am/data.json'),
+		amtmp: await loadData('./am/temp.json'),
 	};
 
-	// 为每个专辑对象添加 'source' 属性以便在渲染时复用
-	sources = {
-		qobuz: Object.freeze(
-			rawData.qobuz.map((album) => ({
-				...album,
-				source: 'qobuz', // 添加 'source' 属性
-			}))
-		),
-		am: Object.freeze(
-			rawData.qobuz.map((album) => ({
-				...album,
-				source: 'am',
-			}))
-		),
+	data = {
+		qobuz: processAlbums(rawData.qobuz, 'qobuz'),
+		qbtmp: processAlbums(rawData.qbtmp, 'qobuz-temp'),
+		am: processAlbums(rawData.am, 'am'),
+		amtmp: processAlbums(rawData.amtmp, 'am-temp'),
 	};
 
-	// 启用搜索框
 	searchBox.disabled = false;
-	searchBox.placeholder = '搜索艺人、专辑、曲目...'; // 更新提示
+	searchBox.placeholder = '搜索艺人、专辑、曲目...';
 	searchBox.focus();
 };
 
 /**
- * @category Functions
- * @function normalizeSearchQuery
- * @description 将搜索查询中的特殊字符替换为下划线以匹配数据格式。
- * @param {string} query - 原始搜索查询。
- * @returns {string} 规范化后的搜索查询。
+ * 规范化搜索查询，替换特殊字符
+ * @param {string} query - 原始搜索词
+ * @returns {string} 规范化后的搜索词
  */
-const normalizeSearchQuery = (query) => {
-	return query.replace(/['/:]/g, '_');
-};
+const normalizeQuery = (query) => query.replace(/['/:]/g, '_');
 
 /**
- * @category Functions
- * @function search
- * @description 根据查询字符串在所有数据源中搜索匹配的条目。
- * @param {string} query - 搜索查询字符串。
- * @returns {Array<object>} 匹配的搜索结果（专辑对象）数组。
+ * 在所有数据中搜索匹配的专辑
+ * @param {string} query - 搜索关键词
+ * @returns {Array} 匹配的专辑数组
  */
 const search = (query) => {
-	const normalized = query.trim().toLowerCase();
-	if (!normalized || !sources) return [];
+	const term = query.trim().toLowerCase();
+	if (!term || !data) return [];
 
-	// 创建规范化版本，将特殊字符替换为下划线
-	const normalizedForMatching = normalizeSearchQuery(normalized);
+	const normalized = normalizeQuery(term);
+	let resultCount = 0;
+	const results = [];
 
-	return Object.values(sources).flatMap((platformData) =>
-		platformData.filter((item) => {
-			// 匹配艺人（使用规范化查询）
-			const artistMatch = item.artist.toLowerCase().includes(normalizedForMatching);
-			// 匹配专辑（使用规范化查询）
-			const albumMatch = item.album.toLowerCase().includes(normalizedForMatching);
+	// 遍历所有数据源，直到达到最大结果数量
+	for (const albums of Object.values(data)) {
+		if (resultCount >= MAX_RESULTS) break;
 
-			// 匹配曲目（使用规范化查询）
-			const trackMatch = item.tracks.some((track) => 
-				track.title.toLowerCase().includes(normalizedForMatching)
-			);
+		for (const album of albums) {
+			if (resultCount >= MAX_RESULTS) break;
 
-			return artistMatch || albumMatch || trackMatch;
-		})
-	);
+			const artistMatch = album.artist.toLowerCase().includes(normalized);
+			const albumMatch = album.album.toLowerCase().includes(normalized);
+			const trackMatch = album.tracks.some((track) => track.title.toLowerCase().includes(normalized));
+
+			if (artistMatch || albumMatch || trackMatch) {
+				results.push(album);
+				resultCount++;
+			}
+		}
+	}
+
+	return results;
 };
 
 /**
- * @category Functions
- * @function escapeRegExp
- * @description 转义字符串中的正则表达式特殊字符。
- * @param {string} string - 需要转义的字符串。
- * @returns {string} 转义后的字符串。
+ * 转义正则表达式特殊字符
+ * @param {string} str - 需要转义的字符串
+ * @returns {string} 转义后的字符串
  */
-const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 /**
-   * @category Functions
-   * @function highlight
-   * @description 根据查询高亮显示搜索结果（艺人、专辑和匹配的曲目）。
-   * @param {object} item - 搜索结果对象 (专辑对象)。
-   * @param {string} query - 用于高亮的搜索查询字符串。
-   * @returns {string} 包含高亮标记的 HTML 字符串。
-   */
-  const highlight = (item, query) => {
-    const regex = new RegExp(`(${escapeRegExp(query)})`, 'gi');
-    const normalizedQuery = query.toLowerCase();
-
-    // 高亮艺人和专辑
-    const highlightArtist = item.artist.replace(regex, '<span class="highlight">$1</span>');
-    const highlightAlbum = item.album.replace(regex, '<span class="highlight">$1</span>');
-
-    // 【优化】查找并高亮匹配的曲目，生成 <li> 列表项
-    const matchingTrackItems = item.tracks
-      .filter(track => track.title.toLowerCase().includes(normalizedQuery))
-      .map(track => 
-        // 使用 <li> 标签，语义更清晰
-        `<li class="track-match-item">
-           ${track.number}. ${track.title.replace(regex, '<span class="highlight">$1</span>')}
-         </li>`
-      )
-      .join(''); // 将所有 <li> 拼接在一起
-
-    // 【优化】如果存在匹配的曲目，则将它们包裹在一个 <ul> 容器中
-    const matchingTracksHTML = matchingTrackItems ? 
-      `<ul class="track-match-list">${matchingTrackItems}</ul>` : 
-      '';
-
-    // 构建内容
-    let content = `
-        <div class="artist">${highlightArtist}</div>
-        <div class="album">${highlightAlbum}</div>
-        <div class="meta">
-            <span class="year">${item.year}</span>
-            <span class="codec">${item.codec}</span>
-        </div>
-        ${matchingTracksHTML} 
-    `;
-
-    return `
-      <div class="result-content">
-          ${content}
-      </div>
-    `;
-  };
-
-/**
- * @category Functions
- * @function renderResults
- * @description 将搜索结果渲染到 DOM 中（结果容器）。
- * @param {Array<object>} results - 搜索结果数组。
- * @param {string} query - 原始搜索查询字符串 (用于高亮)。
- * @returns {void}
+ * 高亮显示搜索结果中的匹配文本
+ * @param {Object} album - 专辑数据对象
+ * @param {string} query - 搜索查询词
+ * @returns {string} 包含高亮标记的HTML字符串
  */
-const renderResults = (results, query) => {
-	resultsContainer.replaceChildren(
-		...results.map((result) => {
-			// 【优化】使用 <a> 标签，语义化、可访问性、UX 均更佳
-			const element = document.createElement('a');
-			element.className = 'result-item';
-			
-			// 根据 result.source 动态设置 href
-			// result.source 可能是 'qobuz' 或 'am'
-			element.href = link[result.source]; 
+const highlight = (album, query) => {
+	const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+	const normQuery = query.toLowerCase();
 
-			// 渲染内容
-			element.innerHTML = `
-          ${highlight(result, query)}
-          <div class="source" data-source="${result.source}">
-              ${result.source.toUpperCase()}
-          </div>
-        `;
+	const artist = album.artist.replace(regex, '<span class="highlight">$1</span>');
+	const albumName = album.album.replace(regex, '<span class="highlight">$1</span>');
 
-			return element;
-		})
-	);
+	const tracks = album.tracks
+		.filter((track) => track.title.toLowerCase().includes(normQuery))
+		.map(
+			(track) => `
+			<li class="track-match-item">
+				${track.number}. ${track.title.replace(regex, '<span class="highlight">$1</span>')}
+			</li>`
+		)
+		.join('');
+
+	const tracksHTML = tracks ? `<ul class="track-match-list">${tracks}</ul>` : '';
+
+	return `
+		<div class="result-content">
+			<div class="artist">${artist}</div>
+			<div class="album">${albumName}</div>
+			<div class="meta">
+				<span class="year">${album.year}</span>
+				<span class="codec">${album.codec}</span>
+			</div>
+			${tracksHTML}
+		</div>
+	`;
 };
 
 /**
- * @category Functions
- * @function debounce
- * @description 创建一个防抖函数，延迟执行目标函数。
- * @param {Function} fn - 需要防抖的函数。
- * @param {number} [delay=100] - 延迟时间（毫秒）。
- * @returns {Function} 防抖后的函数。
+ * 将搜索结果渲染到页面
+ * @param {Array} results - 搜索结果数组
+ * @param {string} query - 搜索查询词
+ */
+const render = (results, query) => {
+	resultsEl.replaceChildren(
+		...results.map((album) => {
+			const el = document.createElement('a');
+			el.className = 'result-item';
+			el.href = links[album.source];
+
+			el.innerHTML = `
+				${highlight(album, query)}
+				<div class="source" data-source="${album.source}">
+					${album.source.toUpperCase()}
+				</div>
+			`;
+
+			return el;
+		})
+	);
+	// 显示结果数量信息
+	if (results.length === MAX_RESULTS) {
+		const infoEl = document.createElement('div');
+		infoEl.className = 'result-info';
+		infoEl.textContent = `显示前 ${MAX_RESULTS} 个结果，请使用更具体的关键词获取更多结果`;
+		resultsEl.appendChild(infoEl);
+	}
+};
+
+/**
+ * 创建防抖函数，延迟执行目标函数
+ * @param {Function} fn - 需要防抖的函数
+ * @param {number} delay - 延迟时间（毫秒）
+ * @returns {Function} 防抖后的函数
  */
 const debounce = (fn, delay = 100) => {
 	let timeout;
@@ -234,23 +199,17 @@ const debounce = (fn, delay = 100) => {
 };
 
 /**
- * @category Event Handlers
- * @function handleSearch
- * @description 搜索框 input 事件的处理函数（经过防抖处理）。
- * @param {Event} event - input 事件对象。
- * @returns {void}
+ * 处理搜索输入事件
+ * @param {Event} event - 输入事件对象
  */
 const handleSearch = debounce((event) => {
 	const query = event.target.value.trim();
 	const results = search(query);
-	renderResults(results, query);
+	render(results, query);
 });
 
-/**
- * @category Initialization
- * @description 立即执行函数 (IIFE)，用于初始化应用。
- */
+// 初始化应用
 (async () => {
-	await initializeData(); // 加载数据
-	searchBox.addEventListener('input', handleSearch); // 绑定事件
+	await init();
+	searchBox.addEventListener('input', handleSearch);
 })();

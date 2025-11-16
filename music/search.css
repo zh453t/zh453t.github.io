@@ -27,7 +27,7 @@
 		min-height: 100vh;
 		background: var(--background);
 		color: var(--text-primary);
-		padding: 1em 20vw;
+		padding-inline: 20vw;
 	}
 
 	/* 基础链接样式 */
@@ -199,6 +199,9 @@
 	@media (max-width: 600px) {
 		.mobile-hidden {
 			display: none;
+		}
+		body {
+			padding-inline: 7vw;
 		}
 	}
 }

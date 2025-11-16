@@ -6,14 +6,13 @@
 		<title>Qobuz 链接导航</title>
 		<style>
 			body {
-				padding: 1em 2em;
-				line-break: anywhere;
-				color: oklch(18.073% 0.02578 204.357);
+				padding: 1em 20vw;
+				color: oklch(21.665% 0.03103 202.435);
 				background-color: oklch(99% 0.01 241.3);
 			}
-			h1,
-			h2 {
-				color: oklch(25.908% 0.0566 244.451);
+			p {
+				font-size: 1.3em;
+				font-weight: bold;
 			}
 			ul {
 				display: grid;
@@ -26,6 +25,9 @@
 			}
 			/* 对于手机端 */
 			@media screen and (max-aspect-ratio: 1) {
+				body {
+					padding-inline: 7vw;
+				}
 				ul {
 					width: unset;
 					margin-left: unset;
@@ -38,10 +40,16 @@
 				font-size: 1.5em;
 				color: oklch(36.8% 0.03 186.7);
 			}
-			a {
+
+			a:link,
+			a:visited {
+				color: oklch(35.274% 0.08386 246.337);
+			}
+
+			li a:link,
+			li a:visited {
 				color: inherit;
 				font-weight: bold;
-				cursor: pointer;
 			}
 
 			/* table */
@@ -89,8 +97,10 @@
 	<body>
 		<h1>Qobuz 链接</h1>
 
-		<h2>近期（2025.9）：<a href="https://pan.baidu.com/s/1rNcrBE3NYoray8Q4X41fdw?pwd=temp">/s/1rNcrBE3NYoray8Q4X41fdw?pwd=temp</a></h2>
-		<h2>历史文件: <a href="https://pan.baidu.com/s/1KZKdzanzOuOucnm0JeIhog?pwd=qbdl">/s/1KZKdzanzOuOucnm0JeIhog?pwd=qbdl</a></h2>
+		<p>历史文件搜索：<a href="./search.html">./search.html</a></p>
+		<p>近期（2025.9）：<a href="https://pan.baidu.com/s/1rNcrBE3NYoray8Q4X41fdw?pwd=temp">/s/1rNcrBE3NYoray8Q4X41fdw?pwd=temp</a></p>
+		<p>历史文件: <a href="https://pan.baidu.com/s/1KZKdzanzOuOucnm0JeIhog?pwd=qbdl">/s/1KZKdzanzOuOucnm0JeIhog?pwd=qbdl</a></p>
+		<p>总链接：<a href="https://pan.baidu.com/s/1ycz_aN-si8uOZic7i3s7Cw?pwd=h423">/s/1ycz_aN-si8uOZic7i3s7Cw?pwd=h423</a></p>
 		<ul>
 			<li><a href="https://pan.baidu.com/s/1Oza9P9nnD4RDL4g441pTtw?pwd=h453">无首字母</a><span style="font-size: smaller"> (汉字/假名/泰文)</span></li>
 			<li><a href="https://pan.baidu.com/s/15-RBMeK5yzGBVDPNnxieHQ?pwd=h453">古典</a></li>
@@ -103,7 +113,7 @@
 			<li><a href="https://pan.baidu.com/s/1UHOTh0uvS78A8eORHdrjrg?pwd=gggg">G</a></li>
 			<li><a href="https://pan.baidu.com/s/1127ZihzYsVjUt9ZRYBfoqQ?pwd=hhhh">H</a></li>
 		</ul>
-		<h2>加密（密码为 qobuz） <a href="https://pan.baidu.com/s/1Fczb9rZ7vOidHbY3DfK5xw?pwd=encr">/s/1Fczb9rZ7vOidHbY3DfK5xw?pwd=encr</a></h2>
+		<p>加密（密码为 qobuz） <a href="https://pan.baidu.com/s/1Fczb9rZ7vOidHbY3DfK5xw?pwd=encr">/s/1Fczb9rZ7vOidHbY3DfK5xw?pwd=encr</a></p>
 		<table>
 			<thead>
 				<tr>
