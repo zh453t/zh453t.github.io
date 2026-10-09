@@ -143,6 +143,16 @@
 				content: '•';
 				margin-inline: 0.5em;
 			}
+
+			.location {
+				word-break: break-all;
+			}
+		}
+
+		.alias {
+			font-size: 0.85em;
+			color: var(--text-light);
+			opacity: 0.85;
 		}
 
 		.track-match-list {

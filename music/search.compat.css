@@ -141,6 +141,16 @@
 		margin-inline: 0.5em;
 	}
 
+	.result-item .meta .location {
+		word-break: break-all;
+	}
+
+	.result-item .alias {
+		font-size: 0.85em;
+		color: var(--text-light);
+		opacity: 0.85;
+	}
+
 	.result-item .track-match-list {
 		list-style-type: none;
 		padding-inline-start: 0;

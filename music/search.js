@@ -2,8 +2,10 @@
 
 const links = {
 	qobuz: 'https://pan.baidu.com/s/1KZKdzanzOuOucnm0JeIhog?pwd=qbdl',
+	// Apple Music：am-sorted 下的条目
 	am: 'https://pan.baidu.com/s/1SYyQkwJYxKiXokgGY7GHdQ?pwd=amdl',
 	qbtmp: 'https://pan.baidu.com/s/1rNcrBE3NYoray8Q4X41fdw?pwd=temp',
+	// Apple Music：am-dlt 下的条目
 	amtmp: 'https://pan.baidu.com/s/1HMoCc-hd1S1lIVgRSfIpKA?pwd=amd3',
 };
 
@@ -17,15 +19,71 @@ searchBox.disabled = true;
 searchBox.placeholder = '正在加载数据...';
 
 /**
- * 从URL异步加载JSON数据
+ * 解析 JSONC 文本（先去除注释与尾随逗号，再交给 JSON.parse）
+ * @param {string} text - JSONC 文本
+ * @returns {any} 解析后的数据
+ */
+const parseJSONC = (text) => {
+	let out = '';
+	let inString = false;
+
+	for (let i = 0; i < text.length; i++) {
+		const char = text[i];
+		const next = text[i + 1];
+
+		if (inString) {
+			out += char;
+			if (char === '\\') {
+				// 转义字符：原样保留下一个字符
+				out += next ?? '';
+				i++;
+			} else if (char === '"') {
+				inString = false;
+			}
+			continue;
+		}
+
+		if (char === '"') {
+			inString = true;
+			out += char;
+			continue;
+		}
+
+		// 行注释
+		if (char === '/' && next === '/') {
+			while (i < text.length && text[i] !== '\n') i++;
+			out += '\n';
+			continue;
+		}
+
+		// 块注释
+		if (char === '/' && next === '*') {
+			i += 2;
+			while (i < text.length && !(text[i] === '*' && text[i + 1] === '/')) i++;
+			i++;
+			continue;
+		}
+
+		out += char;
+	}
+
+	// 移除尾随逗号
+	return JSON.parse(out.replace(/,(\s*[}\]])/g, '$1'));
+};
+
+/**
+ * 从URL异步加载数据（支持 JSON 与 JSONC）
  * @param {string} url - 数据源URL
+ * @param {{ jsonc?: boolean }} [options] - 加载选项
  * @returns {Promise<Array>} 解析后的数据数组
  */
-const loadData = async (url) => {
+const loadData = async (url, { jsonc = false } = {}) => {
 	try {
 		const response = await fetch(url);
 		if (!response.ok) throw new Error(`加载失败: ${response.status}`);
-		return await response.json();
+		const text = await response.text();
+		const parsed = jsonc ? parseJSONC(text) : JSON.parse(text);
+		return Array.isArray(parsed) ? parsed : [];
 	} catch (error) {
 		console.error(`数据加载错误 (${url}):`, error);
 		return [];
@@ -34,6 +92,13 @@ const loadData = async (url) => {
 
 /** @type {Object<string, Array>} 存储所有平台专辑数据 */
 let data;
+
+/** 数据源定义：key 为来源标识，url 为数据文件 */
+const SOURCES = {
+	qobuz: { url: './qobuz/data.json' },
+	qbtmp: { url: './qobuz/temp.json' },
+	am: { url: './am/data.jsonc', jsonc: true },
+};
 
 /**
  * 为专辑数据添加来源标记
@@ -48,22 +113,17 @@ const processAlbums = (albums, source) => Object.freeze(albums.map((album) => ({
  * @returns {Promise<void>}
  */
 const init = async () => {
-	const rawData = {
-		qobuz: await loadData('./qobuz/data.json'),
-		qbtmp: await loadData('./qobuz/temp.json'),
-		am: await loadData('./am/data.json'),
-		amtmp: await loadData('./am/temp.json'),
-	};
+	const loaded = await Promise.all(
+		Object.entries(SOURCES).map(async ([source, { url, jsonc }]) => [
+			source,
+			processAlbums(await loadData(url, { jsonc }), source),
+		])
+	);
 
-	data = {
-		qobuz: processAlbums(rawData.qobuz, 'qobuz'),
-		qbtmp: processAlbums(rawData.qbtmp, 'qobuz-temp'),
-		am: processAlbums(rawData.am, 'am'),
-		amtmp: processAlbums(rawData.amtmp, 'am-temp'),
-	};
+	data = Object.fromEntries(loaded);
 
 	searchBox.disabled = false;
-	searchBox.placeholder = '搜索艺人、专辑、曲目...';
+	searchBox.placeholder = '搜索艺人、专辑...';
 	searchBox.focus();
 };
 
@@ -75,6 +135,19 @@ const init = async () => {
 const normalizeQuery = (query) => query.replace(/['/:]/g, '_');
 
 /**
+ * 判断专辑是否符合关键词（比對艺人、专辑、别名/原名，以及曲目标题（若有））
+ * @param {Object} album - 专辑数据对象
+ * @param {string} normalized - 规范化后的关键词（小写）
+ * @returns {boolean} 是否匹配
+ */
+const matches = (album, normalized) =>
+	[album.artist, album.album, album.original_artist].some(
+		(field) => typeof field === 'string' && field.toLowerCase().includes(normalized)
+	) ||
+	(Array.isArray(album.tracks) &&
+		album.tracks.some((track) => typeof track?.title === 'string' && track.title.toLowerCase().includes(normalized)));
+
+/**
  * 在所有数据中搜索匹配的专辑
  * @param {string} query - 搜索关键词
  * @returns {Array} 匹配的专辑数组
@@ -84,24 +157,13 @@ const search = (query) => {
 	if (!term || !data) return [];
 
 	const normalized = normalizeQuery(term);
-	let resultCount = 0;
 	const results = [];
 
 	// 遍历所有数据源，直到达到最大结果数量
 	for (const albums of Object.values(data)) {
-		if (resultCount >= MAX_RESULTS) break;
-
 		for (const album of albums) {
-			if (resultCount >= MAX_RESULTS) break;
-
-			const artistMatch = album.artist.toLowerCase().includes(normalized);
-			const albumMatch = album.album.toLowerCase().includes(normalized);
-			const trackMatch = album.tracks.some((track) => track.title.toLowerCase().includes(normalized));
-
-			if (artistMatch || albumMatch || trackMatch) {
-				results.push(album);
-				resultCount++;
-			}
+			if (results.length >= MAX_RESULTS) return results;
+			if (matches(album, normalized)) results.push(album);
 		}
 	}
 
@@ -116,41 +178,95 @@ const search = (query) => {
 const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 /**
+ * 建立高亮用正则（同时匹配原始关键词与规范化后的关键词）
+ * @param {string} query - 搜索查询词
+ * @returns {RegExp} 高亮用正则
+ */
+const buildHighlightRegex = (query) => {
+	const variants = [...new Set([query, normalizeQuery(query)])].filter(Boolean);
+	return new RegExp(`(${variants.map(escapeRegex).join('|')})`, 'gi');
+};
+
+/**
+ * 生成结果卡片的附加信息（路径 / 年份 / 格式）
+ * @param {Object} album - 专辑数据对象
+ * @returns {string} 信息区HTML
+ */
+const buildMeta = (album) => {
+	const items = [];
+
+	if (album.location) items.push(`<span class="location">${album.location}</span>`);
+	if (album.year) items.push(`<span class="year">${album.year}</span>`);
+	if (album.codec) items.push(`<span class="codec">${album.codec}</span>`);
+
+	return items.length ? `<div class="meta">${items.join('')}</div>` : '';
+};
+
+/**
  * 高亮显示搜索结果中的匹配文本
  * @param {Object} album - 专辑数据对象
  * @param {string} query - 搜索查询词
  * @returns {string} 包含高亮标记的HTML字符串
  */
 const highlight = (album, query) => {
-	const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
-	const normQuery = query.toLowerCase();
+	const regex = buildHighlightRegex(query);
+	const mark = (text) => (typeof text === 'string' ? text.replace(regex, '<span class="highlight">$1</span>') : '');
 
-	const artist = album.artist.replace(regex, '<span class="highlight">$1</span>');
-	const albumName = album.album.replace(regex, '<span class="highlight">$1</span>');
+	// 别名（原名）仅少数条目存在
+	const alias = album.original_artist ? `<div class="alias">原名：${mark(album.original_artist)}</div>` : '';
 
-	const tracks = album.tracks
-		.filter((track) => track.title.toLowerCase().includes(normQuery))
-		.map(
-			(track) => `
-			<li class="track-match-item">
-				${track.number}. ${track.title.replace(regex, '<span class="highlight">$1</span>')}
-			</li>`
-		)
-		.join('');
+	// Qobuz 等含曲目数据的数据源：列出符合关键词的曲目（Apple Music 无此字段）
+	const normalized = normalizeQuery(query.trim().toLowerCase());
+	const tracks = Array.isArray(album.tracks)
+		? album.tracks
+				.filter((track) => typeof track?.title === 'string' && track.title.toLowerCase().includes(normalized))
+				.map(
+					(track) => `
+				<li class="track-match-item">
+					${track.number}. ${mark(track.title)}
+				</li>`
+				)
+				.join('')
+		: '';
 
 	const tracksHTML = tracks ? `<ul class="track-match-list">${tracks}</ul>` : '';
 
 	return `
 		<div class="result-content">
-			<div class="artist">${artist}</div>
-			<div class="album">${albumName}</div>
-			<div class="meta">
-				<span class="year">${album.year}</span>
-				<span class="codec">${album.codec}</span>
-			</div>
+			<div class="artist">${mark(album.artist)}</div>
+			${alias}
+			<div class="album">${mark(album.album)}</div>
+			${buildMeta(album)}
 			${tracksHTML}
 		</div>
 	`;
+};
+
+/**
+ * 依数据来源与存放路径计算跳转链接
+ * @param {Object} album - 专辑数据对象
+ * @returns {string} 跳转链接
+ */
+const getLink = (album) => {
+	if (album.source === 'am') {
+		// location 在 am-dlt 下的条目指向「近期」链接，在 am-sorted 下的条目指向「历史文件」链接
+		return typeof album.location === 'string' && album.location.startsWith('am-dlt') ? links.amtmp : links.am;
+	}
+	return links[album.source];
+};
+
+/** 来源标识对应的显示名称 */
+const SOURCE_LABELS = {
+	qobuz: 'QOBUZ',
+	qbtmp: 'QOBUZ-TEMP',
+	am: 'AM',
+};
+
+/** 来源标识对应的样式分组 */
+const SOURCE_GROUPS = {
+	qobuz: 'qobuz',
+	qbtmp: 'qobuz',
+	am: 'am',
 };
 
 /**
@@ -163,12 +279,12 @@ const render = (results, query) => {
 		...results.map((album) => {
 			const el = document.createElement('a');
 			el.className = 'result-item';
-			el.href = links[album.source];
+			el.href = getLink(album);
 
 			el.innerHTML = `
 				${highlight(album, query)}
-				<div class="source" data-source="${album.source}">
-					${album.source.toUpperCase()}
+				<div class="source" data-source="${SOURCE_GROUPS[album.source] ?? album.source}">
+					${SOURCE_LABELS[album.source] ?? album.source.toUpperCase()}
 				</div>
 			`;
 
